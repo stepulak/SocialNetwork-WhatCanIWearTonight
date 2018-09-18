@@ -11,3 +11,8 @@ There will be two roles: User and Admin.
 Admin can remove posts that violate regulations of the social network.
 
 User can add posts, upload photos, comment and react on posts of friends or general public, remove own posts, add and remove friends, add restrictions to visibility of own posts (gender, age, friends only etc.), send private messages, add hashtags (for example hashtag for specific occasion, event, body type or clothing type etc.)
+
+## Developers
+
+* Martin Hamernik
+* Stepan Trcka
