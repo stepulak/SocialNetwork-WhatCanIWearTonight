@@ -12,14 +12,14 @@ namespace EntityDatabase
     public class Image
     {
         [Key]
-        public uint Id { get; set; }
+        public int Id { get; set; }
         
-        public uint PostId { get; set; }
+        public int PostId { get; set; }
         public Post Post { get; set; }
 
         public byte[] BinaryImage { get; set; }
-        public uint Likes { get; set; }
-        public uint Dislikes { get; set; }
+        public int Likes { get; set; }
+        public int Dislikes { get; set; }
 
         public List<Vote> Votes { get; set; }
     }

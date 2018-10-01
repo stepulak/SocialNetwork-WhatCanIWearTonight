@@ -12,7 +12,7 @@ namespace EntityDatabase
     public class Hashtag
     {
         [Key]
-        public uint Id { get; set; }
+        public int Id { get; set; }
         public string Tag { get; set; }
         
         public List<HashtagInPost> HashtagInPosts { get; set; }

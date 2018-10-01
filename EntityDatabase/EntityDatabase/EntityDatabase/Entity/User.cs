@@ -12,7 +12,7 @@ namespace EntityDatabase
     public class User
     {
         [Key]
-        public uint Id { get; set; }
+        public int Id { get; set; }
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public Gender Gender { get; set; }

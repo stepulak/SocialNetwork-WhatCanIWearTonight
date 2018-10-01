@@ -1,2 +1,14 @@
 H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csprojAssemblyReference.cache
 H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csproj.CoreCompileInputs.cache
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityDatabase.dll.config
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityDatabase.dll
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityDatabase.pdb
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.dll
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.SqlServer.dll
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.xml
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.SqlServer.xml
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csprojAssemblyReference.cache
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csproj.CoreCompileInputs.cache
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csproj.CopyComplete
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.dll
+D:\Git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.pdb

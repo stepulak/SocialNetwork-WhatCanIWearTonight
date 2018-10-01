@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,14 @@ namespace EntityDatabase
 {
     public class Vote
     {
-        public uint UserId { get; set; }
+        [Key, Column(Order = 0)]
+        public int UserId { get; set; }
         public User User { get; set; }
 
-        public uint ImageId { get; set; }
+        [Key, Column(Order = 1)]
+        public int ImageId { get; set; }
         public Image Image { get; set; }
+
+        public VoteType Type { get; set; }
     }
 }

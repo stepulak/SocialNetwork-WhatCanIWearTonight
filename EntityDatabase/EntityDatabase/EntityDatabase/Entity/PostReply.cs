@@ -11,12 +11,12 @@ namespace EntityDatabase
     public class PostReply
     {
         [Key]
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
-        public uint UserId { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
 
-        public uint PostId { get; set; }
+        public int PostId { get; set; }
         public Post Post { get; set; }
 
         [Column(TypeName = "datetime2")]

@@ -11,12 +11,12 @@ namespace EntityDatabase
     public class Message
     {
         [Key]
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
-        public uint UserSenderId { get; set; }
+        public int? UserSenderId { get; set; }
         public User UserSender { get; set; }
 
-        public uint UserReceiverId { get; set; }
+        public int? UserReceiverId { get; set; }
         public User UserReceiver { get; set; }
 
         [Column(TypeName = "datetime2")]

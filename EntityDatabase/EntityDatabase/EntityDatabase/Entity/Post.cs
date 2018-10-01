@@ -12,7 +12,7 @@ namespace EntityDatabase
     public class Post
     {
         [Key]
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime Time { get; set; }
@@ -22,10 +22,10 @@ namespace EntityDatabase
         public Gender GenderRestriction { get; set; }
 
         public bool HasAgeRestriction { get; set; }
-        public uint AgeRestrictionFrom { get; set; }
-        public uint AgeRestrictionTo { get; set; }
+        public int AgeRestrictionFrom { get; set; }
+        public int AgeRestrictionTo { get; set; }
 
-        public uint UserId { get; set; }
+        public int? UserId { get; set; }
         public User User { get; set; }
 
         public List<PostReply> Replys { get; set; }
