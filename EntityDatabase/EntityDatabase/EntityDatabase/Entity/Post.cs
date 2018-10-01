@@ -30,6 +30,6 @@ namespace EntityDatabase
 
         public List<PostReply> Replys { get; set; }
         public List<Image> Images { get; set; }
-        public List<HashtagInPost> HashtagInPosts { get; set; }
+        public List<HashtagInPost> HashtagsInPosts { get; set; }
     }
 }

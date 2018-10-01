@@ -18,8 +18,8 @@ namespace EntityDatabase
         public Post Post { get; set; }
 
         public byte[] BinaryImage { get; set; }
-        public int Likes { get; set; }
-        public int Dislikes { get; set; }
+        public int LikesCount { get; set; }
+        public int DislikesCount { get; set; }
 
         public List<Vote> Votes { get; set; }
     }
