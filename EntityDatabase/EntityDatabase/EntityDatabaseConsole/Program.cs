@@ -66,8 +66,8 @@ namespace EntityDatabase
                 {
                     FriendshipId = 1,
                     IsConfirmed = false,
-                    User1Id = 2,
-                    User2Id = 1
+                    ApplicantId = 2,
+                    RecipientId = 1
                 };
 
                 db.Friendships.Add(friendship);
@@ -77,8 +77,8 @@ namespace EntityDatabase
                 {
                     Id = 1,
                     BinaryImage = new byte[] { 0, 1, 2, 3 },
-                    Dislikes = 1,
-                    Likes = 0,
+                    DislikesCount = 1,
+                    LikesCount = 0,
                     PostId = 1,
                 };
 
@@ -104,7 +104,7 @@ namespace EntityDatabase
                 }
                 {
                     var query = db.Friendships.First();
-                    Console.WriteLine($"Friendship: First user: {query.User1.Username} Second user: {query.User2.Username}");
+                    Console.WriteLine($"Friendship: First user: {query.Applicant.Username} Second user: {query.Recipient.Username}");
                 }
                 {
                     var query = db.Votes.First();
