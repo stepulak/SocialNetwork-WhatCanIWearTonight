@@ -24,3 +24,13 @@ C:\Users\Martin\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDat
 C:\Users\Martin\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csproj.CopyComplete
 C:\Users\Martin\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.dll
 C:\Users\Martin\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.pdb
+H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityDatabase.dll.config
+H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityDatabase.dll
+H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityDatabase.pdb
+H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.dll
+H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.SqlServer.dll
+H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.xml
+H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.SqlServer.xml
+H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csproj.CopyComplete
+H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.dll
+H:\git\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.pdb

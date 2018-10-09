@@ -7,7 +7,6 @@ namespace WCIWT.Infrastructure.EntityFramework.UnitOfWork
 {
     public class EntityFrameworkUnitOfWork : UnitOfWorkBase
     {
-
         public DbContext Context { get; }
 
         public EntityFrameworkUnitOfWork(Func<DbContext> dbContextFactory)
