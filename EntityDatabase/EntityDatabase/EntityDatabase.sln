@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityDatabaseConsole", "En
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{B44A3536-1A98-4177-9D65-12B45C86DD1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCIWT.Infrastructure", "WCIWT.Infrastructure\WCIWT.Infrastructure.csproj", "{44F182B0-4798-4F20-ADD4-B05B60F7706A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCIWT.Infrastructure", "WCIWT.Infrastructure\WCIWT.Infrastructure.csproj", "{44F182B0-4798-4F20-ADD4-B05B60F7706A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCIWT.Infrastructure.EntityFramework", "WCIWT.Infrastructure.EntityFramework\WCIWT.Infrastructure.EntityFramework.csproj", "{B98291B9-E25B-43DF-848E-50E787FFD036}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCIWT.Infrastructure.EntityFramework", "WCIWT.Infrastructure.EntityFramework\WCIWT.Infrastructure.EntityFramework.csproj", "{B98291B9-E25B-43DF-848E-50E787FFD036}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
