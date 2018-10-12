@@ -12,7 +12,7 @@ namespace WCIWT.Infrastructure.AsyncPoco.UnitOfWork
     {
         private readonly Func<Database> databaseCreator;
 
-        public AsyncPocoUnitOfWorkProvider(Func<Database> contextCreator)
+        public AsyncPocoUnitOfWorkProvider(Func<Database> databaseCreator)
         {
             this.databaseCreator = databaseCreator ?? throw new ArgumentNullException("Database creator is null");
         }

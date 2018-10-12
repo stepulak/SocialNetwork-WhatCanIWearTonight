@@ -37,12 +37,12 @@ namespace WCIWT.Infrastructure.AsyncPoco
 
         public Task<TEntity> GetAsync(Guid id, params string[] includes)
         {
-            throw new NotImplementedException();
+            Database.FetchAsync()
         }
 
-        public void Update(TEntity entity)
+        public async void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            await Database.UpdateAsync(entity);
         }
     }
 }

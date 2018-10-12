@@ -46,7 +46,6 @@ namespace WCIWT.Infrastructure.EntityFramework
             {
                 localContext.Include(toInclude);
             }
-
             return await localContext.SingleOrDefaultAsync(entity => entity.Id.Equals(id));
         }
     }
