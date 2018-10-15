@@ -25,4 +25,3 @@ namespace WCIWT.Infrastructure.AsyncPoco.UnitOfWork
         public override void Dispose() => Database.Dispose();
     }
 }
-}
