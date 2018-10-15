@@ -35,9 +35,17 @@ namespace WCIWT.Infrastructure.AsyncPoco
             return Database.SingleOrDefaultAsync<TEntity>(id);
         }
 
-        public Task<TEntity> GetAsync(Guid id, params string[] includes)
+        public async Task<TEntity> GetAsync(Guid id, params string[] includes)
         {
-            Database.FetchAsync()
+            var entity = await GetAsync(id);
+            var sql = Sql.Builder
+                .Select("*")
+                .From(entity.TableName);
+            foreach (var include in includes)
+            {
+                sql = sql.LeftJoin(include).On($"{include}.Id = {entity.TableName}.Id");
+            }
+            return await Database.FirstAsync<TEntity>(sql);
         }
 
         public async void Update(TEntity entity)
