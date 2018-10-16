@@ -23,11 +23,11 @@ namespace WCIWT.Infrastructure.Query
 
         public int? SelectedPage { get; private set; }
 
-        private string sortBy;
+        private string sortAccordingTo;
 
-        public string SortBy
+        public string SortAccordingTo
         {
-            get => sortBy;
+            get => sortAccordingTo;
             protected set
             {
                 var properties = typeof(TEntity)
@@ -37,7 +37,7 @@ namespace WCIWT.Infrastructure.Query
 
                 var matchedName = properties
                     .FirstOrDefault(name => name.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0);
-                sortBy = matchedName;
+                sortAccordingTo = matchedName;
             }
         }
 
@@ -51,11 +51,9 @@ namespace WCIWT.Infrastructure.Query
             return this;
         }
 
-        IQuery<TEntity> IQuery<TEntity>.SortBy(string sortAccordingTo, bool ascendingOrder = true)
+        public IQuery<TEntity> SortBy(string sortAccordingTo, bool ascendingOrder = true)
         {
-            SortBy = !string.IsNullOrWhiteSpace(sortBy)
-                ? sortBy
-                : throw new ArgumentException($"{nameof(sortBy)} must be defined");
+            SortAccordingTo = !string.IsNullOrWhiteSpace(sortAccordingTo) ? sortAccordingTo : throw new ArgumentException($"{nameof(sortAccordingTo)} must be defined!");
             UseAscendingOrder = ascendingOrder;
             return this;
         }
