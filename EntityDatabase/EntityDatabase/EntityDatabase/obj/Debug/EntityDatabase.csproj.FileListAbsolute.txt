@@ -41,7 +41,6 @@ C:\Users\xhamern2\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityD
 C:\Users\xhamern2\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\xhamern2\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.xml
 C:\Users\xhamern2\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\xhamern2\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csprojAssemblyReference.cache
 C:\Users\xhamern2\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csproj.CoreCompileInputs.cache
 C:\Users\xhamern2\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csproj.CopyComplete
 C:\Users\xhamern2\Source\Repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.dll
