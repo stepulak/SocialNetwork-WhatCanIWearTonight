@@ -64,7 +64,7 @@ namespace EntityDatabase
 
                 var friendship = new Friendship
                 {
-                    FriendshipId = 1,
+                    Id = 1,
                     IsConfirmed = false,
                     ApplicantId = 2,
                     RecipientId = 1

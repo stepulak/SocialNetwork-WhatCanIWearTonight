@@ -26,7 +26,7 @@ namespace EntityDatabase
         public int AgeRestrictionTo { get; set; }
 
         public int? UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public List<PostReply> Replys { get; set; }
         public List<Image> Images { get; set; }
