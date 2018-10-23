@@ -12,11 +12,11 @@ namespace EntityDatabase
     {
         [Key, Column(Order = 0)]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         [Key, Column(Order = 1)]
         public int ImageId { get; set; }
-        public Image Image { get; set; }
+        public virtual Image Image { get; set; }
 
         public VoteType Type { get; set; }
     }

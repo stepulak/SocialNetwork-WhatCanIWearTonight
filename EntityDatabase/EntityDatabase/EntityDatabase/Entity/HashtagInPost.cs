@@ -12,10 +12,10 @@ namespace EntityDatabase
     {
         [Key, Column(Order = 0)]
         public int PostId { get; set; }
-        public Post Post { get; set; }
+        public virtual Post Post { get; set; }
 
         [Key, Column(Order = 1)]
         public int HashtagId { get; set; }
-        public Hashtag Hashtag { get; set; }
+        public virtual Hashtag Hashtag { get; set; }
     }
 }

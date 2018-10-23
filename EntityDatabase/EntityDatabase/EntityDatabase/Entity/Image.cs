@@ -15,7 +15,7 @@ namespace EntityDatabase
         public int Id { get; set; }
         
         public int PostId { get; set; }
-        public Post Post { get; set; }
+        public virtual Post Post { get; set; }
 
         public byte[] BinaryImage { get; set; }
         public int LikesCount { get; set; }

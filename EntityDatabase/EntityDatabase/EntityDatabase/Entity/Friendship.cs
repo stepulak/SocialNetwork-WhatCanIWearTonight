@@ -11,13 +11,13 @@ namespace EntityDatabase
     public class Friendship
     {
         [Key]
-        public int FriendshipId { get; set; }
+        public int Id { get; set; }
 
         public int? ApplicantId { get; set; }
-        public User Applicant { get; set; }
+        public virtual User Applicant { get; set; }
         
         public int? RecipientId { get; set; }
-        public User Recipient { get; set; }
+        public virtual User Recipient { get; set; }
 
         public bool IsConfirmed { get; set; }
     }

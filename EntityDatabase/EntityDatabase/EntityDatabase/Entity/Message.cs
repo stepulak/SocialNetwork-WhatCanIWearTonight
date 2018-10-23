@@ -14,10 +14,10 @@ namespace EntityDatabase
         public int Id { get; set; }
 
         public int? UserSenderId { get; set; }
-        public User UserSender { get; set; }
+        public virtual User UserSender { get; set; }
 
         public int? UserReceiverId { get; set; }
-        public User UserReceiver { get; set; }
+        public virtual User UserReceiver { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime Time { get; set; }
