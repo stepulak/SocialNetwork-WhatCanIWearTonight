@@ -54,9 +54,9 @@
     <Compile Include="UnitOfWork\EntityFrameworkUnitOfWorkProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WCIWT.Infrastructure\WCIWT.Infrastructure.csproj">
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{3acb25ac-070d-4db0-9409-cb6c54c08dc8}</Project>
-      <Name>WCIWT.Infrastructure</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

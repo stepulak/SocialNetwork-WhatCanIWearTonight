@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityDatabase", "EntityDatabase\EntityDatabase.csproj", "{A856A90E-E034-440C-8397-A03776D036E3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityDatabaseConsole", "EntityDatabaseConsole\EntityDatabaseConsole.csproj", "{EFD4D01B-940B-47FE-90B3-2DDFFF5A7DA2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityDatabase", "DataAccessLayer\EntityDatabase\EntityDatabase.csproj", "{A856A90E-E034-440C-8397-A03776D036E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D98CF30A-C64A-4917-85AE-FFA010C08163}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCIWT.Infrastructure.EntityFramework", "WCIWT.Infrastructure.EntityFramework\WCIWT.Infrastructure.EntityFramework.csproj", "{E0B0E028-6994-4EA7-8773-60818F1A1A1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.EntityFramework", "DataAccessLayer\Infrastructure.EntityFramework\Infrastructure.EntityFramework.csproj", "{E0B0E028-6994-4EA7-8773-60818F1A1A1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCIWT.Infrastructure", "WCIWT.Infrastructure\WCIWT.Infrastructure.csproj", "{3ACB25AC-070D-4DB0-9409-CB6C54C08DC8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "DataAccessLayer\Infrastructure\Infrastructure.csproj", "{3ACB25AC-070D-4DB0-9409-CB6C54C08DC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCIWT.Infrastructure.AsyncPoco", "WCIWT.Infrastructure.AsyncPoco\WCIWT.Infrastructure.AsyncPoco.csproj", "{DB16D310-84BC-43CF-94DE-EA7167E29386}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.AsyncPoco", "DataAccessLayer\Infrastructure.AsyncPoco\Infrastructure.AsyncPoco.csproj", "{DB16D310-84BC-43CF-94DE-EA7167E29386}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityDatabaseTesting", "EntityDatabaseTesting\EntityDatabaseTesting.csproj", "{F816E02A-5F4E-4D84-9863-261AF7177983}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityDatabaseTesting", "DataAccessLayer\EntityDatabaseTesting\EntityDatabaseTesting.csproj", "{F816E02A-5F4E-4D84-9863-261AF7177983}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{32202040-29F1-4292-BBA6-3DE1485E5ED6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BL", "BL", "{10FDB14D-248F-405A-9746-4D81FE20796E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +129,22 @@ Global
 		{F816E02A-5F4E-4D84-9863-261AF7177983}.Release|x64.Build.0 = Release|Any CPU
 		{F816E02A-5F4E-4D84-9863-261AF7177983}.Release|x86.ActiveCfg = Release|Any CPU
 		{F816E02A-5F4E-4D84-9863-261AF7177983}.Release|x86.Build.0 = Release|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Debug|ARM.Build.0 = Debug|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Debug|x64.Build.0 = Debug|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Debug|x86.Build.0 = Debug|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Release|ARM.ActiveCfg = Release|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Release|ARM.Build.0 = Release|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Release|x64.ActiveCfg = Release|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Release|x64.Build.0 = Release|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Release|x86.ActiveCfg = Release|Any CPU
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +157,7 @@ Global
 		{3ACB25AC-070D-4DB0-9409-CB6C54C08DC8} = {D98CF30A-C64A-4917-85AE-FFA010C08163}
 		{DB16D310-84BC-43CF-94DE-EA7167E29386} = {D98CF30A-C64A-4917-85AE-FFA010C08163}
 		{F816E02A-5F4E-4D84-9863-261AF7177983} = {32202040-29F1-4292-BBA6-3DE1485E5ED6}
+		{CEFB1219-C701-40D6-B372-1B7EAC2B07FE} = {10FDB14D-248F-405A-9746-4D81FE20796E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {616A4320-8E66-4665-BB34-16ECA06C3A68}
