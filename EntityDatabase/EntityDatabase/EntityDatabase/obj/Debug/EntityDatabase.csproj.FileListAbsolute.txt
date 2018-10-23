@@ -46,3 +46,15 @@ C:\Users\stepan\Documents\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDataba
 C:\Users\stepan\Documents\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csproj.CopyComplete
 C:\Users\stepan\Documents\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.dll
 C:\Users\stepan\Documents\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.pdb
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityDatabase.dll.config
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityDatabase.dll
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityDatabase.pdb
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.dll
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.xml
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csprojAssemblyReference.cache
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csproj.CoreCompileInputs.cache
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.csproj.CopyComplete
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.dll
+C:\Users\xhamern2\source\repos\PV179-WCIWT\EntityDatabase\EntityDatabase\EntityDatabase\obj\Debug\EntityDatabase.pdb
