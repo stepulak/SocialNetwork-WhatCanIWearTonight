@@ -15,6 +15,11 @@ namespace WCIWT.Infrastructure.AsyncPoco
 
         protected Database Database => ((AsyncPocoUnitOfWork)provider.GetUnitOfWorkInstance()).Database;
 
+        public AsyncPocoRepository(IUnitOfWorkProvider provider)
+        {
+            this.provider = provider;
+        }
+
         public async void Create(TEntity entity)
         {
             entity.Id = new Guid();

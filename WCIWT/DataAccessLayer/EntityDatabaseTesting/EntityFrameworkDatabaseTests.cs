@@ -8,6 +8,19 @@ namespace EntityDatabaseTesting
     [TestClass]
     public class EntityFrameworkDatabaseTests
     {
+        [TestCleanup]
+        public void AfterRun()
+        {
+            using (var db = new MyDbContext())
+            {
+                db.Friendships.RemoveRange(db.Friendships);
+                db.PostReplys.RemoveRange(db.PostReplys);
+                db.Posts.RemoveRange(db.Posts);
+                db.Messages.RemoveRange(db.Messages);
+                db.Users.RemoveRange(db.Users);
+            }
+        }
+
         [TestMethod]
         public void AddSingleUser()
         {
@@ -45,7 +58,6 @@ namespace EntityDatabaseTesting
                 Assert.IsNull(user.Posts);
                 Assert.IsNull(user.Votes);
                 Assert.IsNull(user.Friendships);
-                db.Users.RemoveRange(db.Users);
                 db.SaveChanges();
             }
         }
@@ -79,8 +91,6 @@ namespace EntityDatabaseTesting
                 Assert.IsNotNull(friendship.Recipient);
                 Assert.AreEqual(friendship.Applicant.Id, 1);
                 Assert.AreEqual(friendship.Recipient.Id, 2);
-                db.Users.RemoveRange(db.Users);
-                db.Friendships.RemoveRange(db.Friendships);
                 db.SaveChanges();
             }
         }
@@ -148,10 +158,6 @@ namespace EntityDatabaseTesting
                 Assert.AreEqual(reply.Post.Id, 1);
                 Assert.AreEqual(reply.Time, replyTime);
                 Assert.AreEqual(reply.Text, replyText);
-
-                db.Users.RemoveRange(db.Users);
-                db.Posts.RemoveRange(db.Posts);
-                db.PostReplys.RemoveRange(db.PostReplys);
                 db.SaveChanges();
             }
         }
@@ -194,14 +200,11 @@ namespace EntityDatabaseTesting
                 Assert.AreEqual(message.UserSenderId, 2);
                 Assert.IsNotNull(message.UserSender);
                 Assert.AreEqual(message.UserSender.Id, 2);
-
-                db.Users.RemoveRange(db.Users);
-                db.Messages.RemoveRange(db.Messages);
                 db.SaveChanges();
             }
         }
 
-        private User CreateSampleUser(int id)
+        private static User CreateSampleUser(int id)
         {
             return new User
             {

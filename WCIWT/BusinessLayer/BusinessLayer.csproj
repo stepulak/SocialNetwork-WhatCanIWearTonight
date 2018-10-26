@@ -41,6 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTransferObjects\AdminDto.cs" />
+    <Compile Include="DataTransferObjects\BaseDto.cs" />
+    <Compile Include="DataTransferObjects\FriendshipDto.cs" />
+    <Compile Include="DataTransferObjects\FriendshipRequestDto.cs" />
+    <Compile Include="DataTransferObjects\Gender.cs" />
+    <Compile Include="DataTransferObjects\HashtagDto.cs" />
+    <Compile Include="DataTransferObjects\HashtagInPostDto.cs" />
+    <Compile Include="DataTransferObjects\ImageDto.cs" />
+    <Compile Include="DataTransferObjects\MessageDto.cs" />
+    <Compile Include="DataTransferObjects\PostDto.cs" />
+    <Compile Include="DataTransferObjects\PostReplyDto.cs" />
+    <Compile Include="DataTransferObjects\PostVisibility.cs" />
+    <Compile Include="DataTransferObjects\PublicPostDto.cs" />
+    <Compile Include="DataTransferObjects\UserDto.cs" />
+    <Compile Include="DataTransferObjects\VoteDto.cs" />
+    <Compile Include="DataTransferObjects\VoteType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

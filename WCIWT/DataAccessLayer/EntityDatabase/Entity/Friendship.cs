@@ -12,7 +12,7 @@ namespace EntityDatabase
     {
         [Key]
         public int Id { get; set; }
-
+        
         public int? ApplicantId { get; set; }
         public virtual User Applicant { get; set; }
         
