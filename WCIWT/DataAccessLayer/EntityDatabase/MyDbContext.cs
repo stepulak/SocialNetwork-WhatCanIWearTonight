@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace EntityDatabase
 {
-    public class MyDbContext : DbContext
+    public class WCIWTDbContext : DbContext
     {
-        public MyDbContext() : base()
+        public WCIWTDbContext() : base()
         {
-            Database.SetInitializer<MyDbContext>(new DropCreateDatabaseAlways<MyDbContext>());
+            Database.SetInitializer<WCIWTDbContext>(new DropCreateDatabaseAlways<WCIWTDbContext>());
         }
         
         public DbSet<Friendship> Friendships { get; set; }

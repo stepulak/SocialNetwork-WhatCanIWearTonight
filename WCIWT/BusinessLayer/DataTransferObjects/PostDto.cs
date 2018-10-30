@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLayer.DataTransferObjects.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.DataTransferObjects
 {
-    public class PostDto : BaseDto
+    public class PostDto : DtoBase
     {
         public DateTime Time { get; set; }
 
@@ -18,7 +19,7 @@ namespace BusinessLayer.DataTransferObjects
         public int AgeRestrictionFrom { get; set; }
         public int AgeRestrictionTo { get; set; }
 
-        public int? UserId { get; set; }
+        public Guid? UserId { get; set; }
         public virtual UserDto User { get; set; }
     }
 }

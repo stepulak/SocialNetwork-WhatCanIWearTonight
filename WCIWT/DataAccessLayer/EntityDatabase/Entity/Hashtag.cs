@@ -6,15 +6,19 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WCIWT.Infrastructure;
 
 namespace EntityDatabase
 {
-    public class Hashtag
+    public class Hashtag : IEntity
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Tag { get; set; }
         
         public List<HashtagInPost> HashtagInPosts { get; set; }
+
+        [NotMapped]
+        public string TableName => nameof(WCIWTDbContext.Hashtags);
     }
 }

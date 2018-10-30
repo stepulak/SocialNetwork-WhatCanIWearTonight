@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLayer.DataTransferObjects.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.DataTransferObjects
 {
-    public class PostReplyDto : BaseDto
+    public class PostReplyDto : DtoBase
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public virtual UserDto User { get; set; }
 
-        public int PostId { get; set; }
+        public Guid PostId { get; set; }
         public virtual PostDto Post { get; set; }
         
         public DateTime Time { get; set; }

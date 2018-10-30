@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLayer.DataTransferObjects.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.DataTransferObjects
 {
-    public class FriendshipDto : BaseDto
+    public class FriendshipDto : DtoBase
     {
-        public int? ApplicantId { get; set; }
+        public Guid? ApplicantId { get; set; }
         public virtual UserDto Applicant { get; set; }
 
-        public int? RecipientId { get; set; }
+        public Guid? RecipientId { get; set; }
         public virtual UserDto Recipient { get; set; }
 
         public bool IsConfirmed { get; set; }

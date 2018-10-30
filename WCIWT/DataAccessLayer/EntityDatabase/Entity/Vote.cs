@@ -5,19 +5,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WCIWT.Infrastructure;
 
 namespace EntityDatabase
 {
-    public class Vote
+    public class Vote : IEntity
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public virtual User User { get; set; }
 
-        public int ImageId { get; set; }
+        public Guid ImageId { get; set; }
         public virtual Image Image { get; set; }
 
         public VoteType Type { get; set; }
+
+        [NotMapped]
+        public string TableName => nameof(WCIWTDbContext.Votes);
     }
 }

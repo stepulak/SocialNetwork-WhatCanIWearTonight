@@ -5,18 +5,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WCIWT.Infrastructure;
 
 namespace EntityDatabase
 {
-    public class Message
+    public class Message : IEntity
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public int? UserSenderId { get; set; }
+        public Guid? UserSenderId { get; set; }
         public virtual User UserSender { get; set; }
 
-        public int? UserReceiverId { get; set; }
+        public Guid? UserReceiverId { get; set; }
         public virtual User UserReceiver { get; set; }
 
         [Column(TypeName = "datetime2")]
@@ -24,5 +25,8 @@ namespace EntityDatabase
 
         public bool Seen { get; set; }
         public string Text { get; set; }
+
+        [NotMapped]
+        public string TableName => nameof(WCIWTDbContext.Messages);
     }
 }

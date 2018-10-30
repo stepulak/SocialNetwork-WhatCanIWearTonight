@@ -6,15 +6,16 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WCIWT.Infrastructure;
 
 namespace EntityDatabase
 {
-    public class Image
+    public class Image : IEntity
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         
-        public int PostId { get; set; }
+        public Guid PostId { get; set; }
         public virtual Post Post { get; set; }
 
         public byte[] BinaryImage { get; set; }
@@ -22,5 +23,8 @@ namespace EntityDatabase
         public int DislikesCount { get; set; }
 
         public List<Vote> Votes { get; set; }
+
+        [NotMapped]
+        public string TableName => nameof(WCIWTDbContext.Images);
     }
 }

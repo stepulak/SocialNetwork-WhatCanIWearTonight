@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLayer.DataTransferObjects.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.DataTransferObjects
 {
-    public class UserDto : BaseDto
+    public class UserDto : DtoBase
     {
         public string Username { get; set; }
         public string PasswordHash { get; set; }

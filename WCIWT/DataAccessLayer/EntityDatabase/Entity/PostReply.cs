@@ -5,23 +5,27 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WCIWT.Infrastructure;
 
 namespace EntityDatabase
 {
-    public class PostReply
+    public class PostReply : IEntity
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public virtual User User { get; set; }
 
-        public int PostId { get; set; }
+        public Guid PostId { get; set; }
         public virtual Post Post { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime Time { get; set; }
 
         public string Text { get; set; }
+
+        [NotMapped]
+        public string TableName => nameof(WCIWTDbContext.PostReplys);
     }
 }

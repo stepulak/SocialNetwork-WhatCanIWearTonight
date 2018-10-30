@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLayer.DataTransferObjects.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.DataTransferObjects
 {
-    public class HashtagDto : BaseDto
+    public class HashtagDto : DtoBase
     {
         public string Tag { get; set; }
     }

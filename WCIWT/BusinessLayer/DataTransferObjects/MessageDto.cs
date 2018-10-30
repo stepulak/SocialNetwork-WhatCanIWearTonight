@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLayer.DataTransferObjects.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.DataTransferObjects
 {
-    public class MessageDto : BaseDto
+    public class MessageDto : DtoBase
     {
-        public int? UserSenderId { get; set; }
+        public Guid? UserSenderId { get; set; }
         public virtual UserDto UserSender { get; set; }
 
-        public int? UserReceiverId { get; set; }
+        public Guid? UserReceiverId { get; set; }
         public virtual UserDto UserReceiver { get; set; }
         
         public DateTime Time { get; set; }

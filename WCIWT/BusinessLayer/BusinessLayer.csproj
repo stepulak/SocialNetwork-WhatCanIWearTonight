@@ -49,28 +49,36 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTransferObjects\AdminDto.cs" />
-    <Compile Include="DataTransferObjects\BaseDto.cs" />
+    <Compile Include="DataTransferObjects\Common\DtoBase.cs" />
+    <Compile Include="DataTransferObjects\Common\FilterDtoBase.cs" />
+    <Compile Include="DataTransferObjects\Common\QueryResultDto.cs" />
     <Compile Include="DataTransferObjects\FriendshipDto.cs" />
     <Compile Include="DataTransferObjects\FriendshipRequestDto.cs" />
-    <Compile Include="DataTransferObjects\Gender.cs" />
+    <Compile Include="DataTransferObjects\Enums\Gender.cs" />
     <Compile Include="DataTransferObjects\HashtagDto.cs" />
     <Compile Include="DataTransferObjects\HashtagInPostDto.cs" />
     <Compile Include="DataTransferObjects\ImageDto.cs" />
     <Compile Include="DataTransferObjects\MessageDto.cs" />
     <Compile Include="DataTransferObjects\PostDto.cs" />
     <Compile Include="DataTransferObjects\PostReplyDto.cs" />
-    <Compile Include="DataTransferObjects\PostVisibility.cs" />
+    <Compile Include="DataTransferObjects\Enums\PostVisibility.cs" />
     <Compile Include="DataTransferObjects\PublicPostDto.cs" />
     <Compile Include="DataTransferObjects\UserDto.cs" />
     <Compile Include="DataTransferObjects\VoteDto.cs" />
-    <Compile Include="DataTransferObjects\VoteType.cs" />
+    <Compile Include="DataTransferObjects\Enums\VoteType.cs" />
     <Compile Include="Facades\Common\FacadeBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryObjects\Common\QueryObjectBase.cs" />
     <Compile Include="Services\Common\CrudQueryServiceBase.cs" />
     <Compile Include="Services\Common\ServiceBase.cs" />
+    <Compile Include="Services\Post\IPostService.cs" />
+    <Compile Include="Services\Post\PostService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataAccessLayer\EntityDatabase\EntityDatabase.csproj">
+      <Project>{a856a90e-e034-440c-8397-a03776d036e3}</Project>
+      <Name>EntityDatabase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccessLayer\Infrastructure\Infrastructure.csproj">
       <Project>{3ACB25AC-070D-4DB0-9409-CB6C54C08DC8}</Project>
       <Name>Infrastructure</Name>
@@ -79,5 +87,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

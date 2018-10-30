@@ -6,13 +6,14 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WCIWT.Infrastructure;
 
 namespace EntityDatabase
 {
-    public class User
+    public class User : IEntity
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public Gender Gender { get; set; }
@@ -26,5 +27,8 @@ namespace EntityDatabase
         public List<Vote> Votes { get; set; }
         public List<Friendship> Friendships { get; set; }
         public List<Message> Messages { get; set; }
+
+        [NotMapped]
+        public string TableName => nameof(WCIWTDbContext.Users);
     }
 }

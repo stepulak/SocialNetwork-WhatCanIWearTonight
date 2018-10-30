@@ -6,13 +6,14 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WCIWT.Infrastructure;
 
 namespace EntityDatabase
 {
-    public class Post
+    public class Post : IEntity
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime Time { get; set; }
@@ -25,11 +26,14 @@ namespace EntityDatabase
         public int AgeRestrictionFrom { get; set; }
         public int AgeRestrictionTo { get; set; }
 
-        public int? UserId { get; set; }
+        public Guid? UserId { get; set; }
         public virtual User User { get; set; }
 
         public List<PostReply> Replys { get; set; }
         public List<Image> Images { get; set; }
         public List<HashtagInPost> HashtagsInPosts { get; set; }
+
+        [NotMapped]
+        public string TableName => nameof(WCIWTDbContext.Posts);
     }
 }
