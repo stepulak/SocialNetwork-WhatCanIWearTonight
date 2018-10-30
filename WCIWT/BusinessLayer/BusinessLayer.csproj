@@ -69,6 +69,8 @@
     <Compile Include="Facades\Common\FacadeBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryObjects\Common\QueryObjectBase.cs" />
+    <Compile Include="DataTransferObjects\Filters\UserFilterDto.cs" />
+    <Compile Include="QueryObjects\UserQueryObject.cs" />
     <Compile Include="Services\Common\CrudQueryServiceBase.cs" />
     <Compile Include="Services\Common\ServiceBase.cs" />
     <Compile Include="Services\Post\IPostService.cs" />
