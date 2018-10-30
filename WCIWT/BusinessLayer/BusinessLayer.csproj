@@ -57,7 +57,11 @@
     <Compile Include="DataTransferObjects\UserDto.cs" />
     <Compile Include="DataTransferObjects\VoteDto.cs" />
     <Compile Include="DataTransferObjects\VoteType.cs" />
+    <Compile Include="Facades\Common\FacadeBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryObjects\Common\QueryObjectBase.cs" />
+    <Compile Include="Services\Common\CrudQueryServiceBase.cs" />
+    <Compile Include="Services\Common\ServiceBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
