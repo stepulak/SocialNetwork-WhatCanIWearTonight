@@ -12,16 +12,14 @@ namespace BusinessLayer.Services.PostServices
 {
     public class PostReplyService : CrudQueryServiceBase<PostReply, PostReplyDto, PostReplyFilterDto>
     {
-        public PostReplyService(IMapper mapper, IRepository<PostReply> postRepository, PostReplyQueryObject query)
-            : base(mapper, postRepository, query)
+        public PostReplyService(IMapper mapper, IRepository<PostReply> repository, PostReplyQueryObject query)
+            : base(mapper, repository, query)
         {
         }
 
         protected override Task<PostReply> GetWithIncludesAsync(Guid entityId)
         {
-            var userTableName = new User().TableName;
-            var postTableName = new Post().TableName;
-            return Repository.GetAsync(entityId, new string[] { userTableName, postTableName });
+            return Repository.GetAsync(entityId, "User", "Post");
         }
     }
 }

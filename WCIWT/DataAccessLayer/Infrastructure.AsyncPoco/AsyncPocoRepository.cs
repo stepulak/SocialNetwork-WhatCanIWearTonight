@@ -46,10 +46,10 @@ namespace WCIWT.Infrastructure.AsyncPoco
             var sql = Sql.Builder
                 .Select("*")
                 .From(entity.TableName);
-            foreach (var include in includes)
+            /*foreach (var include in includes)
             {
                 sql = sql.LeftJoin(include).On($"{include}.Id = {entity.TableName}.Id");
-            }
+            }*/
             return await Database.FirstAsync<TEntity>(sql);
         }
 

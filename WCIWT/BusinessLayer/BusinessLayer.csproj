@@ -58,6 +58,7 @@
     <Compile Include="DataTransferObjects\Filters\MessageFilterDto.cs" />
     <Compile Include="DataTransferObjects\Filters\PostFilterDto.cs" />
     <Compile Include="DataTransferObjects\Filters\PostReplyFilterDto.cs" />
+    <Compile Include="DataTransferObjects\Filters\VoteFilterDto.cs" />
     <Compile Include="DataTransferObjects\FriendshipDto.cs" />
     <Compile Include="DataTransferObjects\FriendshipRequestDto.cs" />
     <Compile Include="DataTransferObjects\Enums\Gender.cs" />
@@ -83,10 +84,16 @@
     <Compile Include="QueryObjects\PostQueryObject.cs" />
     <Compile Include="QueryObjects\PostReplyQueryObject.cs" />
     <Compile Include="QueryObjects\UserQueryObject.cs" />
+    <Compile Include="QueryObjects\VoteQueryObject.cs" />
     <Compile Include="Services\Common\CrudQueryServiceBase.cs" />
     <Compile Include="Services\Common\ServiceBase.cs" />
+    <Compile Include="Services\PostServices\ImageService.cs" />
     <Compile Include="Services\PostServices\PostReplyService.cs" />
     <Compile Include="Services\PostServices\PostService.cs" />
+    <Compile Include="Services\PostServices\VoteService.cs" />
+    <Compile Include="Services\UserServices\FriendshipService.cs" />
+    <Compile Include="Services\UserServices\MessageService.cs" />
+    <Compile Include="Services\UserServices\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\EntityDatabase\EntityDatabase.csproj">
