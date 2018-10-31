@@ -1,16 +1,14 @@
-﻿using AutoMapper;
+﻿using BusinessLayer.DataTransferObjects;
 using BusinessLayer.Services.Common;
-using WCIWT.Infrastructure;
-using WCIWT.
-using EntityDatabase;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.Post
 {
-    public class PostService : ServiceBase, IPostService
+    /*class PostService : CrudQueryServiceBase<Post, PostDto, PostFilterDto>
     {
-        public PostService(IMapper mapper, IRepository<User> postRepository,) : base(mapper)
-        {
-        }
-        
-    }
+    }*/
 }

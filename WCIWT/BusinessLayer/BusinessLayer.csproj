@@ -71,7 +71,6 @@
     <Compile Include="QueryObjects\Common\QueryObjectBase.cs" />
     <Compile Include="Services\Common\CrudQueryServiceBase.cs" />
     <Compile Include="Services\Common\ServiceBase.cs" />
-    <Compile Include="Services\Post\IPostService.cs" />
     <Compile Include="Services\Post\PostService.cs" />
   </ItemGroup>
   <ItemGroup>

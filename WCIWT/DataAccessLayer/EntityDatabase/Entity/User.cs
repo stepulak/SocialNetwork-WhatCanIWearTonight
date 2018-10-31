@@ -15,10 +15,11 @@ namespace EntityDatabase
         [Key]
         public Guid Id { get; set; }
         public string Username { get; set; }
+        public string Email { get; set; }
         public string PasswordHash { get; set; }
         public Gender Gender { get; set; }
         public bool IsAdmin { get; set; }
-
+        
         [Column(TypeName = "datetime2")]
         public DateTime Birthdate { get; set; }
 
