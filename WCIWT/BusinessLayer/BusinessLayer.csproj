@@ -85,7 +85,8 @@
     <Compile Include="QueryObjects\UserQueryObject.cs" />
     <Compile Include="Services\Common\CrudQueryServiceBase.cs" />
     <Compile Include="Services\Common\ServiceBase.cs" />
-    <Compile Include="Services\Post\PostService.cs" />
+    <Compile Include="Services\PostServices\PostReplyService.cs" />
+    <Compile Include="Services\PostServices\PostService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\EntityDatabase\EntityDatabase.csproj">
