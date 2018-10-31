@@ -13,19 +13,15 @@ using WCIWT.Infrastructure.Query.Predicates.Operators;
 
 namespace BusinessLayer.QueryObjects
 {
-    public class UserQueryObject: QueryObjectBase<UserDto, UserQueryObject, UserFilterDto, IQuery<User>>
+    public class UserQueryObject: QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>>
     {
-        public CustomerQueryObject(IMapper mapper, IQuery<User> query): base(mapper, query) { }
+        public UserQueryObject(IMapper mapper, IQuery<User> query): base(mapper, query) { }
 
-        protected override IQuery<UserQueryObject> ApplyWhereClause(IQuery<UserQueryObject> query, UserFilterDto filter)
+        protected override IQuery<User> ApplyWhereClause(IQuery<User> query, UserFilterDto filter)
         {
-            if (string.IsNullOrWhiteSpace(filter.Email))
-            {
-                return query;
-            }
-
-            return query.Where(new SimplePredicate(nameof(User.Email), ValueComparingOperator.Equal, filter.Email));
+            return string.IsNullOrWhiteSpace(filter.Username)
+                ? query
+                : query.Where(new SimplePredicate(nameof(User.Username), ValueComparingOperator.Equal, filter.Username));
         }
-
     }
 }

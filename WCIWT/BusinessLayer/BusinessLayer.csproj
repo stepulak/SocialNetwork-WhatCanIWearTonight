@@ -52,6 +52,9 @@
     <Compile Include="DataTransferObjects\Common\DtoBase.cs" />
     <Compile Include="DataTransferObjects\Common\FilterDtoBase.cs" />
     <Compile Include="DataTransferObjects\Common\QueryResultDto.cs" />
+    <Compile Include="DataTransferObjects\Filters\FriendshipFilterDto.cs" />
+    <Compile Include="DataTransferObjects\Filters\MessageFilterDto.cs" />
+    <Compile Include="DataTransferObjects\Filters\PostReplyFilterDto.cs" />
     <Compile Include="DataTransferObjects\FriendshipDto.cs" />
     <Compile Include="DataTransferObjects\FriendshipRequestDto.cs" />
     <Compile Include="DataTransferObjects\Enums\Gender.cs" />
@@ -70,6 +73,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryObjects\Common\QueryObjectBase.cs" />
     <Compile Include="DataTransferObjects\Filters\UserFilterDto.cs" />
+    <Compile Include="QueryObjects\FriendshipQueryObject.cs" />
+    <Compile Include="QueryObjects\MessageQueryObject.cs" />
+    <Compile Include="QueryObjects\PostReplyQueryObject.cs" />
+    <Compile Include="QueryObjects\PublicPostQueryObject.cs" />
     <Compile Include="QueryObjects\UserQueryObject.cs" />
     <Compile Include="Services\Common\CrudQueryServiceBase.cs" />
     <Compile Include="Services\Common\ServiceBase.cs" />
