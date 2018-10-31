@@ -22,10 +22,10 @@ namespace BusinessLayer.QueryObjects
 
         protected override IQuery<Message> ApplyWhereClause(IQuery<Message> query, MessageFilterDto filter)
         {
-            return filter.UserId == null ? query : query.Where(CreateCompositePredicate(filter));
+            return filter.UserId == null ? query : query.Where(CreateCompositePredicateFromFilter(filter));
         }
 
-        private CompositePredicate CreateCompositePredicate(MessageFilterDto filter)
+        private CompositePredicate CreateCompositePredicateFromFilter(MessageFilterDto filter)
         {
             List<IPredicate> predicates = new List<IPredicate>
             {
