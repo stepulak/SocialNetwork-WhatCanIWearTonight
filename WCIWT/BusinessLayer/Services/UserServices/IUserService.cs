@@ -11,6 +11,12 @@ namespace BusinessLayer.Services.UserServices
 {
     public interface IUserService
     {
+        Task<UserDto> GetAsync(Guid id, bool withIncludes = true);
+
+        Guid Create(UserDto userDto);
+
+        Task Update(UserDto userDto);
+
         Task<QueryResultDto<UserDto, UserFilterDto>> ListUsersAsync(UserFilterDto filter);
     }
 }
