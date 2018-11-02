@@ -33,6 +33,10 @@ namespace BusinessLayer.QueryObjects
             {
                 predicates.Add(new SimplePredicate(nameof(User.Username), ValueComparingOperator.Equal, filter.Username));
             }
+            if (!string.IsNullOrWhiteSpace(filter.Email))
+            {
+                predicates.Add(new SimplePredicate(nameof(User.Email), ValueComparingOperator.Equal, filter.Email));
+            }
             if (filter.Gender != Gender.NoInformation)
             {
                 predicates.Add(new SimplePredicate(nameof(User.Gender), ValueComparingOperator.Equal, filter.Gender));
