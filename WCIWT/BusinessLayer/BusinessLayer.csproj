@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\BusinessLayerInstaller.cs" />
+    <Compile Include="Config\MappingConfig.cs" />
     <Compile Include="DataTransferObjects\AdminDto.cs" />
     <Compile Include="DataTransferObjects\Common\DtoBase.cs" />
     <Compile Include="DataTransferObjects\Common\FilterDtoBase.cs" />
