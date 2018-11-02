@@ -87,11 +87,18 @@
     <Compile Include="QueryObjects\VoteQueryObject.cs" />
     <Compile Include="Services\Common\CrudQueryServiceBase.cs" />
     <Compile Include="Services\Common\ServiceBase.cs" />
+    <Compile Include="Services\PostServices\IImageService.cs" />
     <Compile Include="Services\PostServices\ImageService.cs" />
+    <Compile Include="Services\PostServices\IPostReplyService.cs" />
+    <Compile Include="Services\PostServices\IPostService.cs" />
+    <Compile Include="Services\PostServices\IVoteService.cs" />
     <Compile Include="Services\PostServices\PostReplyService.cs" />
     <Compile Include="Services\PostServices\PostService.cs" />
     <Compile Include="Services\PostServices\VoteService.cs" />
     <Compile Include="Services\UserServices\FriendshipService.cs" />
+    <Compile Include="Services\UserServices\IFriendshipService.cs" />
+    <Compile Include="Services\UserServices\IMessageService.cs" />
+    <Compile Include="Services\UserServices\IUserService.cs" />
     <Compile Include="Services\UserServices\MessageService.cs" />
     <Compile Include="Services\UserServices\UserService.cs" />
   </ItemGroup>
