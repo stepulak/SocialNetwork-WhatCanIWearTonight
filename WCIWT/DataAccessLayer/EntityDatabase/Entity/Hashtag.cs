@@ -14,11 +14,13 @@ namespace EntityDatabase
     {
         [Key]
         public Guid Id { get; set; }
+
         public string Tag { get; set; }
-        
-        public List<HashtagInPost> HashtagInPosts { get; set; }
+
+        public Guid PostId { get; set; }
+        public virtual Post Post { get; set; }
 
         [NotMapped]
-        public string TableName => nameof(WCIWTDbContext.Hashtags);
+        public string TableName => nameof(WCIWTDbContext.HashtagInPosts);
     }
 }

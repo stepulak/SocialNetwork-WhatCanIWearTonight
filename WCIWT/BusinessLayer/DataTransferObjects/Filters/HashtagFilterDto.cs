@@ -9,6 +9,7 @@ namespace BusinessLayer.DataTransferObjects.Filters
 {
     public class HashtagFilterDto : FilterDtoBase
     {
+        public Guid PostId { get; set; }
         public string Tag { get; set; }
     }
 }

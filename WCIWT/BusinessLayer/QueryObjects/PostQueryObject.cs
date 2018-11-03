@@ -47,7 +47,7 @@ namespace BusinessLayer.QueryObjects
             }
             if (filter.Visibility != PostVisibility.Public)
             {
-                predicates.Add(new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, filter.GenderRestriction));
+                predicates.Add(new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, filter.Visibility));
             }
 
             return new CompositePredicate(predicates, LogicalOperator.AND);

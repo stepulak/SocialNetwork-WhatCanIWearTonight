@@ -9,10 +9,10 @@ namespace BusinessLayer.DataTransferObjects.Filters
 {
     public class PostFilterDto : FilterDtoBase
     {
-        public PostVisibility Visibility { get; set; }
-        public Gender GenderRestriction { get; set; }
+        public PostVisibility Visibility { get; set; } = PostVisibility.Public;
+        public Gender GenderRestriction { get; set; } = Gender.NoInformation;
 
-        public bool HasAgeRestriction { get; set; }
+        public bool HasAgeRestriction { get; set; } = false;
         public int AgeRestrictionFrom { get; set; }
         public int AgeRestrictionTo { get; set; }
 

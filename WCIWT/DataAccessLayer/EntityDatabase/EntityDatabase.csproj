@@ -61,7 +61,6 @@
     <Compile Include="Entity\Friendship.cs" />
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Entity\Hashtag.cs" />
-    <Compile Include="Entity\HashtagInPost.cs" />
     <Compile Include="Entity\Image.cs" />
     <Compile Include="Entity\Message.cs" />
     <Compile Include="Enums\VoteType.cs" />

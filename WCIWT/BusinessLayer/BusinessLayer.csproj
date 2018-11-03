@@ -73,7 +73,6 @@
     <Compile Include="DataTransferObjects\FriendshipRequestDto.cs" />
     <Compile Include="DataTransferObjects\Enums\Gender.cs" />
     <Compile Include="DataTransferObjects\HashtagDto.cs" />
-    <Compile Include="DataTransferObjects\HashtagInPostDto.cs" />
     <Compile Include="DataTransferObjects\ImageDto.cs" />
     <Compile Include="DataTransferObjects\MessageDto.cs" />
     <Compile Include="DataTransferObjects\PostDto.cs" />
@@ -98,6 +97,7 @@
     <Compile Include="QueryObjects\VoteQueryObject.cs" />
     <Compile Include="Services\Common\CrudQueryServiceBase.cs" />
     <Compile Include="Services\Common\ServiceBase.cs" />
+    <Compile Include="Services\PostServices\HashtagService.cs" />
     <Compile Include="Services\PostServices\IImageService.cs" />
     <Compile Include="Services\PostServices\ImageService.cs" />
     <Compile Include="Services\PostServices\IPostReplyService.cs" />

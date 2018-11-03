@@ -9,6 +9,7 @@ namespace BusinessLayer.DataTransferObjects
 {
     public class HashtagDto : DtoBase
     {
+        public Guid PostId { get; set; }
         public string Tag { get; set; }
     }
 }
