@@ -59,7 +59,7 @@ namespace BusinessLayer.QueryObjects
             {
                 return new SimplePredicate(nameof(Post.AgeRestrictionFrom), ValueComparingOperator.GreaterThanOrEqual, filter.AgeRestrictionFrom);
             }
-            if (filter.AgeRestrictionTo > 0 && filter.AgeRestrictionTo <= 0)
+            if (filter.AgeRestrictionTo > 0 && filter.AgeRestrictionFrom <= 0)
             {
                 return new SimplePredicate(nameof(Post.AgeRestrictionTo), ValueComparingOperator.LessThan, filter.AgeRestrictionTo);
             }
