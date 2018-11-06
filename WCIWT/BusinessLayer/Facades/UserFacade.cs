@@ -44,37 +44,17 @@ namespace BusinessLayer.Facades.Common
             return userService.Create(userRegistration);
         }
 
-        public bool DeletePost(UserDto user, PostDto post)
+        public void UnregisterUser(UserDto user)
         {
-            throw new NotImplementedException();
-        }
 
-        public bool AddPost(UserDto user, PostDto post)
-        {
-            throw new NotImplementedException();
         }
-
-        public bool AddVote()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public bool AddFriendshipRequest()
         {
             throw new NotImplementedException();
         }
 
         public bool ConfirmFriendshipRequest()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool SendMessage()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool CommentPost()
         {
             throw new NotImplementedException();
         }

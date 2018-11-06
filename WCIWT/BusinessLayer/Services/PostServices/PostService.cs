@@ -55,15 +55,20 @@ namespace BusinessLayer.Services.PostServices
 
         public async Task<List<PostDto>> ListPostsAvailableForUser(UserDto user, List<Guid> userFriends)
         {
-            var userAge = Convert.ToDateTime(user.Birthdate - DateTime.Now);
-            var allPosts = await ListPostAsync(new PostFilterDto { });
+            var userAge = Convert.ToDateTime(DateTime.Now - user.Birthdate);
+            var allPosts = await ListPostAsync(new PostFilterDto
+            {
+                HasAgeRestriction = true,
+                AgeRestrictionFrom = user.
+                GenderRestriction = user.Gender
+            });
             var posts = new List<PostDto>();
             foreach (var post in allPosts.Items)
             {
-                if (post.HasAgeRestriction && (userAge.Year < post.AgeRestrictionFrom || userAge.Year > post.AgeRestrictionTo))
+                /*if (post.HasAgeRestriction && (userAge.Year < post.AgeRestrictionFrom || userAge.Year > post.AgeRestrictionTo))
                 {
                     continue;
-                }
+                }*/
                 if (post.GenderRestriction != DataTransferObjects.Gender.NoInformation && post.GenderRestriction != user.Gender)
                 {
                     continue;

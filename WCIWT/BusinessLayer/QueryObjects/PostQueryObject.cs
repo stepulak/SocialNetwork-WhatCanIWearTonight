@@ -43,7 +43,12 @@ namespace BusinessLayer.QueryObjects
             }
             if (filter.GenderRestriction != Gender.NoInformation)
             {
-                predicates.Add(new SimplePredicate(nameof(Post.GenderRestriction), ValueComparingOperator.Equal, filter.GenderRestriction));
+                var innerPredicates = new List<IPredicate>
+                {
+                    new SimplePredicate(nameof(Post.GenderRestriction), ValueComparingOperator.Equal, filter.GenderRestriction), // filter by user's gender
+                    new SimplePredicate(nameof(Post.GenderRestriction), ValueComparingOperator.Equal, Gender.NoInformation) // and add posts with no gender restriction
+                };
+                predicates.Add(new CompositePredicate(innerPredicates, LogicalOperator.OR));
             }
             if (filter.Visibility != PostVisibility.Public)
             {
@@ -55,21 +60,30 @@ namespace BusinessLayer.QueryObjects
 
         private IPredicate CreateAgeRestrictionPredicate(PostFilterDto filter)
         {
+            var predicates = new List<IPredicate>
+            {
+                new SimplePredicate(nameof(Post.HasAgeRestriction), ValueComparingOperator.Equal, false)
+            };
+
             if (filter.AgeRestrictionFrom > 0 && filter.AgeRestrictionTo <= 0)
             {
-                return new SimplePredicate(nameof(Post.AgeRestrictionFrom), ValueComparingOperator.GreaterThanOrEqual, filter.AgeRestrictionFrom);
+                predicates.Add(new SimplePredicate(nameof(Post.AgeRestrictionFrom), ValueComparingOperator.GreaterThanOrEqual, filter.AgeRestrictionFrom));
             }
-            if (filter.AgeRestrictionTo > 0 && filter.AgeRestrictionFrom <= 0)
+            else if (filter.AgeRestrictionTo > 0 && filter.AgeRestrictionFrom <= 0)
             {
-                return new SimplePredicate(nameof(Post.AgeRestrictionTo), ValueComparingOperator.LessThan, filter.AgeRestrictionTo);
+                predicates.Add(new SimplePredicate(nameof(Post.AgeRestrictionTo), ValueComparingOperator.LessThan, filter.AgeRestrictionTo));
+            }
+            else
+            {
+                var innerPredicates = new List<IPredicate>()
+                {
+                    new SimplePredicate(nameof(Post.AgeRestrictionFrom), ValueComparingOperator.GreaterThanOrEqual, filter.AgeRestrictionFrom),
+                    new SimplePredicate(nameof(Post.AgeRestrictionTo), ValueComparingOperator.LessThanOrEqual, filter.AgeRestrictionTo)
+                };
+                predicates.Add(new CompositePredicate(innerPredicates, LogicalOperator.AND));
             }
 
-            List<IPredicate> predicates = new List<IPredicate>()
-            {
-                new SimplePredicate(nameof(Post.AgeRestrictionFrom), ValueComparingOperator.GreaterThanOrEqual, filter.AgeRestrictionFrom),
-                new SimplePredicate(nameof(Post.AgeRestrictionTo), ValueComparingOperator.LessThanOrEqual, filter.AgeRestrictionTo)
-            };
-            return new CompositePredicate(predicates, LogicalOperator.AND);
+            return new CompositePredicate(predicates, LogicalOperator.OR);
         }
     }
 }
