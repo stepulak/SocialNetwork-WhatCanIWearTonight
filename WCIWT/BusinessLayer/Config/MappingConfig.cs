@@ -17,7 +17,7 @@ namespace BusinessLayer.Config
         public static void ConfigureMapping(IMapperConfigurationExpression config)
         {
             config.CreateMap<Hashtag, HashtagDto>();
-            config.CreateMap<HashtagDto, Hashtag>().ForMember(dest => dest.HashtagInPosts, opt => opt.Ignore());
+            config.CreateMap<HashtagDto, Hashtag>();
 
             config.CreateMap<Friendship, FriendshipDto>();
             config.CreateMap<FriendshipDto, Friendship>();
