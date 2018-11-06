@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Filters;
-using BusinessLayer.QueryObjects.Common;
+using BusinessLayer.DataTransferObjects.Filters.Common;
 using EntityDatabase;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using WCIWT.Infrastructure.Query;
 using WCIWT.Infrastructure.Query.Predicates;
 using WCIWT.Infrastructure.Query.Predicates.Operators;
 
-namespace BusinessLayer.QueryObjects
+namespace BusinessLayer.DataTransferObjects.Filters
 {
     public class PostReplyQueryObject : QueryObjectBase<PostReplyDto, PostReply, PostReplyFilterDto, IQuery<PostReply>>
     {

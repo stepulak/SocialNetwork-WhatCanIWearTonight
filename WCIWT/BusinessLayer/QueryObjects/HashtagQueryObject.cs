@@ -1,10 +1,10 @@
-﻿using BusinessLayer.QueryObjects.Common;
+﻿using BusinessLayer.DataTransferObjects.Filters.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BusinessLayer.QueryObjects.Common;
+using BusinessLayer.DataTransferObjects.Filters.Common;
 using BusinessLayer.DataTransferObjects;
 using EntityDatabase;
 using BusinessLayer.DataTransferObjects.Filters;
@@ -13,7 +13,7 @@ using AutoMapper;
 using WCIWT.Infrastructure.Query.Predicates;
 using WCIWT.Infrastructure.Query.Predicates.Operators;
 
-namespace BusinessLayer.QueryObjects
+namespace BusinessLayer.DataTransferObjects.Filters
 {
     public class HashtagQueryObject : QueryObjectBase<HashtagDto, Hashtag, HashtagFilterDto, IQuery<Hashtag>>
     {
