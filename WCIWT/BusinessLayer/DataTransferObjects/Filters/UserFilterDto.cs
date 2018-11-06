@@ -2,7 +2,7 @@
 using BusinessLayer.DataTransferObjects.Common;
 using System;
 
-namespace BusinessLayer.QueryObjects
+namespace BusinessLayer.DataTransferObjects.Filters
 {
     public class UserFilterDto : FilterDtoBase
     {

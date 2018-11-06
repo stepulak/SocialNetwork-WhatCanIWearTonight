@@ -33,7 +33,7 @@ namespace BusinessLayer.Config
                     .BasedOn<FacadeBase>()
                     .LifestyleTransient(),
                 Component.For<IMapper>()
- //               .Instance(new Mapper(new MapperConfiguration(MappingConfig.ConfigureMapping))) Remove comment when config is created
+                .Instance(new Mapper(new MapperConfiguration(MappingConfig.ConfigureMapping)))
                 .LifestyleSingleton()
                 );
         }
