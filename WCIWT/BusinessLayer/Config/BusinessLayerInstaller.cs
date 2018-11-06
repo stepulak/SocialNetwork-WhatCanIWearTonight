@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Facades.Common;
-using BusinessLayer.QueryObjects.Common;
+using BusinessLayer.DataTransferObjects.Filters.Common;
 using BusinessLayer.Services.Common;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
@@ -33,7 +33,7 @@ namespace BusinessLayer.Config
                     .BasedOn<FacadeBase>()
                     .LifestyleTransient(),
                 Component.For<IMapper>()
- //               .Instance(new Mapper(new MapperConfiguration(MappingConfig.ConfigureMapping))) Remove comment when config is created
+                .Instance(new Mapper(new MapperConfiguration(MappingConfig.ConfigureMapping)))
                 .LifestyleSingleton()
                 );
         }

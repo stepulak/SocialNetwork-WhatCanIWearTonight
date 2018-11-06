@@ -2,8 +2,8 @@
 using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
-using BusinessLayer.QueryObjects;
-using BusinessLayer.QueryObjects.Common;
+using BusinessLayer.DataTransferObjects.Filters;
+using BusinessLayer.DataTransferObjects.Filters.Common;
 using BusinessLayer.Services.Common;
 using EntityDatabase;
 using System;

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.DataTransferObjects;
-using BusinessLayer.QueryObjects.Common;
+using BusinessLayer.DataTransferObjects.Filters.Common;
 using EntityDatabase;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using WCIWT.Infrastructure.Query.Predicates;
 using WCIWT.Infrastructure.Query.Predicates.Operators;
 using Gender = BusinessLayer.DataTransferObjects.Gender;
 
-namespace BusinessLayer.QueryObjects
+namespace BusinessLayer.DataTransferObjects.Filters
 {
     public class UserQueryObject: QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>>
     {
