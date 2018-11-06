@@ -1,6 +1,6 @@
 ﻿using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Common;
-using BusinessLayer.QueryObjects;
+using BusinessLayer.DataTransferObjects.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;

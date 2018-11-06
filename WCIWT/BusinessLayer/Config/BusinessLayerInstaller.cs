@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Facades.Common;
-using BusinessLayer.QueryObjects.Common;
+using BusinessLayer.DataTransferObjects.Filters.Common;
 using BusinessLayer.Services.Common;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;

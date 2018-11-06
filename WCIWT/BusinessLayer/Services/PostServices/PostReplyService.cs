@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using BusinessLayer.DataTransferObjects.Filters;
 using AutoMapper;
 using WCIWT.Infrastructure;
-using BusinessLayer.QueryObjects;
-using BusinessLayer.QueryObjects.Common;
+using BusinessLayer.DataTransferObjects.Filters;
+using BusinessLayer.DataTransferObjects.Filters.Common;
 using WCIWT.Infrastructure.Query;
 using BusinessLayer.DataTransferObjects.Common;
 
