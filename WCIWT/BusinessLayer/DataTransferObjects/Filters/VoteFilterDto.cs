@@ -9,6 +9,7 @@ namespace BusinessLayer.DataTransferObjects.Filters
 {
     public class VoteFilterDto : FilterDtoBase
     {
+        public Guid UserId { get; set; }
         public Guid ImageId { get; set; }
     }
 }

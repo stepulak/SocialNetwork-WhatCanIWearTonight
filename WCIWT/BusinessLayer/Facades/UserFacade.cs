@@ -100,12 +100,13 @@ namespace BusinessLayer.Facades.Common
 
         public async Task ConfirmFriendshipRequest(FriendshipDto frienship)
         {
-            return;
+            frienship.IsConfirmed = true;
+            await friendshipService.Update(frienship);
         }
 
-        public void CancelFriendshipRequest()
+        public void CancelFriendshipRequest(FriendshipDto friendship)
         {
-
+            friendshipService.Delete(friendship.Id);
         }
     }
 }
