@@ -11,11 +11,7 @@ namespace BusinessLayer.DataTransferObjects.Filters
     {
         public PostVisibility Visibility { get; set; } = PostVisibility.Public;
         public Gender GenderRestriction { get; set; } = Gender.NoInformation;
-
-        public bool HasAgeRestriction { get; set; } = false;
-        public int AgeRestrictionFrom { get; set; }
-        public int AgeRestrictionTo { get; set; }
-
+        public int UserAge { get; set; } = -1;
         public Guid UserId { get; set; }
     }
 }

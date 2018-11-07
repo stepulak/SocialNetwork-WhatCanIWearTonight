@@ -9,11 +9,11 @@ namespace BusinessLayer.DataTransferObjects
 {
     public class FriendshipDto : DtoBase
     {
-        public Guid? ApplicantId { get; set; }
-        public virtual UserDto Applicant { get; set; }
+        public Guid ApplicantId { get; set; }
+        public UserDto Applicant { get; set; }
 
-        public Guid? RecipientId { get; set; }
-        public virtual UserDto Recipient { get; set; }
+        public Guid RecipientId { get; set; }
+        public UserDto Recipient { get; set; }
 
         public bool IsConfirmed { get; set; }
     }

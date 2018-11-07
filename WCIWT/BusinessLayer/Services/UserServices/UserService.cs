@@ -15,8 +15,7 @@ namespace BusinessLayer.Services.UserServices
     public class UserService : CrudQueryServiceBase<User, UserDto, UserFilterDto>, IUserService
     {
         private readonly QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>> userQueryObject;
-
-
+        
         public UserService(IMapper mapper, IRepository<User> repository, UserQueryObject query,
              QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>> userQueryObject)
             : base(mapper, repository, query)

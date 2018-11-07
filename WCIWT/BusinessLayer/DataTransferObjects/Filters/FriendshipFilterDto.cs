@@ -9,6 +9,7 @@ namespace BusinessLayer.DataTransferObjects.Filters
 {
     public class FriendshipFilterDto : FilterDtoBase
     {
-       public Guid UserId { get; set; }
+        public Guid UserA { get; set; }
+        public Guid UserB { get; set; }
     }
 }

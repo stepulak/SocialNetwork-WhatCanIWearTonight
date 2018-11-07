@@ -22,17 +22,35 @@ namespace BusinessLayer.DataTransferObjects.Filters
 
         protected override IQuery<Friendship> ApplyWhereClause(IQuery<Friendship> query, FriendshipFilterDto filter)
         {
-            return filter.UserId == null ? query : query.Where(CreateCompositePredicateFromFilter(filter));
+            return filter.UserA == null && filter.UserB == null ? query : query.Where(CreateCompositePredicateFromFilter(filter));
         }
 
-        private CompositePredicate CreateCompositePredicateFromFilter(FriendshipFilterDto filter)
+        private IPredicate CreateCompositePredicateFromFilter(FriendshipFilterDto filter)
         {
-            List<IPredicate> predicates = new List<IPredicate>
+            if (filter.UserA == null)
             {
-                new SimplePredicate(nameof(Friendship.Applicant), ValueComparingOperator.Equal, filter.UserId),
-                new SimplePredicate(nameof(Friendship.Recipient), ValueComparingOperator.Equal, filter.UserId)
+                return CreatePredicateForOneUser(filter.UserB);
+            }
+            if (filter.UserB == null)
+            {
+                return CreatePredicateForOneUser(filter.UserA);
+            }
+            var predicates = new List<IPredicate>
+            {
+                // Both users must be in frienship structure, doesn't matter who is sender or recipient
+                CreatePredicateForOneUser(filter.UserA),
+                CreatePredicateForOneUser(filter.UserB)
             };
+            return new CompositePredicate(predicates, LogicalOperator.AND);
+        }
 
+        private IPredicate CreatePredicateForOneUser(Guid userId)
+        {
+            var predicates = new List<IPredicate>
+            {
+                new SimplePredicate(nameof(Friendship.Applicant), ValueComparingOperator.Equal, userId),
+                new SimplePredicate(nameof(Friendship.Recipient), ValueComparingOperator.Equal, userId)
+            };
             return new CompositePredicate(predicates, LogicalOperator.OR);
         }
     }

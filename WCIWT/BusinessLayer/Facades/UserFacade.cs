@@ -13,50 +13,99 @@ namespace BusinessLayer.Facades.Common
 {
     public class UserFacade : FacadeBase
     {
-        private readonly IUserService userService;
+        private readonly UserService userService;
+        private readonly FriendshipService friendshipService;
 
-        public UserFacade(IUnitOfWorkProvider unitOfWorkProvider, IUserService userService) : base(unitOfWorkProvider)
+        public UserFacade(IUnitOfWorkProvider unitOfWorkProvider, UserService userService, 
+            FriendshipService friendshipService) 
+            : base(unitOfWorkProvider)
         {
             this.userService = userService;
+            this.friendshipService = friendshipService;
         }
 
         public async Task<QueryResultDto<UserDto, UserFilterDto>> GetAllUsersAsync(UserFilterDto filter = null)
         {
-            using (UnitOfWorkProvider.Create())
+            using (UnitOfWorkProvider.Create()) // ???
             {
                 return await userService.ListUsersAsync(filter);
             }
         }
 
-        public Guid RegisterUser(UserDto userRegistration)
+        public async Task<Guid> RegisterUser(UserDto user)
         {
-            UserFilterDto UsernameAndEmailFilter = new UserFilterDto()
+            var filter = new UserFilterDto()
             {
-                Username = userRegistration.Username,
-                Email = userRegistration.Email
+                Username = user.Username,
+                Email = user.Email
             };
-
-            if (GetAllUsersAsync(UsernameAndEmailFilter).Result.TotalItemsCount != 0)
+            var allUsers = await GetAllUsersAsync(filter);
+            if (allUsers.TotalItemsCount != 0)
             {
-                // throw error here
+                throw new InvalidOperationException($"Unable to register new user {user}. Already exists.");
             }
-
-            return userService.Create(userRegistration);
+            return userService.Create(user);
         }
 
-        public void UnregisterUser(UserDto user)
+        public async Task UnregisterUser(UserDto user)
         {
-
+            var filter = new UserFilterDto()
+            {
+                Username = user.Username,
+                Email = user.Email
+            };
+            var allUsers = await GetAllUsersAsync(filter);
+            if (allUsers.TotalItemsCount == 0)
+            {
+                throw new InvalidOperationException($"Unable to unregister user {user}. Not found.");
+            }
+            userService.Delete(user.Id);
         }
         
-        public bool AddFriendshipRequest()
+        public async Task<List<FriendshipDto>> PendingFriendshipRequests(UserDto user)
         {
-            throw new NotImplementedException();
+            var filter = new FriendshipFilterDto()
+            {
+                UserA = user.Id
+            };
+            var result = await friendshipService.ListFriendshipAsync(filter);
+            return result.Items.ToList();
         }
 
-        public bool ConfirmFriendshipRequest()
+        public async Task<bool> CanSendFrienshipRequest(UserDto applicant, UserDto recipient)
         {
-            throw new NotImplementedException();
+            var filter = new FriendshipFilterDto()
+            {
+                // We can swap those, doesn't really matter the order
+                UserA = applicant.Id,
+                UserB = recipient.Id
+            };
+            var allFriendships = await friendshipService.ListFriendshipAsync(filter);
+            return allFriendships.TotalItemsCount == 0;
+        }
+
+        public async Task SendFriendshipRequest(UserDto applicant, UserDto recipient)
+        {
+            if (await CanSendFrienshipRequest(applicant, recipient) == false)
+            {
+                throw new InvalidOperationException($"Unable to send friendship request {applicant} -> {recipient}. Already exists.");
+            }
+            friendshipService.Create(new FriendshipDto
+            {
+                ApplicantId = applicant.Id,
+                RecipientId = recipient.Id,
+                IsConfirmed = false
+            });
+        }
+
+        public async Task ConfirmFriendshipRequest(FriendshipDto frienship)
+        {
+            return;
+        }
+
+        public void CancelFriendshipRequest()
+        {
+
         }
     }
 }

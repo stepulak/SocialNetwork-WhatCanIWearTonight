@@ -16,5 +16,7 @@ namespace BusinessLayer.DataTransferObjects
         public bool IsAdmin { get; set; }
         
         public DateTime Birthdate { get; set; }
+
+        public override string ToString() =>  $"Username: {Username}, Email: {Email}, Birthdate: {Birthdate}";
     }
 }

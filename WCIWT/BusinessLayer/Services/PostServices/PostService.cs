@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using BusinessLayer.DataTransferObjects.Filters;
 using AutoMapper;
 using WCIWT.Infrastructure;
-using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.DataTransferObjects.Filters.Common;
 using WCIWT.Infrastructure.Query;
 using BusinessLayer.DataTransferObjects.Common;
@@ -55,25 +54,17 @@ namespace BusinessLayer.Services.PostServices
 
         public async Task<List<PostDto>> ListPostsAvailableForUser(UserDto user, List<Guid> userFriends)
         {
-            var userAge = Convert.ToDateTime(DateTime.Now - user.Birthdate);
+            var userAge = Convert.ToDateTime(DateTime.Now - user.Birthdate).Year;
             var allPosts = await ListPostAsync(new PostFilterDto
             {
-                HasAgeRestriction = true,
-                AgeRestrictionFrom = user.
+                UserAge = userAge,
                 GenderRestriction = user.Gender
             });
             var posts = new List<PostDto>();
+            // Filter all posts who are private and you are not friend of post's owner.
             foreach (var post in allPosts.Items)
             {
-                /*if (post.HasAgeRestriction && (userAge.Year < post.AgeRestrictionFrom || userAge.Year > post.AgeRestrictionTo))
-                {
-                    continue;
-                }*/
-                if (post.GenderRestriction != DataTransferObjects.Gender.NoInformation && post.GenderRestriction != user.Gender)
-                {
-                    continue;
-                }
-                if (post.Visibility == DataTransferObjects.PostVisibility.FriendsOnly && !userFriends.Contains(post.UserId.Value))
+                if (post.Visibility != DataTransferObjects.PostVisibility.FriendsOnly || userFriends.Contains(post.UserId.Value))
                 {
                     continue;
                 }

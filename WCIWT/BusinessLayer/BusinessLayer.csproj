@@ -71,7 +71,6 @@
     <Compile Include="DataTransferObjects\Filters\PostReplyFilterDto.cs" />
     <Compile Include="DataTransferObjects\Filters\VoteFilterDto.cs" />
     <Compile Include="DataTransferObjects\FriendshipDto.cs" />
-    <Compile Include="DataTransferObjects\FriendshipRequestDto.cs" />
     <Compile Include="DataTransferObjects\Enums\Gender.cs" />
     <Compile Include="DataTransferObjects\HashtagDto.cs" />
     <Compile Include="DataTransferObjects\ImageDto.cs" />
