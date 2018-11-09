@@ -9,10 +9,10 @@ namespace BusinessLayer.DataTransferObjects
 {
     public class MessageDto : DtoBase
     {
-        public Guid? UserSenderId { get; set; }
+        public Guid UserSenderId { get; set; }
         public virtual UserDto UserSender { get; set; }
 
-        public Guid? UserReceiverId { get; set; }
+        public Guid UserReceiverId { get; set; }
         public virtual UserDto UserReceiver { get; set; }
         
         public DateTime Time { get; set; }
