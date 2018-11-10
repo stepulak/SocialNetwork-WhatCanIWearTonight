@@ -63,6 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FacadesTests\Common\FacadeMockManager.cs" />
+    <Compile Include="FacadesTests\Common\StubUow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryObjectsTests\Common\QueryMockManager.cs" />
     <Compile Include="QueryObjectsTests\FriendshipQueryObjectTest.cs" />
@@ -75,7 +77,6 @@
     <Compile Include="QueryObjectsTests\VoteQueryObjectTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="FacadesTests\Common" />
     <Folder Include="ServicesTests" />
   </ItemGroup>
   <ItemGroup>
