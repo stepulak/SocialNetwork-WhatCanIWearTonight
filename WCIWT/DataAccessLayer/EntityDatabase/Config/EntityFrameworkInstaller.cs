@@ -17,7 +17,7 @@ namespace EntityDatabase.Config
 {
     public class EntityFrameworkInstaller : IWindsorInstaller
     {
-        internal const string ConnectionString = "Data source=(localdb)\\mssqllocaldb;Database=DemoEshopDatabaseSample;Trusted_Connection=True;MultipleActiveResultSets=true";
+        internal const string ConnectionString = "Data source=(localdb)\\mssqllocaldb;Database=DatabaseSample;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
