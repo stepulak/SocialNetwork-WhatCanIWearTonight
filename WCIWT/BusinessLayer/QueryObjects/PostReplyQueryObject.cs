@@ -22,7 +22,9 @@ namespace BusinessLayer.DataTransferObjects.Filters
 
         protected override IQuery<PostReply> ApplyWhereClause(IQuery<PostReply> query, PostReplyFilterDto filter)
         {
-            return filter.PostId == null ? query : query.Where(new SimplePredicate(nameof(PostReply.PostId), ValueComparingOperator.Equal, filter.PostId));
+            return filter.PostId == Guid.Empty
+                ? query 
+                : query.Where(new SimplePredicate(nameof(PostReply.PostId), ValueComparingOperator.Equal, filter.PostId));
         }
     }
 }

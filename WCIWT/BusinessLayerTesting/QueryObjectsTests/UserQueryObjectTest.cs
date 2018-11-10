@@ -18,7 +18,7 @@ namespace BusinessLayerTesting.QueryObjectsTests
     public class UserQueryObjectTest
     {
         [Test]
-        public async Task ApplyWhereClause_SimpleFilterByUsername_ReturnsCorrectSimplePredicate()
+        public async Task ApplyWhereClause_SimpleFilterByUsername_ReturnsCorrectPredicate()
         {
             const string filteredUsername = "TestUser";
             var mockManager = new QueryMockManager();
@@ -37,7 +37,7 @@ namespace BusinessLayerTesting.QueryObjectsTests
         }
         
         [Test]
-        public async Task ApplyWhereClause_SimpleFilterByGender_ReturnsCorrectSimplePredicate()
+        public async Task ApplyWhereClause_SimpleFilterByGender_ReturnsCorrectPredicate()
         {
             const Gender filteredGender = Gender.Male;
             var mockManager = new QueryMockManager();
@@ -56,7 +56,7 @@ namespace BusinessLayerTesting.QueryObjectsTests
         }
         
         [Test]
-        public async Task ApplyWhereClause_SimpleFilterByEmail_ReturnsCorrectSimplePredicate()
+        public async Task ApplyWhereClause_SimpleFilterByEmail_ReturnsCorrectPredicate()
         {
             const string filteredEmail = "test@user.com";
             var mockManager = new QueryMockManager();
@@ -75,7 +75,7 @@ namespace BusinessLayerTesting.QueryObjectsTests
         }
         
         [Test]
-        public async Task ApplyWhereClause_SimpleFilterByBornBefore_ReturnsCorrectSimplePredicate()
+        public async Task ApplyWhereClause_SimpleFilterByBornBefore_ReturnsCorrectPredicate()
         {
             DateTime filterBornBefore = new DateTime(2018,12,12);
             var mockManager = new QueryMockManager();
@@ -94,7 +94,7 @@ namespace BusinessLayerTesting.QueryObjectsTests
         }
         
         [Test]
-        public async Task ApplyWhereClause_SimpleFilterByBornAfter_ReturnsCorrectSimplePredicate()
+        public async Task ApplyWhereClause_SimpleFilterByBornAfter_ReturnsCorrectPredicate()
         {
             DateTime filterBornAfter = new DateTime(2018,12,12);
             var mockManager = new QueryMockManager();
@@ -158,8 +158,6 @@ namespace BusinessLayerTesting.QueryObjectsTests
         public async Task ApplyWhereClause_EmptyFilter_ReturnsNull()
         {
             var mockManager = new QueryMockManager();
-            var expectedPredicate = new CompositePredicate(
-                new List<IPredicate>(), LogicalOperator.AND);
             var mapperMock = mockManager.ConfigureMapperMock<User, UserDto, UserFilterDto>();
             var queryMock = mockManager.ConfigureQueryMock<User>();
             var userQueryObject = new UserQueryObject(mapperMock.Object, queryMock.Object);

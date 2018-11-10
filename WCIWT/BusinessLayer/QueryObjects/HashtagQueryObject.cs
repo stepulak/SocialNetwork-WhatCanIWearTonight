@@ -23,7 +23,7 @@ namespace BusinessLayer.QueryObjects
 
         protected override IQuery<Hashtag> ApplyWhereClause(IQuery<Hashtag> query, HashtagFilterDto filter)
         {
-            return string.IsNullOrWhiteSpace(filter.Tag) && filter.PostId == null 
+            return string.IsNullOrWhiteSpace(filter.Tag) && filter.PostId == Guid.Empty 
                 ? query 
                 : query.Where(CreateCompositePredicateFromFilter(filter));
         }
@@ -35,7 +35,7 @@ namespace BusinessLayer.QueryObjects
             {
                 predicates.Add(new SimplePredicate(nameof(Hashtag.Tag), ValueComparingOperator.Equal, filter.Tag));
             }
-            if (filter.PostId != null)
+            if (filter.PostId != Guid.Empty)
             {
                 predicates.Add(new SimplePredicate(nameof(Hashtag.PostId), ValueComparingOperator.Equal, filter.PostId));
             }

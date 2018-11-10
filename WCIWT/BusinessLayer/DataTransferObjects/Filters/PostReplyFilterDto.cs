@@ -10,5 +10,10 @@ namespace BusinessLayer.DataTransferObjects.Filters
     public class PostReplyFilterDto : FilterDtoBase
     {
         public Guid PostId { get; set; }
+
+        public PostReplyFilterDto()
+        {
+            PostId = Guid.Empty;
+        }
     }
 }

@@ -9,6 +9,11 @@ namespace BusinessLayer.DataTransferObjects.Filters
 {
     public class ImageFilterDto : FilterDtoBase
     {
-        public Guid PostId;
+        public Guid PostId { get; set; }
+
+        public ImageFilterDto()
+        {
+            PostId = Guid.Empty;
+        }
     }
 }

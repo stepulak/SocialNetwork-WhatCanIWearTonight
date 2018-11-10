@@ -22,7 +22,7 @@ namespace BusinessLayer.DataTransferObjects.Filters
 
         protected override IQuery<Message> ApplyWhereClause(IQuery<Message> query, MessageFilterDto filter)
         {
-            return filter.UserId == null ? query : query.Where(CreateCompositePredicateFromFilter(filter));
+            return filter.UserId == Guid.Empty ? query : query.Where(CreateCompositePredicateFromFilter(filter));
         }
 
         private IPredicate CreateCompositePredicateFromFilter(MessageFilterDto filter)

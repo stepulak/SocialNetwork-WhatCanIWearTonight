@@ -22,7 +22,9 @@ namespace BusinessLayer.DataTransferObjects.Filters
 
         protected override IQuery<Image> ApplyWhereClause(IQuery<Image> query, ImageFilterDto filter)
         {
-            return filter.PostId == null ? query : query.Where(new SimplePredicate(nameof(Image.PostId), ValueComparingOperator.Equal, filter.PostId));
+            return filter.PostId == Guid.Empty 
+                ? query 
+                : query.Where(new SimplePredicate(nameof(Image.PostId), ValueComparingOperator.Equal, filter.PostId));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using EntityDatabase;
 using System.Collections.Generic;
 using BusinessLayer.QueryObjects.Common;
@@ -16,7 +17,10 @@ namespace BusinessLayer.DataTransferObjects.Filters
 
         protected override IQuery<Post> ApplyWhereClause(IQuery<Post> query, PostFilterDto filter)
         {
-            return filter.UserId == null && filter.UserAge != -1 && filter.GenderRestriction == Gender.NoInformation && filter.Visibility == PostVisibility.Public
+            return filter.UserId == Guid.Empty 
+                   && filter.UserAge <= 0 
+                   && filter.GenderRestriction == Gender.NoInformation 
+                   && filter.Visibility == PostVisibility.Public
                 ? query
                 : query.Where(CreateCompositePredicateFromFilter(filter));
         }
@@ -25,11 +29,11 @@ namespace BusinessLayer.DataTransferObjects.Filters
         {
             List<IPredicate> predicates = new List<IPredicate>();
 
-            if (filter.UserAge != -1)
+            if (filter.UserAge > 0)
             {
                 predicates.Add(CreateAgeRestrictionPredicate(filter));
             }
-            if (filter.UserId != null)
+            if (filter.UserId != Guid.Empty)
             {
                 predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.UserId));
             }
@@ -51,10 +55,10 @@ namespace BusinessLayer.DataTransferObjects.Filters
             {
                 new SimplePredicate(nameof(Post.HasAgeRestriction), ValueComparingOperator.Equal, false) // add posts who has no age restriction
             };
-            var innerPredicates = new List<IPredicate>()
+            var innerPredicates = new List<IPredicate>
             {
-                new SimplePredicate(nameof(Post.AgeRestrictionTo), ValueComparingOperator.GreaterThanOrEqual, filter.UserAge),
-                new SimplePredicate(nameof(Post.AgeRestrictionFrom), ValueComparingOperator.LessThanOrEqual, filter.UserAge)
+                new SimplePredicate(nameof(Post.AgeRestrictionTo), ValueComparingOperator.LessThanOrEqual, filter.UserAge),
+                new SimplePredicate(nameof(Post.AgeRestrictionFrom), ValueComparingOperator.GreaterThanOrEqual, filter.UserAge)
             };
             predicates.Add(new CompositePredicate(innerPredicates, LogicalOperator.AND));
             return new CompositePredicate(predicates, LogicalOperator.OR);

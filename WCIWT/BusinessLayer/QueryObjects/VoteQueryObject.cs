@@ -22,25 +22,25 @@ namespace BusinessLayer.DataTransferObjects.Filters
 
         protected override IQuery<Vote> ApplyWhereClause(IQuery<Vote> query, VoteFilterDto filter)
         {
-            return filter.ImageId == null && filter.UserId == null ? query : query.Where(CreateCompositePredicateFromFilter(filter));
+            return filter.ImageId == Guid.Empty && filter.UserId == Guid.Empty ? query : query.Where(CreateCompositePredicateFromFilter(filter));
         }
 
         private IPredicate CreateCompositePredicateFromFilter(VoteFilterDto filter)
         {
             // either one of UserId or ImageId
-            if (filter.UserId == null)
+            if (filter.UserId == Guid.Empty)
             {
-                return new SimplePredicate(nameof(Image.Id), ValueComparingOperator.Equal, filter.ImageId);
+                return new SimplePredicate(nameof(Vote.ImageId), ValueComparingOperator.Equal, filter.ImageId);
             }
-            if (filter.ImageId == null)
+            if (filter.ImageId == Guid.Empty)
             {
-                return new SimplePredicate(nameof(User.Id), ValueComparingOperator.Equal, filter.UserId);
+                return new SimplePredicate(nameof(Vote.UserId), ValueComparingOperator.Equal, filter.UserId);
             }
             // Or both
             var predicates = new List<IPredicate>
             {
-                new SimplePredicate(nameof(Image.Id), ValueComparingOperator.Equal, filter.ImageId),
-                new SimplePredicate(nameof(User.Id), ValueComparingOperator.Equal, filter.UserId),
+                new SimplePredicate(nameof(Vote.ImageId), ValueComparingOperator.Equal, filter.ImageId),
+                new SimplePredicate(nameof(Vote.UserId), ValueComparingOperator.Equal, filter.UserId)
             };
             return new CompositePredicate(predicates, LogicalOperator.AND);
         }
