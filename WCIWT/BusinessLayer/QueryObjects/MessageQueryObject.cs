@@ -25,15 +25,21 @@ namespace BusinessLayer.DataTransferObjects.Filters
             return filter.UserId == null ? query : query.Where(CreateCompositePredicateFromFilter(filter));
         }
 
-        private CompositePredicate CreateCompositePredicateFromFilter(MessageFilterDto filter)
+        private IPredicate CreateCompositePredicateFromFilter(MessageFilterDto filter)
         {
-            List<IPredicate> predicates = new List<IPredicate>
+            if (filter.UserFilterType == MessageUserFilterType.Receiver)
+            {
+                return new SimplePredicate(nameof(Message.UserReceiverId), ValueComparingOperator.Equal, filter.UserId);
+            }
+            if (filter.UserFilterType == MessageUserFilterType.Sender)
+            {
+                return new SimplePredicate(nameof(Message.UserSenderId), ValueComparingOperator.Equal, filter.UserId);
+            }
+            var predicates = new List<IPredicate>
             {
                 new SimplePredicate(nameof(Message.UserReceiverId), ValueComparingOperator.Equal, filter.UserId),
                 new SimplePredicate(nameof(Message.UserSenderId), ValueComparingOperator.Equal, filter.UserId)
-
             };
-
             return new CompositePredicate(predicates, LogicalOperator.OR);
         }
     }

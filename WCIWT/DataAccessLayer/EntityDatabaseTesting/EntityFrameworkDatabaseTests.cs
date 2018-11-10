@@ -11,7 +11,7 @@ namespace EntityDatabaseTesting
         [TestCleanup]
         public void AfterRun()
         {
-            using (var db = new MyDbContext())
+            using (var db = new WCIWTDbContext())
             {
                 db.Friendships.RemoveRange(db.Friendships);
                 db.PostReplys.RemoveRange(db.PostReplys);
@@ -28,11 +28,11 @@ namespace EntityDatabaseTesting
             const string passwd = "25afd84d";
             var birthdate = new DateTime(1999, 12, 12);
 
-            using (var db = new MyDbContext())
+            using (var db = new WCIWTDbContext())
             {
                 var user = new User
                 {
-                    Id = 1,
+                    Id = ToGuid(1),
                     Username = username,
                     PasswordHash = passwd,
                     Birthdate = birthdate,
@@ -43,11 +43,11 @@ namespace EntityDatabaseTesting
                 db.SaveChanges();
             }
 
-            using (var db = new MyDbContext())
+            using (var db = new WCIWTDbContext())
             {
                 Assert.AreEqual(db.Users.Count(), 1);
                 var user = db.Users.First();
-                Assert.AreEqual(user.Id, 1);
+                Assert.AreEqual(user.Id, ToGuid(1));
                 Assert.AreEqual(user.Username, username);
                 Assert.AreEqual(user.PasswordHash, passwd);
                 Assert.AreEqual(user.Birthdate, birthdate);
@@ -65,32 +65,32 @@ namespace EntityDatabaseTesting
         [TestMethod]
         public void CreateFriendship()
         {
-            using (var db = new MyDbContext())
+            using (var db = new WCIWTDbContext())
             {
                 db.Users.Add(CreateSampleUser(1));
                 db.Users.Add(CreateSampleUser(2));
                 db.Friendships.Add(new Friendship
                 {
-                    Id = 1,
-                    ApplicantId = 1,
-                    RecipientId = 2,
+                    Id = ToGuid(3),
+                    ApplicantId = ToGuid(1),
+                    RecipientId = ToGuid(2),
                     IsConfirmed = true
                 });
                 db.SaveChanges();
             }
 
-            using (var db = new MyDbContext())
+            using (var db = new WCIWTDbContext())
             {
                 Assert.AreEqual(db.Users.Count(), 2);
                 Assert.AreEqual(db.Friendships.Count(), 1);
                 var friendship = db.Friendships.First();
-                Assert.AreEqual(friendship.ApplicantId, 1);
-                Assert.AreEqual(friendship.RecipientId, 2);
+                Assert.AreEqual(friendship.ApplicantId, ToGuid(1));
+                Assert.AreEqual(friendship.RecipientId, ToGuid(2));
                 Assert.IsTrue(friendship.IsConfirmed);
                 Assert.IsNotNull(friendship.Applicant);
                 Assert.IsNotNull(friendship.Recipient);
-                Assert.AreEqual(friendship.Applicant.Id, 1);
-                Assert.AreEqual(friendship.Recipient.Id, 2);
+                Assert.AreEqual(friendship.Applicant.Id, ToGuid(1));
+                Assert.AreEqual(friendship.Recipient.Id, ToGuid(2));
                 db.SaveChanges();
             }
         }
@@ -103,44 +103,44 @@ namespace EntityDatabaseTesting
             var postTime = new DateTime(2018, 10, 19, 11, 12, 13);
             var replyTime = new DateTime(2018, 10, 19, 11, 12, 15);
             
-            using (var db = new MyDbContext())
+            using (var db = new WCIWTDbContext())
             {
                 db.Users.Add(CreateSampleUser(1));
                 db.Users.Add(CreateSampleUser(2));
                 db.Posts.Add(new Post
                 {
-                    Id = 1,
+                    Id = ToGuid(1),
                     GenderRestriction = Gender.ApacheHelicopter,
                     HasAgeRestriction = true,
                     AgeRestrictionFrom = 18,
                     AgeRestrictionTo = 25,
-                    UserId = 1,
+                    UserId = ToGuid(1),
                     Visibility = PostVisibility.Public,
                     Time = postTime,
                     Text = postText,
                 });
                 db.PostReplys.Add(new PostReply
                 {
-                    Id = 1,
-                    PostId = 1,
-                    UserId = 2,
+                    Id = ToGuid(1),
+                    PostId = ToGuid(1),
+                    UserId = ToGuid(2),
                     Time = replyTime,
                     Text = replyText
                 });
                 db.SaveChanges();
             }
 
-            using (var db = new MyDbContext())
+            using (var db = new WCIWTDbContext())
             {
                 Assert.AreEqual(db.Users.Count(), 2);
                 Assert.AreEqual(db.Posts.Count(), 1);
                 Assert.AreEqual(db.PostReplys.Count(), 1);
 
                 var post = db.Posts.First();
-                Assert.AreEqual(post.Id, 1);
-                Assert.AreEqual(post.UserId, 1);
+                Assert.AreEqual(post.Id, ToGuid(1));
+                Assert.AreEqual(post.UserId, ToGuid(1));
                 Assert.IsNotNull(post.User);
-                Assert.AreEqual(post.User.Id, 1);
+                Assert.AreEqual(post.User.Id, ToGuid(1));
                 Assert.IsTrue(post.HasAgeRestriction);
                 Assert.AreEqual(post.AgeRestrictionFrom, 18);
                 Assert.AreEqual(post.AgeRestrictionTo, 25);
@@ -150,12 +150,12 @@ namespace EntityDatabaseTesting
                 Assert.AreEqual(post.Text, postText);
 
                 var reply = db.PostReplys.First();
-                Assert.AreEqual(reply.Id, 1);
-                Assert.AreEqual(reply.UserId, 2);
+                Assert.AreEqual(reply.Id, ToGuid(1));
+                Assert.AreEqual(reply.UserId, ToGuid(2));
                 Assert.IsNotNull(reply.User);
-                Assert.AreEqual(reply.PostId, 1);
+                Assert.AreEqual(reply.PostId, ToGuid(1));
                 Assert.IsNotNull(reply.Post);
-                Assert.AreEqual(reply.Post.Id, 1);
+                Assert.AreEqual(reply.Post.Id, ToGuid(1));
                 Assert.AreEqual(reply.Time, replyTime);
                 Assert.AreEqual(reply.Text, replyText);
                 db.SaveChanges();
@@ -168,38 +168,37 @@ namespace EntityDatabaseTesting
             const string messageText = "Pew pew pew YEAH";
             var messageTime = new DateTime(2018, 12, 12, 0, 0, 0);
 
-            using (var db = new MyDbContext())
+            using (var db = new WCIWTDbContext())
             {
                 db.Users.Add(CreateSampleUser(1));
                 db.Users.Add(CreateSampleUser(2));
                 db.Messages.Add(new Message
                 {
-                    Id = 1,
+                    Id = ToGuid(1),
                     Seen = false,
                     Text = messageText,
                     Time = messageTime,
-                    UserReceiverId = 1,
-                    UserSenderId = 2,
+                    UserReceiverId = ToGuid(1),
+                    UserSenderId = ToGuid(2),
                 });
                 db.SaveChanges();
             }
 
-            using (var db = new MyDbContext())
+            using (var db = new WCIWTDbContext())
             {
                 Assert.AreEqual(db.Users.Count(), 2);
                 Assert.AreEqual(db.Messages.Count(), 1);
-
                 var message = db.Messages.First();
-                Assert.AreEqual(message.Id, 1);
+                Assert.AreEqual(message.Id, ToGuid(1));
                 Assert.IsFalse(message.Seen);
                 Assert.AreEqual(message.Time, messageTime);
                 Assert.AreEqual(message.Text, messageText);
-                Assert.AreEqual(message.UserReceiverId, 1);
+                Assert.AreEqual(message.UserReceiverId, ToGuid(1));
                 Assert.IsNotNull(message.UserReceiver);
-                Assert.AreEqual(message.UserReceiver.Id, 1);
-                Assert.AreEqual(message.UserSenderId, 2);
+                Assert.AreEqual(message.UserReceiver.Id, ToGuid(1));
+                Assert.AreEqual(message.UserSenderId, ToGuid(2));
                 Assert.IsNotNull(message.UserSender);
-                Assert.AreEqual(message.UserSender.Id, 2);
+                Assert.AreEqual(message.UserSender.Id, ToGuid(2));
                 db.SaveChanges();
             }
         }
@@ -208,13 +207,20 @@ namespace EntityDatabaseTesting
         {
             return new User
             {
-                Id = id,
+                Id = ToGuid(id),
                 Username = $"Sample username {id}",
                 Birthdate = new DateTime(1900 + id, id % 12, id % 28),
                 PasswordHash = "BEEF",
                 Gender = Gender.ApacheHelicopter,
                 IsAdmin = false,
             };
+        }
+
+        private static Guid ToGuid(int value)
+        {
+            byte[] bytes = new byte[16];
+            BitConverter.GetBytes(value).CopyTo(bytes, 0);
+            return new Guid(bytes);
         }
     }
 }
