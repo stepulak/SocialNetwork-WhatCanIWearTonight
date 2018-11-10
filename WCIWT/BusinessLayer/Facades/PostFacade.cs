@@ -29,6 +29,7 @@ namespace BusinessLayer.Facades
             this.postService = postService;
             this.voteService = voteService;
             this.imageService = imageService;
+            this.postReplyService = postReplyService;
         }
 
         public Guid AddPost(UserDto user, PostDto post)

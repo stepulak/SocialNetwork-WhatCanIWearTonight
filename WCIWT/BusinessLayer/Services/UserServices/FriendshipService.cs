@@ -2,7 +2,6 @@
 using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
-using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.Services.Common;
 using EntityDatabase;
 using System;
@@ -49,12 +48,8 @@ namespace BusinessLayer.Services.UserServices
             var friends = new List<Tuple<Guid, bool>>();
             foreach (var friendship in friendships.Items)
             {
-                if (!friendship.ApplicantId.HasValue || !friendship.RecipientId.HasValue)
-                {
-                    continue;
-                }
-                var applicantId = friendship.ApplicantId.Value;
-                var recipientid = friendship.RecipientId.Value;
+                var applicantId = friendship.ApplicantId;
+                var recipientid = friendship.RecipientId;
                 friends.Add(new Tuple<Guid, bool>(applicantId == userId ? recipientid : applicantId, friendship.IsConfirmed));
             }
             return friends;
