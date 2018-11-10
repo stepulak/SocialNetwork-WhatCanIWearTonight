@@ -11,5 +11,11 @@ namespace BusinessLayer.DataTransferObjects.Filters
     {
         public Guid UserA { get; set; }
         public Guid UserB { get; set; }
+
+        public FriendshipFilterDto()
+        {
+            UserA = Guid.Empty;
+            UserB = Guid.Empty;
+        }
     }
 }

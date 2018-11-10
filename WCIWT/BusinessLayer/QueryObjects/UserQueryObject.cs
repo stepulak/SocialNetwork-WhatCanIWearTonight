@@ -20,7 +20,11 @@ namespace BusinessLayer.DataTransferObjects.Filters
 
         protected override IQuery<User> ApplyWhereClause(IQuery<User> query, UserFilterDto filter)
         {
-            return string.IsNullOrWhiteSpace(filter.Username) && filter.Gender == Gender.NoInformation && filter.BornBefore == null && filter.BornAfter == null
+            return string.IsNullOrWhiteSpace(filter.Username) 
+                   && string.IsNullOrWhiteSpace(filter.Email) 
+                   && filter.Gender == Gender.NoInformation 
+                   && filter.BornBefore == DateTime.MinValue 
+                   && filter.BornAfter == DateTime.MinValue
                 ? query
                 : query.Where(CreateCompositePredicateFromFilter(filter));
         }
@@ -41,11 +45,11 @@ namespace BusinessLayer.DataTransferObjects.Filters
             {
                 predicates.Add(new SimplePredicate(nameof(User.Gender), ValueComparingOperator.Equal, filter.Gender));
             }
-            if (filter.BornBefore != null)
+            if (filter.BornBefore != DateTime.MinValue)
             {
                 predicates.Add(new SimplePredicate(nameof(User.Birthdate), ValueComparingOperator.LessThan, filter.BornBefore));
             }
-            if (filter.BornAfter != null)
+            if (filter.BornAfter != DateTime.MinValue)
             {
                 predicates.Add(new SimplePredicate(nameof(User.Birthdate), ValueComparingOperator.GreaterThan, filter.BornAfter));
             }

@@ -22,36 +22,58 @@ namespace BusinessLayer.DataTransferObjects.Filters
 
         protected override IQuery<Friendship> ApplyWhereClause(IQuery<Friendship> query, FriendshipFilterDto filter)
         {
-            return filter.UserA == null && filter.UserB == null ? query : query.Where(CreateCompositePredicateFromFilter(filter));
+            return filter.UserA == Guid.Empty 
+                   && filter.UserB == Guid.Empty 
+                ? query 
+                : query.Where(CreateCompositePredicateFromFilter(filter));
         }
 
         private IPredicate CreateCompositePredicateFromFilter(FriendshipFilterDto filter)
         {
-            if (filter.UserA == null)
+            if (filter.UserA == Guid.Empty)
             {
                 return CreatePredicateForOneUser(filter.UserB);
             }
-            if (filter.UserB == null)
+            if (filter.UserB == Guid.Empty)
             {
                 return CreatePredicateForOneUser(filter.UserA);
             }
-            var predicates = new List<IPredicate>
-            {
-                // Both users must be in frienship structure, doesn't matter who is sender or recipient
-                CreatePredicateForOneUser(filter.UserA),
-                CreatePredicateForOneUser(filter.UserB)
-            };
-            return new CompositePredicate(predicates, LogicalOperator.AND);
+            
+            // Both users must be in frienship structure, doesn't matter who is sender or recipient
+            return CreatePredicateForBothUsers(filter.UserA, filter.UserB);
         }
 
         private IPredicate CreatePredicateForOneUser(Guid userId)
         {
             var predicates = new List<IPredicate>
             {
-                new SimplePredicate(nameof(Friendship.Applicant), ValueComparingOperator.Equal, userId),
-                new SimplePredicate(nameof(Friendship.Recipient), ValueComparingOperator.Equal, userId)
+                new SimplePredicate(nameof(Friendship.ApplicantId), ValueComparingOperator.Equal, userId),
+                new SimplePredicate(nameof(Friendship.RecipientId), ValueComparingOperator.Equal, userId)
             };
             return new CompositePredicate(predicates, LogicalOperator.OR);
+        }
+        
+        private IPredicate CreatePredicateForBothUsers(Guid userAId, Guid userBId)
+        {
+            var userAIsApplicantPredicates = new List<IPredicate>
+            {
+                new SimplePredicate(nameof(Friendship.ApplicantId), ValueComparingOperator.Equal, userAId),
+                new SimplePredicate(nameof(Friendship.RecipientId), ValueComparingOperator.Equal, userBId)
+            };
+            var userBIsApplicantPredicates = new List<IPredicate>
+            {
+                new SimplePredicate(nameof(Friendship.ApplicantId), ValueComparingOperator.Equal, userBId),
+                new SimplePredicate(nameof(Friendship.RecipientId), ValueComparingOperator.Equal, userAId)
+            };
+            
+            var compositeOfUserAIsApplicant = new CompositePredicate(userAIsApplicantPredicates, LogicalOperator.AND);
+            var compositeOfUserBIsApplicant = new CompositePredicate(userBIsApplicantPredicates, LogicalOperator.AND);
+            
+            return new CompositePredicate(new List<IPredicate>
+            {
+                compositeOfUserAIsApplicant,
+                compositeOfUserBIsApplicant
+            }, LogicalOperator.OR);
         }
     }
 }

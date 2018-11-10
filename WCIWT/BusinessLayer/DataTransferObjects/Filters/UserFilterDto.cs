@@ -12,5 +12,11 @@ namespace BusinessLayer.DataTransferObjects.Filters
         public DateTime BornBefore { get; set; }
         public DateTime BornAfter { get; set; }
 
+        public UserFilterDto()
+        {
+            Gender = Gender.NoInformation;
+            BornBefore = DateTime.MinValue;
+            BornAfter = DateTime.MinValue;
+        }
     }
 }

@@ -17,6 +17,12 @@ namespace BusinessLayer.DataTransferObjects.Filters
     public class MessageFilterDto : FilterDtoBase
     {
         public Guid UserId { get; set; }
-        public MessageUserFilterType UserFilterType { get; set; } = MessageUserFilterType.Both;
-    }
+        public MessageUserFilterType UserFilterType { get; set; }
+
+        public MessageFilterDto()
+        {
+            UserId = Guid.Empty;
+            UserFilterType = MessageUserFilterType.Both;
+        }
+    }      
 }

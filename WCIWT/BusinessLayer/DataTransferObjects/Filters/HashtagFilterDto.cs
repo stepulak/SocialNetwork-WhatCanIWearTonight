@@ -11,5 +11,10 @@ namespace BusinessLayer.DataTransferObjects.Filters
     {
         public Guid PostId { get; set; }
         public string Tag { get; set; }
+
+        public HashtagFilterDto()
+        {
+            PostId = Guid.Empty;
+        }
     }
 }

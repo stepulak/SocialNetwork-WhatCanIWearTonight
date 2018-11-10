@@ -11,5 +11,11 @@ namespace BusinessLayer.DataTransferObjects.Filters
     {
         public Guid UserId { get; set; }
         public Guid ImageId { get; set; }
+
+        public VoteFilterDto()
+        {
+            UserId = Guid.Empty;
+            ImageId = Guid.Empty;
+        }
     }
 }
