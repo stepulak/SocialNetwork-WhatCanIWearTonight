@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using BusinessLayer.DataTransferObjects.Filters.Common;
 using EntityDatabase;
 using System.Collections.Generic;
+using BusinessLayer.QueryObjects.Common;
 using WCIWT.Infrastructure.Query;
 using WCIWT.Infrastructure.Query.Predicates;
 using WCIWT.Infrastructure.Query.Predicates.Operators;

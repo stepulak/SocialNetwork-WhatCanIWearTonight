@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using WCIWT.Infrastructure;
 using WCIWT.Infrastructure.Query;
 
-namespace BusinessLayer.DataTransferObjects.Filters.Common
+namespace BusinessLayer.QueryObjects.Common
 {
     public abstract class QueryObjectBase<TDto, TEntity, TFilter, TQuery>
         where TFilter : FilterDtoBase

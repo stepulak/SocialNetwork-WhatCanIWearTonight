@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.DataTransferObjects.Common;
-using BusinessLayer.DataTransferObjects.Filters.Common;
+using BusinessLayer.QueryObjects.Common;
 using WCIWT.Infrastructure;
 using WCIWT.Infrastructure.Query;
 

@@ -3,11 +3,11 @@ using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.DataTransferObjects.Filters;
-using BusinessLayer.DataTransferObjects.Filters.Common;
 using BusinessLayer.Services.Common;
 using EntityDatabase;
 using System;
 using System.Threading.Tasks;
+using BusinessLayer.QueryObjects.Common;
 using WCIWT.Infrastructure;
 using WCIWT.Infrastructure.Query;
 

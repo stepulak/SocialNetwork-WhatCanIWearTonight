@@ -10,6 +10,7 @@ using EntityDatabase;
 using BusinessLayer.DataTransferObjects.Filters;
 using WCIWT.Infrastructure.Query;
 using AutoMapper;
+
 using WCIWT.Infrastructure.Query.Predicates;
 using WCIWT.Infrastructure.Query.Predicates.Operators;
 

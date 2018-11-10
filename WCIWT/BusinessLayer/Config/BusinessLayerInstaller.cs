@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BusinessLayer.Facades.Common;
-using BusinessLayer.DataTransferObjects.Filters.Common;
 using BusinessLayer.Services.Common;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer.QueryObjects.Common;
 
 namespace BusinessLayer.Config
 {
