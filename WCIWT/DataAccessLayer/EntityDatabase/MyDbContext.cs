@@ -17,6 +17,7 @@ namespace EntityDatabase
         
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<Hashtag> Hashtags { get; set; }
+        public DbSet<HashtagInPost> HashtagInPosts { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Post> Posts { get; set; }

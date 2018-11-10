@@ -21,6 +21,6 @@ namespace EntityDatabase
         public virtual Post Post { get; set; }
 
         [NotMapped]
-        public string TableName => nameof(WCIWTDbContext.Hashtags);
+        public string TableName => nameof(WCIWTDbContext.HashtagInPosts);
     }
 }

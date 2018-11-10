@@ -7,16 +7,8 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.DataTransferObjects.Filters
 {
-    public enum MessageUserFilterType
-    {
-        Sender,
-        Receiver,
-        Both
-    }
-
     public class MessageFilterDto : FilterDtoBase
     {
         public Guid UserId { get; set; }
-        public MessageUserFilterType UserFilterType { get; set; } = MessageUserFilterType.Both;
     }
 }

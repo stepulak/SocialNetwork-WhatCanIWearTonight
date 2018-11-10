@@ -104,7 +104,9 @@ namespace BusinessLayer.Facades.Common
             await friendshipService.Update(frienship);
         }
 
-        public void CancelFriendshipRequest(FriendshipDto friendship) 
-            => friendshipService.Delete(friendship.Id);
+        public void CancelFriendshipRequest(FriendshipDto friendship)
+        {
+            friendshipService.Delete(friendship.Id);
+        }
     }
 }

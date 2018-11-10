@@ -22,7 +22,7 @@ namespace BusinessLayer.Facades
         private readonly PostReplyService postReplyService;
 
         public PostFacade(IUnitOfWorkProvider unitOfWorkProvider, 
-            PostService postService, PostReplyService postReplyService,
+            PostService postService, PostReplyDto postReplyService,
             VoteService voteService, ImageService imageService)
             : base(unitOfWorkProvider)
         {
@@ -38,7 +38,10 @@ namespace BusinessLayer.Facades
             return postService.Create(post);
         }
 
-        public void DeletePost(PostDto post) => postService.Delete(post.Id);
+        public void DeletePost(PostDto post)
+        {
+            postService.Delete(post.Id);
+        }
         
         public async Task<Tuple<bool, VoteDto>> VoteFromUser(ImageDto image, UserDto user)
         {
