@@ -18,6 +18,11 @@ namespace BusinessLayerTesting.FacadesTests.Common
 
         internal static IMapper ConfigureRealMapper() => new Mapper(new MapperConfiguration(MappingConfig.ConfigureMapping));
 
+        internal IMapper ConfigureMapperMock<T1, T2, T3>()
+        {
+            return new Mapper(new MapperConfiguration(MappingConfig.ConfigureMapping));
+        }
+
         internal static Mock<IUnitOfWorkProvider> ConfigureUowMock()
         {
             var uowMock = new Mock<IUnitOfWorkProvider>(MockBehavior.Loose);
