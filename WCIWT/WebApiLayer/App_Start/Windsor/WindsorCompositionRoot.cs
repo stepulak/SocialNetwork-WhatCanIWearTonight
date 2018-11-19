@@ -1,3 +1,9 @@
+using System;
+using System.Net.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Dispatcher;
+using Castle.Windsor;
+
 namespace WebApiLayer.Windsor
 {
     public class WindsorCompositionRoot: IHttpControllerActivator
