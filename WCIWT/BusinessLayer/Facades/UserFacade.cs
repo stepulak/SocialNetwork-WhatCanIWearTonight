@@ -5,7 +5,6 @@ using BusinessLayer.Services.UserServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using WCIWT.Infrastructure.UnitOfWork;
 
@@ -32,9 +31,17 @@ namespace BusinessLayer.Facades.Common
             }
         }
 
+        public async Task<UserDto> GetUserAsync(Guid id)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await userService.GetAsync(id);
+            }
+        }
+
         public async Task<Guid> RegisterUser(UserDto user)
         {
-            var filter = new UserFilterDto()
+            var filter = new UserFilterDto
             {
                 Username = user.Username,
                 Email = user.Email
@@ -47,24 +54,44 @@ namespace BusinessLayer.Facades.Common
             return userService.Create(user);
         }
 
-        public async Task UnregisterUser(UserDto user)
+        public async Task<bool> UnregisterUser(UserDto user)
         {
-            var filter = new UserFilterDto()
+            using (var uow = UnitOfWorkProvider.Create())
             {
-                Username = user.Username,
-                Email = user.Email
-            };
-            var allUsers = await GetAllUsersAsync(filter);
-            if (allUsers.TotalItemsCount == 0)
-            {
-                throw new InvalidOperationException($"Unable to unregister user {user}. Not found.");
+                var filter = new UserFilterDto
+                {
+                    Username = user.Username,
+                    Email = user.Email
+                };
+                var allUsers = await GetAllUsersAsync(filter);
+                if (allUsers.TotalItemsCount == 0)
+                {
+                    return false;
+                }
+                userService.Delete(user.Id);
+                await uow.Commit();
+                return true;
             }
-            userService.Delete(user.Id);
+        }
+
+        public async Task<bool> EditUserAsync(UserDto userDto)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                if (await userService.GetAsync(userDto.Id, false) == null)
+                {
+                    return false;
+                }
+
+                await userService.Update(userDto);
+                await uow.Commit();
+                return true;
+            }
         }
         
         public async Task<List<FriendshipDto>> PendingFriendshipRequests(UserDto user)
         {
-            var filter = new FriendshipFilterDto()
+            var filter = new FriendshipFilterDto
             {
                 UserA = user.Id
             };
@@ -74,7 +101,7 @@ namespace BusinessLayer.Facades.Common
 
         public async Task<bool> CanSendFrienshipRequest(UserDto applicant, UserDto recipient)
         {
-            var filter = new FriendshipFilterDto()
+            var filter = new FriendshipFilterDto
             {
                 // We can swap those, doesn't really matter the order
                 UserA = applicant.Id,

@@ -19,4 +19,5 @@ namespace BusinessLayer.DataTransferObjects
 
         public override string ToString() =>  $"Username: {Username}, Email: {Email}, Birthdate: {Birthdate}";
     }
+    
 }
