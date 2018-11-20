@@ -14,9 +14,14 @@ namespace EntityDatabase
     {
         [Key]
         public Guid Id { get; set; }
+        [Required]
         public string Username { get; set; }
         public string Email { get; set; }
+        
+        [Required, StringLength(100)]
         public string PasswordHash { get; set; }
+        [Required, StringLength(100)]
+        public string PasswordSalt {get; set;}
         public Gender Gender { get; set; }
         public bool IsAdmin { get; set; }
         
