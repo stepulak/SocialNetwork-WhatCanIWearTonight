@@ -1,30 +1,118 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using BusinessLayer.DataTransferObjects;
+using BusinessLayer.DataTransferObjects.Common;
+using BusinessLayer.DataTransferObjects.Filters;
+using BusinessLayer.Facades;
+using BusinessLayer.Facades.Common;
+using PresentationLayerMVC.Models.Aggregated;
+using PresentationLayerMVC.Models.FriendRequests;
+using PresentationLayerMVC.Models.Friends;
+using PresentationLayerMVC.Models.Posts;
+using X.PagedList;
 
 namespace PresentationLayerMVC.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public const int PostsPageSize = 5;
+        public const int FriendRequestsPageSize = 20;
+        public const int FriendsPageSize = 20;
+        private const string FilterSessionKey = "filter";
+        
+        public UserFacade UserFacade { get; set; }
+        public PostFacade PostFacade { get; set; }
+        
+        public async Task<ActionResult> Index(int page = 1)
         {
-            return View();
+            // TODO: If user is logged in, get his id
+            var userId = Guid.Empty;
+
+            var postsModel = await GetPostModel(userId, page);
+            var friendRequestsModel = await GetFriendRequestsModel(userId);
+            var friendsModel = await GetFriendsModel(userId);
+            var homepageModel = new HomePageAggregatedViewModel
+            {
+                Posts = postsModel,
+                FriendRequests = friendRequestsModel,
+                Friends = friendsModel
+            };
+            return View(homepageModel);
         }
 
-        public ActionResult About()
+        private async Task<FriendRequestListViewModel> GetFriendRequestsModel(Guid userId)
         {
-            ViewBag.Message = "Your application description page.";
+            if (userId == Guid.Empty)
+            {
+                return new FriendRequestListViewModel();
+            }
+            
+            var friendshipRequests = await UserFacade.PendingFriendshipRequests(userId);
+            var friendRequestsModel = InitializeFriendRequestListViewModel(friendshipRequests);
 
-            return View();
+            return friendRequestsModel;
         }
 
-        public ActionResult Contact()
+        private async Task<FriendListViewModel> GetFriendsModel(Guid userId)
         {
-            ViewBag.Message = "Your contact page.";
+            if (userId == Guid.Empty)
+            {
+                return new FriendListViewModel();
+            }
 
-            return View();
+            var friends = await UserFacade.GetFriendsOfUser(userId);
+            return InitializeFriendListViewModel(friends);
+        }
+        
+
+        private async Task<PostListViewModel> GetPostModel(Guid userId, int page)
+        {
+            if (userId == Guid.Empty)
+            {
+                return new PostListViewModel();;
+            }
+
+            // TODO: when filter DTO is changed, pass userId to filter
+            var filter = Session[FilterSessionKey] as PostFilterDto ?? new PostFilterDto{PageSize = PostsPageSize};
+            filter.RequestedPageNumber = page;
+           
+            var posts = await PostFacade.GetPostFeedAsync(filter, userId);
+            return InitializePostListViewModel(posts);   
+        }
+
+        private FriendRequestListViewModel InitializeFriendRequestListViewModel(
+            QueryResultDto<FriendshipDto, FriendshipFilterDto> result)
+        {
+            return new FriendRequestListViewModel
+            {
+                FriendRequests = new StaticPagedList<FriendshipDto>(result.Items, result.RequestedPageNumber ?? 1, FriendRequestsPageSize,
+                    (int) result.TotalItemsCount),
+                Filter = result.Filter
+            };
+        }
+
+        private PostListViewModel InitializePostListViewModel(QueryResultDto<PostDto, PostFilterDto> result)
+        {
+            return new PostListViewModel
+            {
+                Posts = new StaticPagedList<PostDto>(result.Items, result.RequestedPageNumber ?? 1, PostsPageSize,
+                    (int) result.TotalItemsCount),
+                Filter = result.Filter
+            };
+        }
+
+        private FriendListViewModel InitializeFriendListViewModel(IList<UserDto> result)
+        {
+            return new FriendListViewModel
+            {
+                Friends = new StaticPagedList<UserDto>(result, 1, FriendsPageSize, FriendsPageSize),
+                Filter = null
+            };
         }
     }
 }

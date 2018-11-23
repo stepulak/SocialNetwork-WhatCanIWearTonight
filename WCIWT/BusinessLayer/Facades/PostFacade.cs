@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer.DataTransferObjects.Common;
 using WCIWT.Infrastructure.UnitOfWork;
 
 namespace BusinessLayer.Facades
@@ -37,6 +38,18 @@ namespace BusinessLayer.Facades
             post.Time = DateTime.Now;
             post.UserId = user.Id;
             return postService.Create(post);
+        }
+
+        public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostFeedAsync(PostFilterDto filter, Guid userId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                if (userId != Guid.Empty)
+                {
+                    return await postService.ListPostsAvailableForUser(userId, filter);
+                }
+                return await postService.ListPostAsync(filter);
+            }
         }
 
         public void DeletePost(PostDto post) => postService.Delete(post.Id);

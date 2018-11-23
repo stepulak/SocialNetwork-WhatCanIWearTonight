@@ -30,29 +30,25 @@ namespace BusinessLayer.Services.UserServices
             return await friendshipQueryObject.ExecuteQuery(filter);
         }
 
-        public async Task<List<Guid>> ListOfFriends(Guid userId)
+        public async Task<List<UserDto>> ListOfFriendsAsync(Guid userId)
         {
-            var friends = await ListOfPossibleFriends(userId);
+            var friends = await ListOfPossibleFriendsAsync(userId);
             return friends.Where(t => t.Item2).Select(t => t.Item1).ToList();
         }
 
-        public async Task<List<Guid>> ListOfFriendRequests(Guid userId)
+        public async Task<List<UserDto>> ListOfFriendRequestsAsync(Guid userId)
         {
-            var friends = await ListOfPossibleFriends(userId);
+            var friends = await ListOfPossibleFriendsAsync(userId);
             return friends.Where(t => !t.Item2).Select(t => t.Item1).ToList();
         }
 
-        private async Task<List<Tuple<Guid, bool>>> ListOfPossibleFriends(Guid userId)
+        private async Task<List<Tuple<UserDto, bool>>> ListOfPossibleFriendsAsync(Guid userId)
         {
             var friendships = await ListFriendshipAsync(new FriendshipFilterDto { UserA = userId });
-            var friends = new List<Tuple<Guid, bool>>();
-            foreach (var friendship in friendships.Items)
-            {
-                var applicantId = friendship.ApplicantId;
-                var recipientid = friendship.RecipientId;
-                friends.Add(new Tuple<Guid, bool>(applicantId == userId ? recipientid : applicantId, friendship.IsConfirmed));
-            }
-            return friends;
+            return (from friendship in friendships.Items
+                let applicantId = friendship.ApplicantId
+                select new Tuple<UserDto, bool>(applicantId == userId ? friendship.Recipient : friendship.Applicant,
+                    friendship.IsConfirmed)).ToList();
         }
 
         protected override Task<Friendship> GetWithIncludesAsync(Guid entityId)

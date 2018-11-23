@@ -89,14 +89,13 @@ namespace BusinessLayer.Facades.Common
             }
         }
         
-        public async Task<List<FriendshipDto>> PendingFriendshipRequests(UserDto user)
+        public async Task<QueryResultDto<FriendshipDto, FriendshipFilterDto>> PendingFriendshipRequests(Guid userId)
         {
             var filter = new FriendshipFilterDto
             {
-                UserA = user.Id
+                UserA = userId
             };
-            var result = await friendshipService.ListFriendshipAsync(filter);
-            return result.Items.ToList();
+            return await friendshipService.ListFriendshipAsync(filter);
         }
 
         public async Task<bool> CanSendFrienshipRequest(UserDto applicant, UserDto recipient)
@@ -133,5 +132,11 @@ namespace BusinessLayer.Facades.Common
 
         public void CancelFriendshipRequest(FriendshipDto friendship) 
             => friendshipService.Delete(friendship.Id);
+
+        public async Task<List<UserDto>> GetFriendsOfUser(Guid userId)
+        {
+            return await friendshipService.ListOfFriendsAsync(userId);
+        }
+
     }
 }
