@@ -42,7 +42,7 @@ namespace PresentationLayerMVC.Controllers
                 FriendRequests = friendRequestsModel,
                 Friends = friendsModel
             };
-            return View("Index");
+            return View("Index", homepageModel);
         }
 
         private async Task<FriendRequestListViewModel> GetFriendRequestsModel(Guid userId)
