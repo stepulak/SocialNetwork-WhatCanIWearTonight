@@ -169,6 +169,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Accounts\LoginModel.cs" />
+    <Compile Include="Models\Aggregated\HomePageAggregatedViewModel.cs" />
     <Compile Include="Models\FriendRequests\FriendRequestListViewModel.cs" />
     <Compile Include="Models\Friends\FriendsListViewModel.cs" />
     <Compile Include="Models\Messages\MessageListViewModel.cs" />

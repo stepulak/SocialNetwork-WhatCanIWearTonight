@@ -6,7 +6,7 @@ using X.PagedList;
 
 namespace PresentationLayerMVC.Models.Friends
 {
-    public class FriendsListViewModel
+    public class FriendListViewModel
     {
         public IPagedList<UserDto> Friends { get; set; }
         public UserFilterDto Filter { get; set; }

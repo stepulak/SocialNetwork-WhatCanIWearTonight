@@ -40,7 +40,7 @@ namespace BusinessLayer.Facades
             return postService.Create(post);
         }
 
-        public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostFeedAsync(PostFilterDto filter, Guid userId = Guid.Empty)
+        public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostFeedAsync(PostFilterDto filter, Guid userId)
         {
             using (UnitOfWorkProvider.Create())
             {

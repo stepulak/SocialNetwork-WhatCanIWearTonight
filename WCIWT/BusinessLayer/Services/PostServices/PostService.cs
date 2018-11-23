@@ -64,7 +64,7 @@ namespace BusinessLayer.Services.PostServices
             PostFilterDto filter)
         {
             UserDto user = await userService.GetAsync(userId);
-            List<Guid> userFriends = await friendshipService.ListOfFriendsAsync(userId);
+            List<UserDto> userFriends = await friendshipService.ListOfFriendsAsync(userId);
             var userAge = Convert.ToDateTime(DateTime.Now - user.Birthdate).Year;
             filter.UserAge = userAge;
             filter.GenderRestriction = user.Gender;

@@ -26,6 +26,14 @@ namespace BusinessLayerTesting.FacadesTests
             return new UserService(mapperMock, repositoryMock, null, queryMock);
         }
 
+        public FriendshipService CreateFriendshipService(FacadeMockManager mockManager)
+        {
+            var mapperMock = mockManager.ConfigureMapperMock<Friendship, FriendshipDto, FriendshipFilterDto>();
+            var queryMock = mockManager.ConfigureQueryObjectMock<FriendshipDto, Friendship, FriendshipFilterDto>(null).Object;
+            var repositoryMock = mockManager.ConfigureRepositoryMock<Friendship>().Object;
+            return new FriendshipService(mapperMock, repositoryMock, null, queryMock);
+        }
+
         public HashtagService CreateHashtagService(FacadeMockManager mockManager)
         {
             var mapperMock = mockManager.ConfigureMapperMock<Hashtag, HashtagDto, HashtagFilterDto>();
@@ -39,7 +47,8 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<Post, PostDto, PostFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<PostDto, Post, PostFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<Post>().Object;
-            return new PostService(mapperMock, repositoryMock, null, queryMock, CreateHashtagService(mockManager));
+            return new PostService(mapperMock, repositoryMock, null, queryMock, CreateHashtagService(mockManager),
+                CreateUserService(mockManager), CreateFriendshipService(mockManager));
         }
 
         public PostReplyService CreatePostReplyService(FacadeMockManager mockManager)
