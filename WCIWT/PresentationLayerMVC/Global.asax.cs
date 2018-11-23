@@ -7,7 +7,7 @@ using Castle.Windsor;
 using System.Web;
 using PresentationLayerMVC;
 using BusinessLayer.Config;
-using DemoEshop.PresentationLayer.Windsor;
+using PresentationLayerMVC.Windsor;
 
 namespace PresentationLayerMVC
 {

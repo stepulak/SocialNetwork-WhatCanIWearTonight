@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.MicroKernel;
 
-namespace DemoEshop.PresentationLayer.Windsor
+namespace PresentationLayerMVC.Windsor
 {
     public class WindsorControllerFactory : DefaultControllerFactory
     {

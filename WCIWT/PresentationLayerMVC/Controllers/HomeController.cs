@@ -27,7 +27,7 @@ namespace PresentationLayerMVC.Controllers
         
         public UserFacade UserFacade { get; set; }
         public PostFacade PostFacade { get; set; }
-        
+
         public async Task<ActionResult> Index(int page = 1)
         {
             // TODO: If user is logged in, get his id
@@ -42,7 +42,7 @@ namespace PresentationLayerMVC.Controllers
                 FriendRequests = friendRequestsModel,
                 Friends = friendsModel
             };
-            return View(homepageModel);
+            return View("Index");
         }
 
         private async Task<FriendRequestListViewModel> GetFriendRequestsModel(Guid userId)
