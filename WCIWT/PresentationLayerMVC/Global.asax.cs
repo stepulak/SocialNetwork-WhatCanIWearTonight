@@ -9,7 +9,7 @@ using PresentationLayerMVC;
 using BusinessLayer.Config;
 using DemoEshop.PresentationLayer.Windsor;
 
-namespace DemoEshop.PresentationLayer
+namespace PresentationLayerMVC
 {
     public class MvcApplication : System.Web.HttpApplication
     {
