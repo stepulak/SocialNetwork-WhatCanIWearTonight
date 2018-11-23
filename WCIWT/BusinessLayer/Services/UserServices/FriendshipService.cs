@@ -30,19 +30,19 @@ namespace BusinessLayer.Services.UserServices
             return await friendshipQueryObject.ExecuteQuery(filter);
         }
 
-        public async Task<List<Guid>> ListOfFriends(Guid userId)
+        public async Task<List<Guid>> ListOfFriendsAsync(Guid userId)
         {
-            var friends = await ListOfPossibleFriends(userId);
+            var friends = await ListOfPossibleFriendsAsync(userId);
             return friends.Where(t => t.Item2).Select(t => t.Item1).ToList();
         }
 
-        public async Task<List<Guid>> ListOfFriendRequests(Guid userId)
+        public async Task<List<Guid>> ListOfFriendRequestsAsync(Guid userId)
         {
-            var friends = await ListOfPossibleFriends(userId);
+            var friends = await ListOfPossibleFriendsAsync(userId);
             return friends.Where(t => !t.Item2).Select(t => t.Item1).ToList();
         }
 
-        private async Task<List<Tuple<Guid, bool>>> ListOfPossibleFriends(Guid userId)
+        private async Task<List<Tuple<Guid, bool>>> ListOfPossibleFriendsAsync(Guid userId)
         {
             var friendships = await ListFriendshipAsync(new FriendshipFilterDto { UserA = userId });
             var friends = new List<Tuple<Guid, bool>>();

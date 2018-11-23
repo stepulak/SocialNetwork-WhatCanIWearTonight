@@ -11,6 +11,8 @@ using WCIWT.Infrastructure.Query;
 using BusinessLayer.DataTransferObjects.Common;
 using System.Collections.Generic;
 using BusinessLayer.QueryObjects.Common;
+using BusinessLayer.Services.UserServices;
+using PostVisibility = EntityDatabase.PostVisibility;
 
 namespace BusinessLayer.Services.PostServices
 {
@@ -18,14 +20,20 @@ namespace BusinessLayer.Services.PostServices
     {
         private readonly QueryObjectBase<PostDto, Post, PostFilterDto, IQuery<Post>> postQueryObject;
         private readonly HashtagService hashtagService;
+        private readonly UserService userService;
+        private readonly FriendshipService friendshipService;
 
         public PostService(IMapper mapper, IRepository<Post> repository, PostQueryObject query,
             QueryObjectBase<PostDto, Post, PostFilterDto, IQuery<Post>> postQueryObject,
-            HashtagService hashtagService)
+            HashtagService hashtagService,
+            UserService userService,
+            FriendshipService friendshipService)
             : base(mapper, repository, query)
         {
             this.postQueryObject = postQueryObject;
             this.hashtagService = hashtagService;
+            this.userService = userService;
+            this.friendshipService = friendshipService;
         }
 
         public override Guid Create(PostDto entityDto)
@@ -52,25 +60,23 @@ namespace BusinessLayer.Services.PostServices
             return await ListPostAsync(new PostFilterDto { UserId = userId });
         }
 
-        public async Task<List<PostDto>> ListPostsAvailableForUser(UserDto user, List<Guid> userFriends)
+        public async Task<QueryResultDto<PostDto, PostFilterDto>> ListPostsAvailableForUser(Guid userId,
+            PostFilterDto filter)
         {
+            UserDto user = await userService.GetAsync(userId);
+            List<Guid> userFriends = await friendshipService.ListOfFriendsAsync(userId);
             var userAge = Convert.ToDateTime(DateTime.Now - user.Birthdate).Year;
-            var allPosts = await ListPostAsync(new PostFilterDto
-            {
-                UserAge = userAge,
-                GenderRestriction = user.Gender
-            });
-            var posts = new List<PostDto>();
+            filter.UserAge = userAge;
+            filter.GenderRestriction = user.Gender;
+
+            return await ListPostAsync(filter);
+
+            // TODO: needs to return QueryResult object, filterDTO should be rewritten to allow needed filtering
             // Filter all posts who are private and you are not friend of post's owner.
-            foreach (var post in allPosts.Items)
-            {
-                if (post.Visibility != DataTransferObjects.PostVisibility.FriendsOnly || userFriends.Contains(post.UserId.Value))
-                {
-                    continue;
-                }
-                posts.Add(post);
-            }
-            return posts;
+//            return allPosts.Items
+//                .Where(post => post.Visibility == (DataTransferObjects.PostVisibility) PostVisibility.FriendsOnly
+//                               && !userFriends.Contains(post.UserId)
+//                               || post.Visibility == (DataTransferObjects.PostVisibility) PostVisibility.FriendsOnly);
         }
 
         protected override Task<Post> GetWithIncludesAsync(Guid entityId)

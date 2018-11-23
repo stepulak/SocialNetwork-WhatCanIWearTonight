@@ -19,7 +19,7 @@ namespace BusinessLayer.DataTransferObjects
         public int AgeRestrictionFrom { get; set; }
         public int AgeRestrictionTo { get; set; }
 
-        public Guid? UserId { get; set; }
+        public Guid UserId { get; set; }
         public virtual UserDto User { get; set; }
     }
 }
