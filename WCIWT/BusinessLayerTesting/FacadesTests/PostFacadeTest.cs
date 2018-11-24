@@ -2,7 +2,6 @@
 using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.Facades;
 using BusinessLayer.Services.PostServices;
-using BusinessLayer.Services.UserServices;
 using BusinessLayerTesting.FacadesTests.Common;
 using EntityDatabase;
 using NUnit.Framework;
@@ -11,6 +10,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer.Services.Friendships;
+using BusinessLayer.Services.Hashtags;
+using BusinessLayer.Services.Images;
+using BusinessLayer.Services.PostReplys;
+using BusinessLayer.Services.Posts;
+using BusinessLayer.Services.Users;
+using BusinessLayer.Services.Votes;
 using PostVisibility = BusinessLayer.DataTransferObjects.PostVisibility;
 
 namespace BusinessLayerTesting.FacadesTests

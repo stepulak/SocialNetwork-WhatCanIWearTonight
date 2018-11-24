@@ -1,18 +1,16 @@
-﻿using AutoMapper;
-using BusinessLayer.DataTransferObjects;
-using EntityDatabase;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
+using BusinessLayer.DataTransferObjects;
+using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.QueryObjects.Common;
+using EntityDatabase;
 using WCIWT.Infrastructure.Query;
 using WCIWT.Infrastructure.Query.Predicates;
 using WCIWT.Infrastructure.Query.Predicates.Operators;
 using Gender = BusinessLayer.DataTransferObjects.Gender;
 
-namespace BusinessLayer.DataTransferObjects.Filters
+namespace BusinessLayer.QueryObjects
 {
     public class UserQueryObject: QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>>
     {

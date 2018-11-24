@@ -1,14 +1,16 @@
 ﻿using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Filters;
-using BusinessLayer.Facades.Common;
+using BusinessLayer.Facades;
 using BusinessLayer.Services.PostServices;
-using BusinessLayer.Services.UserServices;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer.Facades.Common;
+using BusinessLayer.Services.Messages;
+using BusinessLayer.Services.Users;
 using WCIWT.Infrastructure.UnitOfWork;
 
 namespace BusinessLayer.Facades

@@ -1,14 +1,16 @@
 ﻿using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
-using BusinessLayer.Services.UserServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLayer.Facades.Common;
+using BusinessLayer.Services.Friendships;
+using BusinessLayer.Services.Users;
 using WCIWT.Infrastructure.UnitOfWork;
 
-namespace BusinessLayer.Facades.Common
+namespace BusinessLayer.Facades
 {
     public class UserFacade : FacadeBase
     {

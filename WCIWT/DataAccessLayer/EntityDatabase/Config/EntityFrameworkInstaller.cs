@@ -3,6 +3,7 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -17,13 +18,13 @@ namespace EntityDatabase.Config
 {
     public class EntityFrameworkInstaller : IWindsorInstaller
     {
-        internal const string ConnectionString = "Data source=(localdb)\\mssqllocaldb;Database=DatabaseSample;Trusted_Connection=True;MultipleActiveResultSets=true";
+        internal const string ConnectionString = "Data source=(localdb)\\mssqllocaldb;Database=WCIWTDatabaseSample;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
                 Component.For<Func<DbContext>>()
-                    .Instance(() => new WCIWTDbContext())
+                   .Instance(() => new WCIWTDbContext())
                     .LifestyleTransient(),
                 Component.For<IUnitOfWorkProvider>()
                     .ImplementedBy<EntityFrameworkUnitOfWorkProvider>()

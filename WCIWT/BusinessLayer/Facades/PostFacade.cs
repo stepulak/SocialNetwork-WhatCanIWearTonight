@@ -1,7 +1,6 @@
 ﻿using BusinessLayer.DataTransferObjects;
-using BusinessLayer.Facades.Common;
+using BusinessLayer.Facades;
 using BusinessLayer.Services.PostServices;
-using BusinessLayer.Services.UserServices;
 using BusinessLayer.DataTransferObjects.Filters;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLayer.DataTransferObjects.Common;
+using BusinessLayer.Facades.Common;
+using BusinessLayer.Services.Images;
+using BusinessLayer.Services.PostReplys;
+using BusinessLayer.Services.Posts;
+using BusinessLayer.Services.Votes;
 using WCIWT.Infrastructure.UnitOfWork;
 
 namespace BusinessLayer.Facades

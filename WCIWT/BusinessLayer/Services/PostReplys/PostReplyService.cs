@@ -1,16 +1,18 @@
-﻿using BusinessLayer.DataTransferObjects;
-using BusinessLayer.Services.Common;
-using EntityDatabase;
-using System;
+﻿using System;
 using System.Threading.Tasks;
-using BusinessLayer.DataTransferObjects.Filters;
 using AutoMapper;
+using BusinessLayer.DataTransferObjects;
+using BusinessLayer.DataTransferObjects.Common;
+using BusinessLayer.DataTransferObjects.Filters;
+using BusinessLayer.QueryObjects;
+using BusinessLayer.QueryObjects.Common;
+using BusinessLayer.Services.Common;
+using BusinessLayer.Services.PostServices;
+using EntityDatabase;
 using WCIWT.Infrastructure;
 using WCIWT.Infrastructure.Query;
-using BusinessLayer.DataTransferObjects.Common;
-using BusinessLayer.QueryObjects.Common;
 
-namespace BusinessLayer.Services.PostServices
+namespace BusinessLayer.Services.PostReplys
 {
     public class PostReplyService : CrudQueryServiceBase<PostReply, PostReplyDto, PostReplyFilterDto>, IPostReplyService
     {

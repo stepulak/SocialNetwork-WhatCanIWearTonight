@@ -1,7 +1,6 @@
 ﻿using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.Facades;
-using BusinessLayer.Services.UserServices;
 using BusinessLayerTesting.FacadesTests.Common;
 using EntityDatabase;
 using NUnit.Framework;
@@ -10,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer.Services.Messages;
+using BusinessLayer.Services.Users;
 
 namespace BusinessLayerTesting.FacadesTests
 {

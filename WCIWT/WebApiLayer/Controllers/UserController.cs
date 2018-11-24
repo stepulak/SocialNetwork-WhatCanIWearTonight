@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Filters;
-using BusinessLayer.Facades.Common;
+using BusinessLayer.Facades;
 using Microsoft.Ajax.Utilities;
 
 namespace WebApiLayer.Controllers
@@ -16,12 +16,6 @@ namespace WebApiLayer.Controllers
     public class UserController : ApiController
     {
         public UserFacade UserFacade { get; set; }
-
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public Gender Gender { get; set; }
-        public DateTime BornBefore { get; set; }
-        public DateTime BornAfter { get; set; }
         
         [HttpGet, Route("api/users/query")]
         public async Task<IEnumerable<UserDto>> Query(string sort = null, bool asc = true,

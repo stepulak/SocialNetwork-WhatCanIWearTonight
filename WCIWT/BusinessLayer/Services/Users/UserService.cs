@@ -1,7 +1,11 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading.Tasks;
+using AutoMapper;
 using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
+using BusinessLayer.QueryObjects;
+using BusinessLayer.QueryObjects.Common;
 using BusinessLayer.Services.Common;
 using EntityDatabase;
 using System;
@@ -12,7 +16,7 @@ using WCIWT.Infrastructure;
 using WCIWT.Infrastructure.Query;
 using System.Security.Cryptography;
 
-namespace BusinessLayer.Services.UserServices
+namespace BusinessLayer.Services.Users
 {
     public class UserService : CrudQueryServiceBase<User, UserDto, UserFilterDto>, IUserService
     {

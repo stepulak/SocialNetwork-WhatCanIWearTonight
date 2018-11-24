@@ -101,21 +101,22 @@
     <Compile Include="QueryObjects\VoteQueryObject.cs" />
     <Compile Include="Services\Common\CrudQueryServiceBase.cs" />
     <Compile Include="Services\Common\ServiceBase.cs" />
-    <Compile Include="Services\PostServices\HashtagService.cs" />
-    <Compile Include="Services\PostServices\IImageService.cs" />
-    <Compile Include="Services\PostServices\ImageService.cs" />
-    <Compile Include="Services\PostServices\IPostReplyService.cs" />
-    <Compile Include="Services\PostServices\IPostService.cs" />
-    <Compile Include="Services\PostServices\IVoteService.cs" />
-    <Compile Include="Services\PostServices\PostReplyService.cs" />
-    <Compile Include="Services\PostServices\PostService.cs" />
-    <Compile Include="Services\PostServices\VoteService.cs" />
-    <Compile Include="Services\UserServices\FriendshipService.cs" />
-    <Compile Include="Services\UserServices\IFriendshipService.cs" />
-    <Compile Include="Services\UserServices\IMessageService.cs" />
-    <Compile Include="Services\UserServices\IUserService.cs" />
-    <Compile Include="Services\UserServices\MessageService.cs" />
-    <Compile Include="Services\UserServices\UserService.cs" />
+    <Compile Include="Services\Friendships\FriendshipService.cs" />
+    <Compile Include="Services\Friendships\IFriendshipService.cs" />
+    <Compile Include="Services\Hashtags\HashtagService.cs" />
+    <Compile Include="Services\Hashtags\IHashtagService.cs" />
+    <Compile Include="Services\Images\IImageService.cs" />
+    <Compile Include="Services\Images\ImageService.cs" />
+    <Compile Include="Services\Messages\IMessageService.cs" />
+    <Compile Include="Services\Messages\MessageService.cs" />
+    <Compile Include="Services\PostReplys\IPostReplyService.cs" />
+    <Compile Include="Services\PostReplys\PostReplyService.cs" />
+    <Compile Include="Services\Posts\IPostService.cs" />
+    <Compile Include="Services\Posts\PostService.cs" />
+    <Compile Include="Services\Users\IUserService.cs" />
+    <Compile Include="Services\Users\UserService.cs" />
+    <Compile Include="Services\Votes\IVoteService.cs" />
+    <Compile Include="Services\Votes\VoteService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\EntityDatabase\EntityDatabase.csproj">

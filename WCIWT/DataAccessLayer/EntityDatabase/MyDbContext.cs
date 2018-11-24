@@ -1,20 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EntityDatabase.Config;
 
 namespace EntityDatabase
 {
     public class WCIWTDbContext : DbContext
     {
-        public WCIWTDbContext() : base()
+        public WCIWTDbContext() : base(EntityFrameworkInstaller.ConnectionString)
         {
-            Database.SetInitializer<WCIWTDbContext>(new DropCreateDatabaseAlways<WCIWTDbContext>());
+            var instance = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
-        
+
+        public WCIWTDbContext(DbConnection connection) : base(connection, true)
+        {
+            Database.CreateIfNotExists();
+        }
+
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<Hashtag> Hashtags { get; set; }
         public DbSet<Image> Images { get; set; }
