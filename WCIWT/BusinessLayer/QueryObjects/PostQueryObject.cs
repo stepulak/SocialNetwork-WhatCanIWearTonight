@@ -1,13 +1,17 @@
 ﻿using System;
-using AutoMapper;
-using EntityDatabase;
 using System.Collections.Generic;
+using AutoMapper;
+using BusinessLayer.DataTransferObjects;
+using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.QueryObjects.Common;
+using EntityDatabase;
 using WCIWT.Infrastructure.Query;
 using WCIWT.Infrastructure.Query.Predicates;
 using WCIWT.Infrastructure.Query.Predicates.Operators;
+using Gender = BusinessLayer.DataTransferObjects.Gender;
+using PostVisibility = BusinessLayer.DataTransferObjects.PostVisibility;
 
-namespace BusinessLayer.DataTransferObjects.Filters
+namespace BusinessLayer.QueryObjects
 {
     public class PostQueryObject : QueryObjectBase<PostDto, Post, PostFilterDto, IQuery<Post>>
     {

@@ -1,8 +1,7 @@
 ﻿using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
-using BusinessLayer.Facades.Common;
-using BusinessLayer.Services.UserServices;
+using BusinessLayer.Facades;
 using BusinessLayerTesting.FacadesTests.Common;
 using EntityDatabase;
 using NUnit.Framework;
@@ -11,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer.Services.Friendships;
+using BusinessLayer.Services.Users;
 using WCIWT.Infrastructure;
 
 namespace BusinessLayerTesting.FacadesTests

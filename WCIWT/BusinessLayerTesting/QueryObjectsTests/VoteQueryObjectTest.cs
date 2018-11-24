@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Filters;
+using BusinessLayer.QueryObjects;
 using BusinessLayerTesting.QueryObjectsTests.Common;
 using EntityDatabase;
 using NUnit.Framework;

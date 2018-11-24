@@ -1,16 +1,12 @@
 ﻿using AutoMapper;
-using BusinessLayer.Facades.Common;
 using BusinessLayer.Services.Common;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using EntityDatabase.Config;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BusinessLayer.Facades.Common;
 using BusinessLayer.QueryObjects.Common;
+
 
 namespace BusinessLayer.Config
 {

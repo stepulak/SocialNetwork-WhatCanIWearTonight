@@ -9,7 +9,6 @@ using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.Facades;
-using BusinessLayer.Facades.Common;
 using PresentationLayerMVC.Models.Aggregated;
 using PresentationLayerMVC.Models.FriendRequests;
 using PresentationLayerMVC.Models.Friends;
@@ -27,6 +26,12 @@ namespace PresentationLayerMVC.Controllers
         
         public UserFacade UserFacade { get; set; }
         public PostFacade PostFacade { get; set; }
+
+        public HomeController(PostFacade postFacade, UserFacade userFacade)
+        {
+            UserFacade = userFacade;
+            PostFacade = postFacade;
+        }
 
         public async Task<ActionResult> Index(int page = 1)
         {

@@ -1,20 +1,22 @@
-﻿using BusinessLayer.DataTransferObjects;
-using BusinessLayer.Services.Common;
-using EntityDatabase;
-using System;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using BusinessLayer.DataTransferObjects.Filters;
 using AutoMapper;
+using BusinessLayer.DataTransferObjects;
+using BusinessLayer.DataTransferObjects.Common;
+using BusinessLayer.DataTransferObjects.Filters;
+using BusinessLayer.QueryObjects;
+using BusinessLayer.QueryObjects.Common;
+using BusinessLayer.Services.Common;
+using BusinessLayer.Services.Friendships;
+using BusinessLayer.Services.Hashtags;
+using BusinessLayer.Services.PostServices;
+using BusinessLayer.Services.Users;
+using EntityDatabase;
 using WCIWT.Infrastructure;
 using WCIWT.Infrastructure.Query;
-using BusinessLayer.DataTransferObjects.Common;
-using System.Collections.Generic;
-using BusinessLayer.QueryObjects.Common;
-using BusinessLayer.Services.UserServices;
-using PostVisibility = EntityDatabase.PostVisibility;
 
-namespace BusinessLayer.Services.PostServices
+namespace BusinessLayer.Services.Posts
 {
     public class PostService : CrudQueryServiceBase<Post, PostDto, PostFilterDto>, IPostService
     {

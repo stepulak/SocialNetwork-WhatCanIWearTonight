@@ -1,18 +1,14 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Filters;
-using EntityDatabase;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLayer.QueryObjects.Common;
+using EntityDatabase;
 using WCIWT.Infrastructure.Query;
 using WCIWT.Infrastructure.Query.Predicates;
 using WCIWT.Infrastructure.Query.Predicates.Operators;
 
-namespace BusinessLayer.DataTransferObjects.Filters
+namespace BusinessLayer.QueryObjects
 {
     public class ImageQueryObject : QueryObjectBase<ImageDto, Image, ImageFilterDto, IQuery<Image>>
     {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Filters;
-using BusinessLayer.Facades.Common;
+using BusinessLayer.Facades;
 using Microsoft.Ajax.Utilities;
 
 namespace WebApiLayer.Controllers

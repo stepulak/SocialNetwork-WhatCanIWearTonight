@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 using BusinessLayer.Config;
-using BusinessLayer.Facades.Common;
+using BusinessLayer.Facades;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;

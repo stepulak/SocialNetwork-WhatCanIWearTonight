@@ -1,16 +1,17 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading.Tasks;
+using AutoMapper;
 using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
+using BusinessLayer.QueryObjects;
+using BusinessLayer.QueryObjects.Common;
 using BusinessLayer.Services.Common;
 using EntityDatabase;
-using System;
-using System.Threading.Tasks;
-using BusinessLayer.QueryObjects.Common;
 using WCIWT.Infrastructure;
 using WCIWT.Infrastructure.Query;
 
-namespace BusinessLayer.Services.UserServices
+namespace BusinessLayer.Services.Messages
 {
     public class MessageService : CrudQueryServiceBase<Message, MessageDto, MessageFilterDto>, IMessageService
     {
