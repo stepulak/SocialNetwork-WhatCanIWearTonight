@@ -1,4 +1,7 @@
-﻿@{
+﻿@using X.PagedList.Mvc
+@using System.Web.Mvc.Html
+@model PresentationLayerMVC.Models.Aggregated.HomePageAggregatedViewModel
+@{
     ViewBag.Title = "Home";
 }
 <div class="row">
@@ -25,43 +28,66 @@
 </div>
 
 <div class="row">
-    <div class="col-md-8">
-        <div class="well">
-            <h3>User Name</h3>
-            <div class="divider"></div>
-            <p>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Sed vel lectus. Donec odio tempus molestie, porttitor ut, iaculis quis, sem. Praesent id justo in neque elementum ultrices. Integer lacinia. Proin in tellus sit amet nibh dignissim sagittis. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar.   
-            </p>
-            <img src="#" alt="Image"/>
-            <button class="btn btn-success">Vote</button>
-        </div>
-        <button class="btn btn-default">Show Comments</button>
-    </div>
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading>">
-                <h4 class="panel-title">Friendship Requests</h4>
+    @for (var i = 0; i < Model.PostListViewModel.Posts.Count; i++)
+    {
+        <div class="col-md-8">
+            <div class="well">
+                <h3>@Html.DisplayFor(model => model.PostListViewModel.Posts[i].User.Username)</h3>
+                <div class="divider"></div>
+                <p>
+                    @Html.DisplayFor(model => model.PostListViewModel.Posts[i].Text)
+                </p>
+                <img src="#" alt="Image"/>
+                <button class="btn btn-success">Vote</button>
             </div>
-            <div class="panel-body">
-                <div class="list-group">
-                    <a href="#" class="list-group-item">
-                        Friendship Request #1
-                    </a>
+            <button class="btn btn-default">Show Comments</button>
+        </div>
+    }
+
+    @if (Model.FriendListViewModel.Friends != null 
+         && Model.FriendListViewModel.Friends.Count != 0
+         && Model.FriendRequestListViewModel.FriendRequests != null  
+         && Model.FriendRequestListViewModel.FriendRequests.Count != 0) 
+// TODO: check if user is logged in
+    {
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading>">
+                    <h4 class="panel-title">Friendship Requests</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        @for (var i = 0; i < Model.FriendRequestListViewModel.FriendRequests.Count; i++)
+                        {
+                            <a href="#" class="list-group-item">
+                                @Html.DisplayFor(model => model.FriendRequestListViewModel.FriendRequests[i].Applicant.Username)
+                            </a>
+                            <button class="btn btn-success">
+                                <div class="glyphicon glyphicon-ok"></div>
+                            </button>
+                            <button class="btn btn-danger">
+                                <div class="glyphicon glyphicon-remove"></div>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading>">
+                    <h4 class="panel-title">Contact List</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        @for (var i = 0; i < Model.FriendListViewModel.Friends.Count; i++)
+                        {
+                            <a href="#" class="list-group-item">
+                                @Html.DisplayFor(model => model.FriendListViewModel.Friends[i].Username)
+                            </a> 
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading>">
-                <h4 class="panel-title">Contact List</h4>
-            </div>
-            <div class="panel-body">
-                <div class="list-group">
-                    <a href="#" class="list-group-item">
-                        Friend #1
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    }
 </div>
 

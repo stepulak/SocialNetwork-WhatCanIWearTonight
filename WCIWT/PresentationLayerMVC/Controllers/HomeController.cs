@@ -38,9 +38,9 @@ namespace PresentationLayerMVC.Controllers
             var friendsModel = await GetFriendsModel(userId);
             var homepageModel = new HomePageAggregatedViewModel
             {
-                Posts = postsModel,
-                FriendRequests = friendRequestsModel,
-                Friends = friendsModel
+                PostListViewModel = postsModel,
+                FriendRequestListViewModel = friendRequestsModel,
+                FriendListViewModel = friendsModel
             };
             return View("Index", homepageModel);
         }
@@ -49,7 +49,10 @@ namespace PresentationLayerMVC.Controllers
         {
             if (userId == Guid.Empty)
             {
-                return new FriendRequestListViewModel();
+                return new FriendRequestListViewModel
+                {
+                    FriendRequests = new StaticPagedList<FriendshipDto>(new List<FriendshipDto>(), 1, 0, 0)
+                };
             }
             
             var friendshipRequests = await UserFacade.PendingFriendshipRequests(userId);
@@ -62,7 +65,10 @@ namespace PresentationLayerMVC.Controllers
         {
             if (userId == Guid.Empty)
             {
-                return new FriendListViewModel();
+                return new FriendListViewModel
+                {
+                    Friends = new StaticPagedList<UserDto>(new List<UserDto>(), 1, 0, 0)
+                };
             }
 
             var friends = await UserFacade.GetFriendsOfUser(userId);
@@ -74,7 +80,10 @@ namespace PresentationLayerMVC.Controllers
         {
             if (userId == Guid.Empty)
             {
-                return new PostListViewModel();;
+                return new PostListViewModel
+                {
+                    Posts = new StaticPagedList<PostDto>(new List<PostDto>(), 1, 0, 0)
+                };
             }
 
             // TODO: when filter DTO is changed, pass userId to filter

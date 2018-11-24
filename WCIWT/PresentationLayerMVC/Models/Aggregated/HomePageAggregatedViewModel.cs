@@ -6,8 +6,8 @@ namespace PresentationLayerMVC.Models.Aggregated
 {
     public class HomePageAggregatedViewModel
     {
-        public PostListViewModel Posts;
-        public FriendRequestListViewModel FriendRequests;
-        public FriendListViewModel Friends;
+        public PostListViewModel PostListViewModel;
+        public FriendRequestListViewModel FriendRequestListViewModel;
+        public FriendListViewModel FriendListViewModel;
     }
 }
