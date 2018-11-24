@@ -15,5 +15,9 @@ namespace BusinessLayer.Services.Users
         Task Update(UserDto userDto);
 
         Task<QueryResultDto<UserDto, UserFilterDto>> ListUsersAsync(UserFilterDto filter);
+
+        Task<Guid> RegisterUserAsync(UserCreateDto user);
+
+        Task<bool> AuthorizeUserAsync(string username, string password);
     }
 }

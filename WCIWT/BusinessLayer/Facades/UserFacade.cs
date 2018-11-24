@@ -27,7 +27,7 @@ namespace BusinessLayer.Facades
 
         public async Task<QueryResultDto<UserDto, UserFilterDto>> GetAllUsersAsync(UserFilterDto filter = null)
         {
-            using (UnitOfWorkProvider.Create()) // ???
+            using (UnitOfWorkProvider.Create())
             {
                 return await userService.ListUsersAsync(filter);
             }
@@ -41,19 +41,21 @@ namespace BusinessLayer.Facades
             }
         }
 
-        public async Task<Guid> RegisterUser(UserDto user)
+        public async Task<Guid> RegisterUser(UserCreateDto userCreate)
         {
-            var filter = new UserFilterDto
+            using (var uow = UnitOfWorkProvider.Create())
             {
-                Username = user.Username,
-                Email = user.Email
-            };
-            var allUsers = await GetAllUsersAsync(filter);
-            if (allUsers.TotalItemsCount != 0)
-            {
-                throw new InvalidOperationException($"Unable to register new user {user}. Already exists.");
+                try
+                {
+                    var id = await userService.RegisterUserAsync(userCreate);
+                    await uow.Commit();
+                    return id;
+                }
+                catch (ArgumentException)
+                {
+                    throw;
+                }
             }
-            return userService.Create(user);
         }
 
         public async Task<bool> UnregisterUser(UserDto user)
@@ -73,6 +75,14 @@ namespace BusinessLayer.Facades
                 userService.Delete(user.Id);
                 await uow.Commit();
                 return true;
+            }
+        }
+
+        public async Task<bool> Login(string username, string password)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await userService.AuthorizeUserAsync(username, password);
             }
         }
 
