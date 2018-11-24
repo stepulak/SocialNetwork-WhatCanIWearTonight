@@ -31,8 +31,7 @@ namespace PresentationLayerMVC.Controllers
         public async Task<ActionResult> Index(int page = 1)
         {
             // TODO: If user is logged in, get his id
-            var userId = Guid.Empty;
-
+            var userId = Guid.Parse("25d1461d-41db-4a5a-8996-dd0fcf7f5f04");
             var postsModel = await GetPostModel(userId, page);
             var friendRequestsModel = await GetFriendRequestsModel(userId);
             var friendsModel = await GetFriendsModel(userId);
@@ -78,18 +77,9 @@ namespace PresentationLayerMVC.Controllers
 
         private async Task<PostListViewModel> GetPostModel(Guid userId, int page)
         {
-            if (userId == Guid.Empty)
-            {
-                return new PostListViewModel
-                {
-                    Posts = new StaticPagedList<PostDto>(new List<PostDto>(), 1, 0, 0)
-                };
-            }
-
             // TODO: when filter DTO is changed, pass userId to filter
             var filter = Session[FilterSessionKey] as PostFilterDto ?? new PostFilterDto{PageSize = PostsPageSize};
             filter.RequestedPageNumber = page;
-           
             var posts = await PostFacade.GetPostFeedAsync(filter, userId);
             return InitializePostListViewModel(posts);   
         }
