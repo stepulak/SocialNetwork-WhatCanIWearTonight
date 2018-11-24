@@ -24,7 +24,7 @@ namespace EntityDatabase.Config
         {
             container.Register(
                 Component.For<Func<DbContext>>()
-                    .Instance(() => new WCIWTDbContext())
+                   .Instance(() => new WCIWTDbContext())
                     .LifestyleTransient(),
                 Component.For<IUnitOfWorkProvider>()
                     .ImplementedBy<EntityFrameworkUnitOfWorkProvider>()

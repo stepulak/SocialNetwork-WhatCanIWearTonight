@@ -10,9 +10,7 @@ namespace PresentationLayerMVC.Windsor
     public class PresentationLayerInstaller : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
-        {
-            new BusinessLayerInstaller().Install(container, store);
-            
+        {            
             container.Register(
                 Classes.FromThisAssembly()
                     .BasedOn<IController>()
