@@ -7,6 +7,5 @@ namespace PresentationLayerMVC.Models.Friends
     {
         public IPagedList<UserDto> Friends { get; set; }
         public UserDto Filter { get; set; }
-
     }
 }

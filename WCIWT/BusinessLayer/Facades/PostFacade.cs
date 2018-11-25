@@ -37,6 +37,8 @@ namespace BusinessLayer.Facades
             this.postReplyService = postReplyService;
         }
 
+        public async Task<PostDto> GetPostDtoAccordingToId(Guid id) => await postService.GetAsync(id);
+
         public Guid AddPost(UserDto user, PostDto post)
         {
             post.Time = DateTime.Now;
@@ -58,24 +60,29 @@ namespace BusinessLayer.Facades
 
         public void DeletePost(PostDto post) => postService.Delete(post.Id);
         
-        public async Task<Tuple<bool, VoteDto>> VoteFromUser(ImageDto image, UserDto user)
+        public async Task<Tuple<bool, VoteDto>> VoteFromUser(Guid imageId, Guid userId)
         {
             var vote = await voteService.ListVoteAsync(new VoteFilterDto
             {
-                ImageId = image.Id,
-                UserId = user.Id
+                ImageId = imageId,
+                UserId = userId
             });
             if (vote.TotalItemsCount == 1)
             {
                 return new Tuple<bool, VoteDto>(true, vote.Items.First());
             }
-            return new Tuple<bool, VoteDto>(true, new VoteDto { });
+            return new Tuple<bool, VoteDto>(false, new VoteDto { });
         }
 
-        public async Task<Guid> AddVote(ImageDto image, UserDto user, VoteType type)
+        public async Task<Guid> AddVote(Guid imageId, Guid userId, VoteType type)
         {
-            var vote = await VoteFromUser(image, user);
-            if (vote.Item1 == true)
+            var image = await imageService.GetAsync(imageId);
+            if (image == null)
+            {
+                throw new ArgumentException("Image does not exist");
+            }
+            var vote = await VoteFromUser(imageId, userId);
+            if (vote.Item1)
             {
                 // In case you disliked the image and you want to like it instead
                 // (or other way round), remove the old vote and create new
@@ -90,7 +97,13 @@ namespace BusinessLayer.Facades
                 image.DislikesCount++;
             }
             await imageService.Update(image);
-            return voteService.Create(new VoteDto { ImageId = image.Id, UserId = user.Id, Type = type });
+            return voteService.Create(new VoteDto { ImageId = imageId, UserId = userId, Type = type });
+        }
+
+        public async Task RemoveVote(Guid imageId, Guid userId)
+        {
+            var allVotes = await voteService.ListVoteAsync(new VoteFilterDto { ImageId = imageId, UserId = userId });
+            await RemoveVote(allVotes.Items.First());
         }
 
         public async Task RemoveVote(VoteDto vote)
@@ -121,6 +134,18 @@ namespace BusinessLayer.Facades
                 Time = DateTime.Now,
             };
             postReplyService.Create(comment);
+        }
+
+        public async Task<List<PostReplyDto>> ListOfReplysForPost(Guid postId)
+        {
+            var result = await postReplyService.ListPostReplyAsync(new PostReplyFilterDto { PostId = postId });
+            return result.Items.OrderBy(r => r.Time).ToList();
+        }
+
+        public async Task<List<ImageDto>> ListOfImagesForPost(Guid postId)
+        {
+            var result = await imageService.ListImageAsync(new ImageFilterDto { PostId = postId });
+            return result.Items.ToList();
         }
     }
 }
