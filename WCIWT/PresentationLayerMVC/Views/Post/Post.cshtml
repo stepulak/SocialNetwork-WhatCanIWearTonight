@@ -1,0 +1,66 @@
+﻿@model PresentationLayerMVC.Models.Posts.PostWithReplysViewModel
+@{
+    ViewBag.Title = "Post";
+}
+
+<!-- TODO MAYBE REMOVE THIS? -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search user, hashtag" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary" type="button">Add Post</button>
+                        <button class="btn btn-info" type="button">Filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="well">
+            <h3>@Html.DisplayFor(model => model.Post.User.Username)</h3>
+            <div class="divider"></div>
+            <p>
+                @Html.DisplayFor(model => model.Post.Text)
+            </p>
+            <div class="divider"></div>
+            @for (var i = 0; i < Model.Images.Count; i++)
+            {
+                @{
+                    var base64 = Convert.ToBase64String(Model.Images[i].BinaryImage);
+                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                }
+                <img src="@imgSrc" />
+                <button class="btn btn-info" type="button">Like</button>
+                <button class="btn btn-info" type="button">Dislike</button>
+                <div class="divider"></div>
+            }
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        @for (var i = 0; i < Model.Replys.Count; i++)
+        {
+        <div class="well">
+            <h6>[@Html.DisplayFor(model => model.Replys[i].Time.ToString())] @Html.DisplayFor(model => model.Replys[i].User.Username)</h6>
+            <div class="divider"></div>
+            <p>
+                @Html.DisplayFor(model => model.Replys[i].Text)
+            </p>
+        </div>
+        }
+    </div>
+</div>
