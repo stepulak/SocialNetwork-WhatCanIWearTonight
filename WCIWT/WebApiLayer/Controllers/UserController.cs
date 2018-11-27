@@ -43,7 +43,7 @@ namespace WebApiLayer.Controllers
         }
         
         [HttpPost, Route("api/users/register")]
-        public async Task<string> Register([FromBody] UserDto userDto)
+        public async Task<string> Register([FromBody] UserCreateDto userDto)
         {
             if (!ModelState.IsValid) //TODO: add annotations to DTOs
             {

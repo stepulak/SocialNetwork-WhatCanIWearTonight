@@ -43,11 +43,11 @@ namespace BusinessLayerTesting.FacadesTests
             var userService = CreateUserService(mockManager);
             var friendshipService = CreateFriendshipService(mockManager);
             var facade = new UserFacade(unitOfWorkMock, userService, friendshipService);
-            var guid = await facade.RegisterUser(new UserDto
+            var guid = await facade.RegisterUser(new UserCreateDto
             {
                 Email = "missfortune@lol.com",
                 Username = "Miss Fortune",
-                PasswordHash = "0xBEEF"
+                Password = "0xBEEF"
             });
             var expected = await userService.GetAsync(guid);
             Assert.AreEqual(expected.Id, guid);
@@ -61,11 +61,11 @@ namespace BusinessLayerTesting.FacadesTests
             var userService = CreateUserService(mockManager);
             var friendshipService = CreateFriendshipService(mockManager);
             var facade = new UserFacade(unitOfWorkMock, userService, friendshipService);
-            var dto = new UserDto
+            var dto = new UserCreateDto
             {
                 Email = "missfortune@lol.com",
                 Username = "Miss Fortune",
-                PasswordHash = "0xBEEF"
+                Password = "0xBEEF"
             };
             var guid = await facade.RegisterUser(dto);
             await facade.UnregisterUser(new UserDto { Id = guid });
