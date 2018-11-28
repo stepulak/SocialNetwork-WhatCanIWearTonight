@@ -28,7 +28,7 @@ namespace EntityDatabase.Config
                     .LifestyleTransient(),
                 Component.For<IUnitOfWorkProvider>()
                     .ImplementedBy<EntityFrameworkUnitOfWorkProvider>()
-                    .LifestyleTransient(),
+                    .LifestyleSingleton(),
                 Component.For(typeof(IRepository<>))
                     .ImplementedBy(typeof(EntityFrameworkRepository<>))
                     .LifestyleTransient(),

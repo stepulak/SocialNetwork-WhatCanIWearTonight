@@ -13,6 +13,11 @@ namespace WCIWT.Infrastructure.EntityFramework
 
         protected DbContext Context => ((EntityFrameworkUnitOfWork) provider.GetUnitOfWorkInstance()).Context;
 
+        public EntityFrameworkRepository(IUnitOfWorkProvider provider)
+        {
+            this.provider = provider;
+        }
+
         public void Create(TEntity entity)
         {
             entity.Id = Guid.NewGuid();
