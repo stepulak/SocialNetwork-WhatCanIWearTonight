@@ -24,7 +24,7 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<User, UserDto, UserFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<UserDto, User, UserFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<User>().Object;
-            return new UserService(mapperMock, repositoryMock, null, queryMock);
+            return new UserService(mapperMock, repositoryMock, queryMock);
         }
 
         public FriendshipService CreateFriendshipService(FacadeMockManager mockManager)
@@ -32,7 +32,7 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<Friendship, FriendshipDto, FriendshipFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<FriendshipDto, Friendship, FriendshipFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<Friendship>().Object;
-            return new FriendshipService(mapperMock, repositoryMock, null, queryMock);
+            return new FriendshipService(mapperMock, repositoryMock, queryMock);
         }
 
         [Test]

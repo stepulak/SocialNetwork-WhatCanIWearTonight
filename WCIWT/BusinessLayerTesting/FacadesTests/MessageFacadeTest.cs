@@ -22,7 +22,7 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<User, UserDto, UserFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<UserDto, User, UserFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<User>().Object;
-            return new UserService(mapperMock, repositoryMock, null, queryMock);
+            return new UserService(mapperMock, repositoryMock, queryMock);
         }
 
         public MessageService CreateMessagesService(FacadeMockManager mockManager)
@@ -30,7 +30,7 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<Message, MessageDto, MessageFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<MessageDto, Message, MessageFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<Message>().Object;
-            return new MessageService(mapperMock, repositoryMock, null, queryMock);
+            return new MessageService(mapperMock, repositoryMock, queryMock);
         }
 
         public Tuple<Guid, Guid> CreateSampleUsers(UserService service)

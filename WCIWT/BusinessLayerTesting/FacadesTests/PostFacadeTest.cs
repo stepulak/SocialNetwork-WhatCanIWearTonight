@@ -29,7 +29,7 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<User, UserDto, UserFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<UserDto, User, UserFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<User>().Object;
-            return new UserService(mapperMock, repositoryMock, null, queryMock);
+            return new UserService(mapperMock, repositoryMock, queryMock);
         }
 
         public FriendshipService CreateFriendshipService(FacadeMockManager mockManager)
@@ -37,7 +37,7 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<Friendship, FriendshipDto, FriendshipFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<FriendshipDto, Friendship, FriendshipFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<Friendship>().Object;
-            return new FriendshipService(mapperMock, repositoryMock, null, queryMock);
+            return new FriendshipService(mapperMock, repositoryMock, queryMock);
         }
 
         public HashtagService CreateHashtagService(FacadeMockManager mockManager)
@@ -45,7 +45,7 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<Hashtag, HashtagDto, HashtagFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<HashtagDto, Hashtag, HashtagFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<Hashtag>().Object;
-            return new HashtagService(mapperMock, repositoryMock, null, queryMock);
+            return new HashtagService(mapperMock, repositoryMock, queryMock);
         }
 
         public PostService CreatePostService(FacadeMockManager mockManager)
@@ -53,7 +53,7 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<Post, PostDto, PostFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<PostDto, Post, PostFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<Post>().Object;
-            return new PostService(mapperMock, repositoryMock, null, queryMock, CreateHashtagService(mockManager),
+            return new PostService(mapperMock, repositoryMock, queryMock, CreateHashtagService(mockManager),
                 CreateUserService(mockManager), CreateFriendshipService(mockManager));
         }
 
@@ -62,7 +62,7 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<PostReply, PostReplyDto, PostReplyFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<PostReplyDto, PostReply, PostReplyFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<PostReply>().Object;
-            return new PostReplyService(mapperMock, repositoryMock, null, queryMock);
+            return new PostReplyService(mapperMock, repositoryMock, queryMock);
         }
 
         public VoteService CreateVoteService(FacadeMockManager mockManager)
@@ -70,7 +70,7 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<Vote, VoteDto, VoteFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<VoteDto, Vote, VoteFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<Vote>().Object;
-            return new VoteService(mapperMock, repositoryMock, null, queryMock);
+            return new VoteService(mapperMock, repositoryMock, queryMock);
         }
 
         public ImageService CreateImageService(FacadeMockManager mockManager)
@@ -78,7 +78,7 @@ namespace BusinessLayerTesting.FacadesTests
             var mapperMock = mockManager.ConfigureMapperMock<Image, ImageDto, ImageFilterDto>();
             var queryMock = mockManager.ConfigureQueryObjectMock<ImageDto, Image, ImageFilterDto>(null).Object;
             var repositoryMock = mockManager.ConfigureRepositoryMock<Image>().Object;
-            return new ImageService(mapperMock, repositoryMock, null, queryMock);
+            return new ImageService(mapperMock, repositoryMock, queryMock);
         }
 
         public Guid CreateSampleUser(UserService service)
