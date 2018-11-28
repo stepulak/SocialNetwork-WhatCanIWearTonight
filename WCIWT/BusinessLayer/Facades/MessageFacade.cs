@@ -17,11 +17,11 @@ namespace BusinessLayer.Facades
 {
     public class MessageFacade : FacadeBase
     {
-        private readonly MessageService messageService;
-        private readonly UserService userService;
+        private readonly IMessageService messageService;
+        private readonly IUserService userService;
 
         public MessageFacade(IUnitOfWorkProvider unitOfWorkProvider,
-            MessageService messageService, UserService userService)
+            IMessageService messageService, IUserService userService)
             : base(unitOfWorkProvider)
         {
             this.messageService = messageService;

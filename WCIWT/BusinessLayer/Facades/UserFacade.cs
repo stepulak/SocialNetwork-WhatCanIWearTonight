@@ -14,11 +14,11 @@ namespace BusinessLayer.Facades
 {
     public class UserFacade : FacadeBase
     {
-        private readonly UserService userService;
-        private readonly FriendshipService friendshipService;
+        private readonly IUserService userService;
+        private readonly IFriendshipService friendshipService;
 
-        public UserFacade(IUnitOfWorkProvider unitOfWorkProvider, UserService userService, 
-            FriendshipService friendshipService) 
+        public UserFacade(IUnitOfWorkProvider unitOfWorkProvider, IUserService userService, 
+            IFriendshipService friendshipService) 
             : base(unitOfWorkProvider)
         {
             this.userService = userService;

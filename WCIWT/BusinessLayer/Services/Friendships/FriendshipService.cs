@@ -17,18 +17,15 @@ namespace BusinessLayer.Services.Friendships
 {
     public class FriendshipService : CrudQueryServiceBase<Friendship, FriendshipDto, FriendshipFilterDto>, IFriendshipService
     {
-        private readonly QueryObjectBase<FriendshipDto, Friendship, FriendshipFilterDto, IQuery<Friendship>> friendshipQueryObject;
-
-        public FriendshipService(IMapper mapper, IRepository<Friendship> repository, FriendshipQueryObject query,
-             QueryObjectBase<FriendshipDto, Friendship, FriendshipFilterDto, IQuery<Friendship>> friendshipQueryObject)
-            : base(mapper, repository, query)
+        public FriendshipService(IMapper mapper, IRepository<Friendship> repository,
+            QueryObjectBase<FriendshipDto, Friendship, FriendshipFilterDto, IQuery<Friendship>> friendshipQuery)
+            : base(mapper, repository, friendshipQuery)
         {
-            this.friendshipQueryObject = friendshipQueryObject;
         }
         
         public async Task<QueryResultDto<FriendshipDto, FriendshipFilterDto>> ListFriendshipAsync(FriendshipFilterDto filter)
         {
-            return await friendshipQueryObject.ExecuteQuery(filter);
+            return await Query.ExecuteQuery(filter);
         }
 
         public async Task<List<UserDto>> ListOfFriendsAsync(Guid userId)

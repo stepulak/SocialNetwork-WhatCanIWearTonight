@@ -23,14 +23,11 @@ namespace BusinessLayer.Services.Users
         private const int PBKDF2IterCount = 100000;
         private const int PBKDF2SubkeyLength = 160 / 8;
         private const int saltSize = 128 / 8;
-
-        private readonly QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>> userQueryObject;
         
-        public UserService(IMapper mapper, IRepository<User> repository, UserQueryObject query,
+        public UserService(IMapper mapper, IRepository<User> repository, 
              QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>> userQueryObject)
-            : base(mapper, repository, query)
+            : base(mapper, repository, userQueryObject)
         {
-            this.userQueryObject = userQueryObject;
         }
 
         public async Task<Guid> RegisterUserAsync(UserCreateDto userDto)
@@ -53,14 +50,14 @@ namespace BusinessLayer.Services.Users
 
         public async Task<bool> AuthorizeUserAsync(string username, string password)
         {
-            var userResult = await userQueryObject.ExecuteQuery(new UserFilterDto { Username = username });
+            var userResult = await Query.ExecuteQuery(new UserFilterDto { Username = username });
             var user = userResult.Items.SingleOrDefault();
             return user != null && VerifyHashedPassword(user.PasswordHash, user.PasswordSalt, password);
         }
 
         public async Task<QueryResultDto<UserDto, UserFilterDto>> ListUsersAsync(UserFilterDto filter)
         {
-            return await userQueryObject.ExecuteQuery(filter);
+            return await Query.ExecuteQuery(filter);
         }
 
         protected override Task<User> GetWithIncludesAsync(Guid entityId)
@@ -70,7 +67,7 @@ namespace BusinessLayer.Services.Users
 
         private async Task<bool> DoesUserExistAsync(string username)
         {
-            var queryResult = await userQueryObject.ExecuteQuery(new UserFilterDto { Username = username });
+            var queryResult = await Query.ExecuteQuery(new UserFilterDto { Username = username });
             return (queryResult.Items.Count() == 1);
         }
 

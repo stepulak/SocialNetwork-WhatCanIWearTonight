@@ -18,14 +18,9 @@ namespace BusinessLayer.Services.Images
 {
     public class ImageService : CrudQueryServiceBase<Image, ImageDto, ImageFilterDto>, IImageService
     {
-        private readonly QueryObjectBase<ImageDto, Image, ImageFilterDto, IQuery<Image>> imageQueryObject;
-
-
-        public ImageService(IMapper mapper, IRepository<Image> repository, ImageQueryObject query,
-            QueryObjectBase<ImageDto, Image, ImageFilterDto, IQuery<Image>> imageQueryObject)
-            : base(mapper, repository, query)
+        public ImageService(IMapper mapper, IRepository<Image> repository, QueryObjectBase<ImageDto, Image, ImageFilterDto, IQuery<Image>> imageQueryObject)
+            : base(mapper, repository, imageQueryObject)
         {
-            this.imageQueryObject = imageQueryObject;
         }
 
         public async Task<List<ImageDto>> GetSortedImagesByVotes(Guid postId)
@@ -36,7 +31,7 @@ namespace BusinessLayer.Services.Images
 
         public async Task<QueryResultDto<ImageDto, ImageFilterDto>> ListImageAsync(ImageFilterDto filter)
         {
-            return await imageQueryObject.ExecuteQuery(filter); 
+            return await Query.ExecuteQuery(filter); 
         }
 
         protected override Task<Image> GetWithIncludesAsync(Guid entityId)

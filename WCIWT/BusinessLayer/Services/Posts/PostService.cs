@@ -20,19 +20,17 @@ namespace BusinessLayer.Services.Posts
 {
     public class PostService : CrudQueryServiceBase<Post, PostDto, PostFilterDto>, IPostService
     {
-        private readonly QueryObjectBase<PostDto, Post, PostFilterDto, IQuery<Post>> postQueryObject;
-        private readonly HashtagService hashtagService;
-        private readonly UserService userService;
-        private readonly FriendshipService friendshipService;
+        private readonly IHashtagService hashtagService;
+        private readonly IUserService userService;
+        private readonly IFriendshipService friendshipService;
 
-        public PostService(IMapper mapper, IRepository<Post> repository, PostQueryObject query,
+        public PostService(IMapper mapper, IRepository<Post> repository,
             QueryObjectBase<PostDto, Post, PostFilterDto, IQuery<Post>> postQueryObject,
-            HashtagService hashtagService,
-            UserService userService,
-            FriendshipService friendshipService)
-            : base(mapper, repository, query)
+            IHashtagService hashtagService,
+            IUserService userService,
+            IFriendshipService friendshipService)
+            : base(mapper, repository, postQueryObject)
         {
-            this.postQueryObject = postQueryObject;
             this.hashtagService = hashtagService;
             this.userService = userService;
             this.friendshipService = friendshipService;
@@ -54,7 +52,7 @@ namespace BusinessLayer.Services.Posts
 
         public async Task<QueryResultDto<PostDto, PostFilterDto>> ListPostAsync(PostFilterDto filter)
         {
-            return await postQueryObject.ExecuteQuery(filter);
+            return await Query.ExecuteQuery(filter);
         }
 
         public async Task<QueryResultDto<PostDto, PostFilterDto>> ListUserOwnedPosts(Guid userId)
@@ -80,7 +78,7 @@ namespace BusinessLayer.Services.Posts
 //                               && !userFriends.Contains(post.UserId)
 //                               || post.Visibility == (DataTransferObjects.PostVisibility) PostVisibility.FriendsOnly);
         }
-
+        
         protected override Task<Post> GetWithIncludesAsync(Guid entityId)
         {
             return Repository.GetAsync(entityId, "User");

@@ -16,18 +16,16 @@ namespace BusinessLayer.Services.PostReplys
 {
     public class PostReplyService : CrudQueryServiceBase<PostReply, PostReplyDto, PostReplyFilterDto>, IPostReplyService
     {
-        private readonly QueryObjectBase<PostReplyDto, PostReply, PostReplyFilterDto, IQuery<PostReply>> postReplyQueryObject;
 
-        public PostReplyService(IMapper mapper, IRepository<PostReply> repository, PostReplyQueryObject query,
+        public PostReplyService(IMapper mapper, IRepository<PostReply> repository,
              QueryObjectBase<PostReplyDto, PostReply, PostReplyFilterDto, IQuery<PostReply>> postReplyQueryObject)
-            : base(mapper, repository, query)
+            : base(mapper, repository, postReplyQueryObject)
         {
-            this.postReplyQueryObject = postReplyQueryObject;
         }
 
         public async Task<QueryResultDto<PostReplyDto, PostReplyFilterDto>> ListPostReplyAsync(PostReplyFilterDto filter)
         {
-            return await postReplyQueryObject.ExecuteQuery(filter);
+            return await Query.ExecuteQuery(filter);
         }
 
         protected override Task<PostReply> GetWithIncludesAsync(Guid entityId)

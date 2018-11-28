@@ -18,21 +18,19 @@ namespace BusinessLayer.Services.Hashtags
     {
         private readonly QueryObjectBase<HashtagDto, Hashtag, HashtagFilterDto, IQuery<Hashtag>> HashtagQueryObject;
 
-        public HashtagService(IMapper mapper, IRepository<Hashtag> repository, HashtagQueryObject query,
-            QueryObjectBase<HashtagDto, Hashtag, HashtagFilterDto, IQuery<Hashtag>> hashtagQueryObject)
-            : base(mapper, repository, query)
+        public HashtagService(IMapper mapper, IRepository<Hashtag> repository, QueryObjectBase<HashtagDto, Hashtag, HashtagFilterDto, IQuery<Hashtag>> hashtagQueryObject)
+            : base(mapper, repository, hashtagQueryObject)
         {
-            this.HashtagQueryObject = hashtagQueryObject;
-        }
-        
-        protected override Task<Hashtag> GetWithIncludesAsync(Guid entityId)
-        {
-            return Repository.GetAsync(entityId, "Post");
         }
 
         public async Task<QueryResultDto<HashtagDto, HashtagFilterDto>> ListHashtagAsync(HashtagFilterDto filter)
         {
             return await HashtagQueryObject.ExecuteQuery(filter);
+        }
+        
+        protected override Task<Hashtag> GetWithIncludesAsync(Guid entityId)
+        {
+            return Repository.GetAsync(entityId, "Post");
         }
     }
 }

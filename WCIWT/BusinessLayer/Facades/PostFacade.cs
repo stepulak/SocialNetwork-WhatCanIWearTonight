@@ -21,14 +21,14 @@ namespace BusinessLayer.Facades
     {
         public const int MinimalPostReplyLength = 2;
 
-        private readonly PostService postService;
-        private readonly VoteService voteService;
-        private readonly ImageService imageService;
-        private readonly PostReplyService postReplyService;
+        private readonly IPostService postService;
+        private readonly IVoteService voteService;
+        private readonly IImageService imageService;
+        private readonly IPostReplyService postReplyService;
 
         public PostFacade(IUnitOfWorkProvider unitOfWorkProvider, 
-            PostService postService, PostReplyService postReplyService,
-            VoteService voteService, ImageService imageService)
+            IPostService postService, IPostReplyService postReplyService,
+            IVoteService voteService, IImageService imageService)
             : base(unitOfWorkProvider)
         {
             this.postService = postService;

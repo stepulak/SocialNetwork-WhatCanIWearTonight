@@ -9,15 +9,12 @@ namespace BusinessLayer.Services.Users
     public interface IUserService
     {
         Task<UserDto> GetAsync(Guid id, bool withIncludes = true);
-
-        Guid Create(UserDto userDto);
-
-        Task Update(UserDto userDto);
-
+        Guid Create(UserDto entityDto);
+        Task Update(UserDto entityDto);
+        void Delete(Guid entityId);
+        Task<QueryResultDto<UserDto, UserFilterDto>> ListAllAsync();
         Task<QueryResultDto<UserDto, UserFilterDto>> ListUsersAsync(UserFilterDto filter);
-
         Task<Guid> RegisterUserAsync(UserCreateDto user);
-
         Task<bool> AuthorizeUserAsync(string username, string password);
     }
 }

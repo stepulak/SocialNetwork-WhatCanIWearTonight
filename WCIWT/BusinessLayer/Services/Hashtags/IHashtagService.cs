@@ -9,6 +9,11 @@ namespace BusinessLayer.Services.PostServices
 {
     public interface IHashtagService
     {
+        Task<HashtagDto> GetAsync(Guid id, bool withIncludes = true);
+        Guid Create(HashtagDto entityDto);
+        Task Update(HashtagDto entityDto);
+        void Delete(Guid entityId);
+        Task<QueryResultDto<HashtagDto, HashtagFilterDto>> ListAllAsync();
         Task<QueryResultDto<HashtagDto, HashtagFilterDto>> ListHashtagAsync(HashtagFilterDto filter);
     }
 }

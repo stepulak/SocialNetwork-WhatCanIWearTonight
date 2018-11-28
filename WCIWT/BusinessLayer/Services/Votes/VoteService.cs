@@ -16,18 +16,17 @@ namespace BusinessLayer.Services.Votes
 {
     public class VoteService : CrudQueryServiceBase<Vote, VoteDto, VoteFilterDto>, IVoteService
     {
-        private readonly QueryObjectBase<VoteDto, Vote, VoteFilterDto, IQuery<Vote>> voteQueryObject;
 
-        public VoteService(IMapper mapper, IRepository<Vote> repository, VoteQueryObject query,
+        public VoteService(IMapper mapper, IRepository<Vote> repository,
             QueryObjectBase<VoteDto, Vote, VoteFilterDto, IQuery<Vote>> voteQueryObject)
-            : base(mapper, repository, query)
+            : base(mapper, repository, voteQueryObject)
         {
-            this.voteQueryObject = voteQueryObject;
+            
         }
 
         public async Task<QueryResultDto<VoteDto, VoteFilterDto>> ListVoteAsync(VoteFilterDto filter)
         {
-            return await voteQueryObject.ExecuteQuery(filter);
+            return await Query.ExecuteQuery(filter);
         }
 
         protected override Task<Vote> GetWithIncludesAsync(Guid entityId)
