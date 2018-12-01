@@ -21,10 +21,7 @@ namespace WCIWT.Infrastructure.EntityFramework
         private readonly ParameterExpression parameterExpression = Expression.Parameter(typeof(TEntity), LamdaParameterName);
 
         protected DbContext Context => ((EntityFrameworkUnitOfWork)Provider.GetUnitOfWorkInstance()).Context;
-
-        /// <summary>
-        ///   Initializes a new instance of the <see cref="EntityFrameworkQuery{TResult}" /> class.
-        /// </summary>
+        
         public EntityFrameworkQuery(IUnitOfWorkProvider provider) : base(provider) { }
 
         public override async Task<QueryResult<TEntity>> ExecuteAsync()
@@ -33,7 +30,6 @@ namespace WCIWT.Infrastructure.EntityFramework
 
             if (string.IsNullOrWhiteSpace(SortAccordingTo) && DesiredPage.HasValue)
             {
-                // Sorting must always take place when paging is required
                 SortAccordingTo = nameof(IEntity.Id);
                 UseAscendingOrder = true;
             }
@@ -75,10 +71,10 @@ namespace WCIWT.Infrastructure.EntityFramework
         {
             var bodyExpression = Predicate is CompositePredicate composite ? CombineBinaryExpressions(composite) : BuildBinaryExpression(Predicate as SimplePredicate);
             var lambdaExpression = Expression.Lambda<Func<TEntity, bool>>(bodyExpression, parameterExpression);
-            //Debug.WriteLine(lambdaExpression.ToString());
             return queryable.Where(lambdaExpression);
         }
-        
+
+
         private Expression CombineBinaryExpressions(CompositePredicate compositePredicate)
         {
             if (compositePredicate.Predicates.Count == 0)

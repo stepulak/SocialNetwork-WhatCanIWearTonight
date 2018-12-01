@@ -10,8 +10,8 @@ namespace WCIWT.Infrastructure.EntityFramework
     public class EntityFrameworkRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity, new()
     {
         private readonly IUnitOfWorkProvider provider;
-
-        protected DbContext Context => ((EntityFrameworkUnitOfWork) provider.GetUnitOfWorkInstance()).Context;
+        
+        protected DbContext Context => ((EntityFrameworkUnitOfWork)provider.GetUnitOfWorkInstance()).Context;
 
         public EntityFrameworkRepository(IUnitOfWorkProvider provider)
         {
@@ -24,18 +24,12 @@ namespace WCIWT.Infrastructure.EntityFramework
             Context.Set<TEntity>().Add(entity);
         }
 
-        public void Update(TEntity entity)
-        {
-            var entityToUpdate = Context.Set<TEntity>().Find(entity.Id);
-            Context.Entry(entityToUpdate).CurrentValues.SetValues(entity);
-        }
-
         public void Delete(Guid id)
         {
-            var entityToRemove = Context.Set<TEntity>().Find(id);
-            if (entityToRemove != null)
+            var entity = Context.Set<TEntity>().Find(id);
+            if (entity != null)
             {
-                Context.Set<TEntity>().Remove(entityToRemove);
+                Context.Set<TEntity>().Remove(entity);
             }
         }
 
@@ -46,12 +40,19 @@ namespace WCIWT.Infrastructure.EntityFramework
 
         public async Task<TEntity> GetAsync(Guid id, params string[] includes)
         {
-            DbQuery<TEntity> localContext = Context.Set<TEntity>();
-            foreach (var toInclude in includes)
+            DbQuery<TEntity> ctx = Context.Set<TEntity>();
+            foreach (var include in includes)
             {
-                localContext.Include(toInclude);
+                ctx = ctx.Include(include);
             }
-            return await localContext.SingleOrDefaultAsync(entity => entity.Id.Equals(id));
+            return await ctx
+                .SingleOrDefaultAsync(entity => entity.Id.Equals(id));
+        }
+
+        public void Update(TEntity entity)
+        {
+            var foundEntity = Context.Set<TEntity>().Find(entity.Id);
+            Context.Entry(foundEntity).CurrentValues.SetValues(entity);
         }
     }
 }

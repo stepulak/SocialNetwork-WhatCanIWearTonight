@@ -27,6 +27,7 @@ namespace WCIWT.Infrastructure.EntityFramework
         public static Expression GetExpression(this SimplePredicate simplePredicate, ParameterExpression parameterExpression)
         {
             var memberExpression = Expression.PropertyOrField(parameterExpression, simplePredicate.TargetPropertyName);
+            // Ensure compared value has the same type as the accessed member 
             var memberType = GetMemberType(simplePredicate, memberExpression);
             var constantExpression = Expression.Constant(simplePredicate.ComparedValue, memberType);
             return TransformToExpression(simplePredicate.ValueComparingOperator, memberExpression, constantExpression);
@@ -41,7 +42,7 @@ namespace WCIWT.Infrastructure.EntityFramework
         {
             if (!Expressions.ContainsKey(comparingOperator))
             {
-                throw new InvalidOperationException($"Transformation of operator: {comparingOperator} to expression is not supported.");
+                throw new InvalidOperationException($"Transformation of value comparing operator: {comparingOperator} to expression is not supported!");
             }
             return Expressions[comparingOperator].Invoke(memberExpression, constantExpression);
         }

@@ -43,7 +43,7 @@ namespace BusinessLayer.QueryObjects
             }
             if (filter.GenderRestriction != Gender.NoInformation)
             {
-                predicates.Add(CreateGenderRestrictionPredicate(filter));
+                //predicates.Add(CreateGenderRestrictionPredicate(filter));
             }
             if (filter.Visibility != PostVisibility.Public)
             {

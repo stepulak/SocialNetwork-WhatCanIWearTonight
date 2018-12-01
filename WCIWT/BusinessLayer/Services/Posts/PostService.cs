@@ -65,7 +65,7 @@ namespace BusinessLayer.Services.Posts
         {
             UserDto user = await userService.GetAsync(userId);
             List<UserDto> userFriends = await friendshipService.ListOfFriendsAsync(userId);
-            var userAge = Convert.ToDateTime(DateTime.Now - user.Birthdate).Year;
+            var userAge = (int)((DateTime.Now - user.Birthdate).TotalDays / 365.2425);
             filter.UserAge = userAge;
             filter.GenderRestriction = user.Gender;
 
