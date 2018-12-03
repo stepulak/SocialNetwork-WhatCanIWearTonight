@@ -55,6 +55,7 @@ namespace BusinessLayer.Services.Users
             return user != null && VerifyHashedPassword(user.PasswordHash, user.PasswordSalt, password);
         }
 
+
         public async Task<QueryResultDto<UserDto, UserFilterDto>> ListUsersAsync(UserFilterDto filter)
         {
             return await Query.ExecuteQuery(filter);
