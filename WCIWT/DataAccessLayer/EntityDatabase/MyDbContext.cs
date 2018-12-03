@@ -15,6 +15,8 @@ namespace EntityDatabase
         public WCIWTDbContext() : base(EntityFrameworkInstaller.ConnectionString)
         {
             var instance = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<WCIWTDbContext, Migrations.Configuration>());
+
         }
 
         public WCIWTDbContext(DbConnection connection) : base(connection, true)

@@ -29,7 +29,7 @@ namespace EntityDatabase.Migrations
             // Password: qwerty123
             var user1 = new User
             {
-                Id = Guid.Parse("25d1461d-41db-4a5a-8996-dd0fcf7f5f04"),
+                Id = Guid.Parse("22d1461d-41db-4a5a-8996-dd0fcf7f5f04"),
                 Username = "Yohji Yanamoto",
                 Email = "yohji@gmail.com",
                 PasswordHash = "FuQPWbHATtEPh0CO1i6tUqI65/k=",
@@ -113,7 +113,7 @@ namespace EntityDatabase.Migrations
             
             var post5 = new Post
             {
-                Id = Guid.Parse("142330f6-3648-46e3-8ece-64ae166dd913"),
+                Id = Guid.Parse("142330f6-3648-46e3-8ece-64ae166dd914"),
                 Time = new DateTime(2018, 3, 20, 20, 20, 35),
                 Text = "This is a test of age restricted post. Only users with age between 20 and 40 should see this.Vote for the outfit you like the most",
                 Visibility = PostVisibility.Public,
@@ -127,7 +127,7 @@ namespace EntityDatabase.Migrations
 
             var post6 = new Post
             {
-                Id = Guid.Parse("142330f6-3648-46e3-8ece-64ae166dd913"),
+                Id = Guid.Parse("142330f6-3648-46e3-8ece-64ae166dd915"),
                 Time = new DateTime(2018, 3, 20, 20, 20, 35),
                 Text = "This is a test post from Lenka",
                 Visibility = PostVisibility.Public,
@@ -139,7 +139,7 @@ namespace EntityDatabase.Migrations
         
             var post7 = new Post
             {
-                Id = Guid.Parse("142330f6-3648-46e3-8ece-64ae166dd913"),
+                Id = Guid.Parse("142330f6-3648-46e3-8ece-64ae166dd916"),
                 Time = new DateTime(2018, 3, 20, 20, 20, 35),
                 Text = "This is a test post from Marie",
                 Visibility = PostVisibility.Public,
@@ -227,7 +227,7 @@ namespace EntityDatabase.Migrations
             };
             
             user1.Friendships = user1Frienships;
-            user3.Friendships = user3Frienships;
+            //user3.Friendships = user3Frienships;
 
             var message1 = new Message
             {

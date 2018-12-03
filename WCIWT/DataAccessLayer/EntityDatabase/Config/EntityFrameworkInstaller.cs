@@ -13,6 +13,7 @@ using WCIWT.Infrastructure.EntityFramework.UnitOfWork;
 using WCIWT.Infrastructure;
 using WCIWT.Infrastructure.EntityFramework;
 using WCIWT.Infrastructure.Query;
+using EntityDatabase.Migrations;
 
 namespace EntityDatabase.Config
 {
@@ -24,7 +25,7 @@ namespace EntityDatabase.Config
         {
             container.Register(
                 Component.For<Func<DbContext>>()
-                   .Instance(() => CreateContext())
+                   .Instance(() => new WCIWTDbContext())
                     .LifestyleTransient(),
                 Component.For<IUnitOfWorkProvider>()
                     .ImplementedBy<EntityFrameworkUnitOfWorkProvider>()
@@ -36,27 +37,6 @@ namespace EntityDatabase.Config
                     .ImplementedBy(typeof(EntityFrameworkQuery<>))
                     .LifestyleTransient()
                 );
-        }
-
-        public WCIWTDbContext CreateContext()
-        {
-            var context = new WCIWTDbContext();
-            if (context.Users.Where(u => u.Username == "Miss Fortune").Count() == 0)
-            {
-                context.Users.Add(new User
-                {
-                    Id = Guid.Parse("25d1461d-41db-4a5a-8996-dd0fcf7f5f04"),
-                    Username = "Miss Fortune",
-                    Email = "missfortune@gold.com",
-                    Birthdate = new DateTime(1995, 12, 14, 13, 26, 52),
-                    Gender = Gender.Female,
-                    PasswordHash = "0xBEEF",
-                    PasswordSalt = "0xBAD007",
-                    IsAdmin = false
-                });
-            }
-            context.SaveChanges();
-            return context;
         }
     }
 }
