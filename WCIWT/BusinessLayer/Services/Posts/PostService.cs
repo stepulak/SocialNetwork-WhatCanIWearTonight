@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.DataTransferObjects;
@@ -65,18 +66,19 @@ namespace BusinessLayer.Services.Posts
         {
             UserDto user = await userService.GetAsync(userId);
             List<UserDto> userFriends = await friendshipService.ListOfFriendsAsync(userId);
+            List<Guid> userFriendsIds = userFriends.Select(x => x.Id).ToList();
             var userAge = (int)((DateTime.Now - user.Birthdate).TotalDays / 365.2425);
             filter.UserAge = userAge;
             filter.GenderRestriction = user.Gender;
 
-            return await ListPostAsync(filter);
-
-            // TODO: needs to return QueryResult object, filterDTO should be rewritten to allow needed filtering
+            var allPosts = await ListPostAsync(filter);
+            // TODO: filterDTO should be rewritten to allow needed filtering
             // Filter all posts who are private and you are not friend of post's owner.
-//            return allPosts.Items
-//                .Where(post => post.Visibility == (DataTransferObjects.PostVisibility) PostVisibility.FriendsOnly
-//                               && !userFriends.Contains(post.UserId)
-//                               || post.Visibility == (DataTransferObjects.PostVisibility) PostVisibility.FriendsOnly);
+            allPosts.Items = allPosts.Items
+                .Where(post => userFriendsIds.Contains(post.UserId)
+                               || post.UserId == userId
+                               || post.Visibility == DataTransferObjects.PostVisibility.Public);
+            return allPosts;
         }
         
         protected override Task<Post> GetWithIncludesAsync(Guid entityId)

@@ -149,6 +149,18 @@ namespace EntityDatabase.Migrations
                 User = user3
             };
 
+            var post8 = new Post
+            {
+                Id = Guid.Parse("142330f6-3648-46e3-8ece-64ae166dd917"),
+                Time = new DateTime(2018, 3, 20, 20, 20, 35),
+                Text = "This is a private post from Marie",
+                Visibility = PostVisibility.FriendsOnly,
+                GenderRestriction = Gender.NoInformation,
+                HasAgeRestriction = false,
+                UserId = user3.Id,
+                User = user3
+            };
+
 
             user1.Posts = new List<Post>
             {
@@ -166,7 +178,8 @@ namespace EntityDatabase.Migrations
             
             user3.Posts = new List<Post>
             {
-                post7
+                post7,
+                post8
             };
 
             var postReply1 = new PostReply
@@ -289,7 +302,7 @@ namespace EntityDatabase.Migrations
             user3.Messages = user1ToUser3Messages;
 
             context.Users.AddOrUpdate(user => user.Id, admin, user1, user2, user3);
-            context.Posts.AddOrUpdate(post => post.Id, post1, post2, post3, post4, post5, post6, post7);
+            context.Posts.AddOrUpdate(post => post.Id, post1, post2, post3, post4, post5, post6, post7, post8);
             context.Friendships.AddOrUpdate(friendship => friendship.Id, user1Touser3Friendship);
             context.PostReplys.AddOrUpdate(postReply => postReply.Id, postReply1, postReply2);
             context.Messages.AddOrUpdate(message => message.Id, message1, message2, message3, message4);
