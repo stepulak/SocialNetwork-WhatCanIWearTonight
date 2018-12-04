@@ -66,6 +66,18 @@ namespace BusinessLayer.Services.Users
             return Repository.GetAsync(entityId);
         }
 
+
+        public async Task<UserDto> GetUserByUsernameAsync(string username)
+        {
+            UserFilterDto filter = new UserFilterDto
+            {
+                Username = username
+            };
+            var result = await Query.ExecuteQuery(filter);
+            return result.Items.FirstOrDefault();
+        }
+
+
         private async Task<bool> DoesUserExistAsync(string username)
         {
             var queryResult = await Query.ExecuteQuery(new UserFilterDto { Username = username });

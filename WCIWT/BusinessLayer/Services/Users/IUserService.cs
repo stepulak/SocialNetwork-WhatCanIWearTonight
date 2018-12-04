@@ -12,6 +12,7 @@ namespace BusinessLayer.Services.Users
         Guid Create(UserDto entityDto);
         Task Update(UserDto entityDto);
         void Delete(Guid entityId);
+        Task<UserDto> GetUserByUsernameAsync(string username);
         Task<QueryResultDto<UserDto, UserFilterDto>> ListAllAsync();
         Task<QueryResultDto<UserDto, UserFilterDto>> ListUsersAsync(UserFilterDto filter);
         Task<Guid> RegisterUserAsync(UserCreateDto user);

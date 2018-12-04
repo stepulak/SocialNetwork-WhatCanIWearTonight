@@ -168,6 +168,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostController.cs" />
+    <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -178,6 +179,7 @@
     <Compile Include="Models\Messages\MessageListViewModel.cs" />
     <Compile Include="Models\Posts\PostListViewModel.cs" />
     <Compile Include="Models\Posts\PostWithCommentsViewModel.cs" />
+    <Compile Include="Models\UserProfile\UserProfileViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +225,8 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Post\Post.cshtml" />
+    <Content Include="Views\Shared\_UserMenu.cshtml" />
+    <Content Include="Views\UserProfile\UserProfileView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

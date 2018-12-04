@@ -32,7 +32,11 @@
     {
         <div class="col-md-8">
             <div class="well">
-                <h3>@Html.DisplayFor(model => model.PostListViewModel.Posts[i].User.Username)</h3>
+                <h3>
+                    @Html.ActionLink(Model.PostListViewModel.Posts[i].User.Username,
+                "/User/" + Model.PostListViewModel.Posts[i].User.Username,
+                new { Area = "" })
+                            </h3>
                 <div class="divider"></div>
                 <p>
                     @Html.DisplayFor(model => model.PostListViewModel.Posts[i].Text)
@@ -43,52 +47,54 @@
             <button class="btn btn-default">Show Comments</button>
         </div>
     }
-    <div class="col-md-4">
-        @if (Model.FriendRequestListViewModel.FriendRequests != null
-             && Model.FriendRequestListViewModel.FriendRequests.Count != 0)
-        // TODO: check if user is logged in
-        {
-            <div class="panel panel-default">
-                <div class="panel-heading>">
-                    <h4 class="panel-title">Friendship Requests</h4>
-                </div>
-                <div class="panel-body">
-                    <div class="list-group">
-                        @for (var i = 0; i < Model.FriendRequestListViewModel.FriendRequests.Count; i++)
-                        {
-                            <a href="#" class="list-group-item">
-                                @Html.DisplayFor(model => model.FriendRequestListViewModel.FriendRequests[i].Applicant.Username)
-                            </a>
-                            <button class="btn btn-success">
-                                <div class="glyphicon glyphicon-ok"></div>
-                            </button>
-                            <button class="btn btn-danger">
-                                <div class="glyphicon glyphicon-remove"></div>
-                            </button>
-                        }
+    @if (true) // TODO: If user is logged in
+    {
+        <div class="col-md-4">
+            @if (Model.FriendRequestListViewModel.FriendRequests != null
+                    && Model.FriendRequestListViewModel.FriendRequests.Count != 0)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading>">
+                        <h4 class="panel-title">Friendship Requests</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="list-group">
+                            @for (var i = 0; i < Model.FriendRequestListViewModel.FriendRequests.Count; i++)
+                            {
+                                <a href="#" class="list-group-item">
+                                    @Html.DisplayFor(model => model.FriendRequestListViewModel.FriendRequests[i].Applicant.Username)
+                                </a>
+                                <button class="btn btn-success">
+                                    <div class="glyphicon glyphicon-ok"></div>
+                                </button>
+                                <button class="btn btn-danger">
+                                    <div class="glyphicon glyphicon-remove"></div>
+                                </button>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-        @if (Model.FriendListViewModel.Friends != null
-        && Model.FriendListViewModel.Friends.Count != 0)
-        {
-            <div class="panel panel-default">
-                <div class="panel-heading>">
-                    <h4 class="panel-title">Contact List</h4>
-                </div>
-                <div class="panel-body">
-                    <div class="list-group">
-                        @for (var i = 0; i < Model.FriendListViewModel.Friends.Count; i++)
-                        {
-                            <a href="#" class="list-group-item">
-                                @Html.DisplayFor(model => model.FriendListViewModel.Friends[i].Username)
-                            </a>
-                        }
+            }
+            @if (Model.FriendListViewModel.Friends != null
+            && Model.FriendListViewModel.Friends.Count != 0)
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading>">
+                        <h4 class="panel-title">Contact List</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="list-group">
+                            @for (var i = 0; i < Model.FriendListViewModel.Friends.Count; i++)
+                            {
+                                <a href="#" class="list-group-item">
+                                    @Html.DisplayFor(model => model.FriendListViewModel.Friends[i].Username)
+                                </a>
+                            }
+                        </div>
                     </div>
                 </div>
+            }
             </div>
-        }
-        </div>
+    }
     </div>
 

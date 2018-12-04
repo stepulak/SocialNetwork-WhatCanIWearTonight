@@ -1,0 +1,21 @@
+﻿<ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        </a>
+        <ul class="dropdown-menu">
+            @if (true) // TODO: Add check if user is logged in
+            {
+                <li>Username here</li>
+                <li role="separator" class="divider"></li>
+                <li>@Html.ActionLink("My Profile", "Index", "UserProfile")</li>
+                <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+            }
+            @if (true) // TODO Add check if user is not logged in
+            {
+                <li>@Html.ActionLink("Login", "Login", "Account")</li>
+            }
+        </ul>
+    </li>
+</ul>

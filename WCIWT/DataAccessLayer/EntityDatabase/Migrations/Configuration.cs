@@ -17,7 +17,7 @@ namespace EntityDatabase.Migrations
             {
                 // Password: PV226jesuper
                 Id = Guid.Parse("aa00dc64-5c07-40fe-a916-175165b9b90f"),
-                Username = "Mr.Admin",
+                Username = "admin",
                 Email = "admin@admin.com",
                 PasswordHash = "FuQPWbHATtEPh0CO1i6tUqI65",
                 PasswordSalt = "WMYJiF/FT8bEchjALl3bCg==",
@@ -30,7 +30,7 @@ namespace EntityDatabase.Migrations
             var user1 = new User
             {
                 Id = Guid.Parse("22d1461d-41db-4a5a-8996-dd0fcf7f5f04"),
-                Username = "Yohji Yanamoto",
+                Username = "yohjiYanamoto",
                 Email = "yohji@gmail.com",
                 PasswordHash = "FuQPWbHATtEPh0CO1i6tUqI65/k=",
                 PasswordSalt = "WMYJiF/FT8bEchjALl3bCg==",

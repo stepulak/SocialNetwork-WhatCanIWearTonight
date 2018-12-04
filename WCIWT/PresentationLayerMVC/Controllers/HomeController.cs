@@ -27,6 +27,12 @@ namespace PresentationLayerMVC.Controllers
         public UserFacade UserFacade { get; set; }
         public PostFacade PostFacade { get; set; }
 
+        public PartialViewResult UserMenu()
+        {
+            var model = UserFacade.GetUserAsync(Guid.Parse("22d1461d-41db-4a5a-8996-dd0fcf7f5f04"));
+            return PartialView("_UserMenu", model);
+        }
+
         public async Task<ActionResult> Index(int page = 1)
         {
             // TODO: If user is logged in, get his id
