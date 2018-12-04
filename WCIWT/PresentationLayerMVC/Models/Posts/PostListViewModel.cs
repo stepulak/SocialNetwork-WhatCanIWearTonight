@@ -9,6 +9,7 @@ namespace PresentationLayerMVC.Models.Posts
     public class PostListViewModel
     {
         public IPagedList<PostDto> Posts { get; set; }
-        public PostFilterDto Filter { get; set; }
+        public List<List<ImageDto>> ImagesForPosts { get; set; }
+        public PostFilterDto PostFilter { get; set; }
     }
 }

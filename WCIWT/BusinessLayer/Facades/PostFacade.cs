@@ -138,14 +138,20 @@ namespace BusinessLayer.Facades
 
         public async Task<List<PostReplyDto>> ListOfReplysForPost(Guid postId)
         {
-            var result = await postReplyService.ListPostReplyAsync(new PostReplyFilterDto { PostId = postId });
-            return result.Items.OrderBy(r => r.Time).ToList();
+            using (UnitOfWorkProvider.Create())
+            {
+                var result = await postReplyService.ListPostReplyAsync(new PostReplyFilterDto { PostId = postId });
+                return result.Items.OrderBy(r => r.Time).ToList();
+            }
         }
 
         public async Task<List<ImageDto>> ListOfImagesForPost(Guid postId)
         {
-            var result = await imageService.ListImageAsync(new ImageFilterDto { PostId = postId });
-            return result.Items.ToList();
+            using (UnitOfWorkProvider.Create())
+            {
+                var result = await imageService.ListImageAsync(new ImageFilterDto { PostId = postId });
+                return result.Items.ToList();
+            }
         }
     }
 }

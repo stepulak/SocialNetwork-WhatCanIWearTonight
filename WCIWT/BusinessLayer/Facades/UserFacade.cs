@@ -28,7 +28,6 @@ namespace BusinessLayer.Facades
 
         public async Task<UserDto> GetUserByUsernameAsync(string username)
         {
-
             using (UnitOfWorkProvider.Create())
             {
                 return await userService.GetUserByUsernameAsync(username);

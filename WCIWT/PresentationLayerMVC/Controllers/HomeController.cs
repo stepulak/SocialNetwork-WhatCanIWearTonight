@@ -22,6 +22,7 @@ namespace PresentationLayerMVC.Controllers
         public const int PostsPageSize = 10;
         public const int FriendRequestsPageSize = 20;
         public const int FriendsPageSize = 20;
+        public const int ImagesPerPost = 5;
         private const string FilterSessionKey = "filter";
         
         public UserFacade UserFacade { get; set; }
@@ -35,9 +36,8 @@ namespace PresentationLayerMVC.Controllers
 
         public async Task<ActionResult> Index(int page = 1)
         {
-            // TODO: If user is logged in, get his id
-            var userId = Guid.Parse("22d1461d-41db-4a5a-8996-dd0fcf7f5f04");
-           //var userId = Guid.Empty;
+            Guid userId = await GetGuidOfLoggedUser();
+            //userId = Guid.Parse("22d1461d-41db-4a5a-8996-dd0fcf7f5f04");
             var postsModel = await GetPostModel(userId, page);
             var friendRequestsModel = await GetFriendRequestsModel(userId);
             var friendsModel = await GetFriendsModel(userId);
@@ -59,10 +59,8 @@ namespace PresentationLayerMVC.Controllers
                     FriendRequests = new StaticPagedList<FriendshipDto>(new List<FriendshipDto>(), 1, 0, 0)
                 };
             }
-            
             var friendshipRequests = await UserFacade.PendingFriendshipRequests(userId);
             var friendRequestsModel = InitializeFriendRequestListViewModel(friendshipRequests);
-
             return friendRequestsModel;
         }
 
@@ -83,11 +81,28 @@ namespace PresentationLayerMVC.Controllers
 
         private async Task<PostListViewModel> GetPostModel(Guid userId, int page)
         {
+            if (userId == Guid.Empty)
+            {
+                return new PostListViewModel
+                {
+                    Posts = new StaticPagedList<PostDto>(new List<PostDto>(), 1, 0, 0),
+                    ImagesForPosts = new List<List<ImageDto>>(),
+                    PostFilter = null,
+                };
+            }
             // TODO: when filter DTO is changed, pass userId to filter
             var filter = Session[FilterSessionKey] as PostFilterDto ?? new PostFilterDto{PageSize = PostsPageSize};
             filter.RequestedPageNumber = page;
+
             var posts = await PostFacade.GetPostFeedAsync(filter, userId);
-            return InitializePostListViewModel(posts);   
+            var imagesForPosts = new List<List<ImageDto>>();
+
+            foreach (var post in posts.Items)
+            {
+                imagesForPosts.Add(await PostFacade.ListOfImagesForPost(post.Id));
+            }
+
+            return InitializePostListViewModel(posts, imagesForPosts);
         }
 
         private FriendRequestListViewModel InitializeFriendRequestListViewModel(
@@ -101,13 +116,15 @@ namespace PresentationLayerMVC.Controllers
             };
         }
 
-        private PostListViewModel InitializePostListViewModel(QueryResultDto<PostDto, PostFilterDto> result)
+        private PostListViewModel InitializePostListViewModel(QueryResultDto<PostDto, PostFilterDto> postsResult,
+            List<List<ImageDto>> imagesResult)
         {
             return new PostListViewModel
             {
-                Posts = new StaticPagedList<PostDto>(result.Items, result.RequestedPageNumber ?? 1, PostsPageSize,
-                    (int) result.TotalItemsCount),
-                Filter = result.Filter
+                Posts = new StaticPagedList<PostDto>(postsResult.Items, postsResult.RequestedPageNumber ?? 1, PostsPageSize,
+                    (int)postsResult.TotalItemsCount),
+                ImagesForPosts = imagesResult,
+                PostFilter = postsResult.Filter,
             };
         }
 
@@ -118,6 +135,16 @@ namespace PresentationLayerMVC.Controllers
                 Friends = new StaticPagedList<UserDto>(result, 1, FriendsPageSize, FriendsPageSize),
                 Filter = null
             };
+        }
+
+        private async Task<Guid> GetGuidOfLoggedUser()
+        {
+            if (HttpContext.User != null && HttpContext.User.Identity != null)
+            {
+                var userDto = await UserFacade.GetUserByUsernameAsync(HttpContext.User.Identity.Name);
+                return userDto?.Id ?? Guid.Empty;
+            }
+            return Guid.Empty;
         }
     }
 }

@@ -18,8 +18,8 @@ namespace BusinessLayer.QueryObjects
 
         protected override IQuery<User> ApplyWhereClause(IQuery<User> query, UserFilterDto filter)
         {
-            return string.IsNullOrWhiteSpace(filter.Username) 
-                   && string.IsNullOrWhiteSpace(filter.Email) 
+            return filter.Username != null
+                   && filter.Email != null
                    && filter.Gender == Gender.NoInformation 
                    && filter.BornBefore == DateTime.MinValue 
                    && filter.BornAfter == DateTime.MinValue
@@ -31,11 +31,11 @@ namespace BusinessLayer.QueryObjects
         {
             List<IPredicate> predicates = new List<IPredicate>();
 
-            if (!string.IsNullOrWhiteSpace(filter.Username))
+            if (filter.Username != null)
             {
                 predicates.Add(new SimplePredicate(nameof(User.Username), ValueComparingOperator.Equal, filter.Username));
             }
-            if (!string.IsNullOrWhiteSpace(filter.Email))
+            if (filter.Email != null)
             {
                 predicates.Add(new SimplePredicate(nameof(User.Email), ValueComparingOperator.Equal, filter.Email));
             }
