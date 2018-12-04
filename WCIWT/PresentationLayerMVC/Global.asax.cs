@@ -19,21 +19,10 @@ namespace PresentationLayerMVC
         {
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(ConfigureRoutes());
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             BootstrapContainer();
-        }
-
-        private RouteCollection ConfigureRoutes()
-        {
-            var routes = RouteTable.Routes;
-            routes.MapRoute(
-                "User",
-                "User/{username}",
-                new { controller = "UserProfile", action = "Index", username = "" }
-                );
-            return routes;
         }
 
         private void BootstrapContainer()

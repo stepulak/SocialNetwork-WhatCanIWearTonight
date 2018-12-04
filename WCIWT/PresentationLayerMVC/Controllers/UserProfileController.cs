@@ -9,11 +9,14 @@ using System.Web.Mvc;
 
 namespace PresentationLayerMVC.Controllers
 {
+    [RoutePrefix("users")]
     public class UserProfileController : Controller
     {
         public UserFacade UserFacade { get; set; }
 
-        // GET: User/{username}
+        // GET: user/{username}
+        [HttpGet]
+        [Route("{username}")]
         public async Task<ActionResult> Index(string username)
         {
             var user = await UserFacade.GetUserByUsernameAsync(username);
@@ -21,7 +24,7 @@ namespace PresentationLayerMVC.Controllers
             {
                 User = user
             };
-            return View("UserProfileView", model);
+            return View($"UserProfileView", model);
         }
     }
 }
