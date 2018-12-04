@@ -103,51 +103,73 @@ namespace BusinessLayer.Facades
         
         public async Task<QueryResultDto<FriendshipDto, FriendshipFilterDto>> PendingFriendshipRequests(Guid userId)
         {
-            var filter = new FriendshipFilterDto
+            using (UnitOfWorkProvider.Create())
             {
-                UserA = userId
-            };
-            return await friendshipService.ListFriendshipAsync(filter);
+                var filter = new FriendshipFilterDto
+                {
+                    UserA = userId
+                };
+                return await friendshipService.ListFriendshipAsync(filter);
+            }
         }
 
         public async Task<bool> CanSendFrienshipRequest(UserDto applicant, UserDto recipient)
         {
-            var filter = new FriendshipFilterDto
+            using (UnitOfWorkProvider.Create())
             {
-                // We can swap those, doesn't really matter the order
-                UserA = applicant.Id,
-                UserB = recipient.Id
-            };
-            var allFriendships = await friendshipService.ListFriendshipAsync(filter);
-            return allFriendships.TotalItemsCount == 0;
+                var filter = new FriendshipFilterDto
+                {
+                    // We can swap those, doesn't really matter the order
+                    UserA = applicant.Id,
+                    UserB = recipient.Id
+                };
+                var allFriendships = await friendshipService.ListFriendshipAsync(filter);
+                return allFriendships.TotalItemsCount == 0;
+            }
+
         }
 
         public async Task SendFriendshipRequest(UserDto applicant, UserDto recipient)
         {
-            if (await CanSendFrienshipRequest(applicant, recipient) == false)
+            using (UnitOfWorkProvider.Create())
             {
-                throw new InvalidOperationException($"Unable to send friendship request {applicant} -> {recipient}. Already exists.");
+                if (await CanSendFrienshipRequest(applicant, recipient) == false)
+                {
+                    throw new InvalidOperationException($"Unable to send friendship request {applicant} -> {recipient}. Already exists.");
+                }
+                friendshipService.Create(new FriendshipDto
+                {
+                    ApplicantId = applicant.Id,
+                    RecipientId = recipient.Id,
+                    IsConfirmed = false
+                });
             }
-            friendshipService.Create(new FriendshipDto
-            {
-                ApplicantId = applicant.Id,
-                RecipientId = recipient.Id,
-                IsConfirmed = false
-            });
+
         }
 
         public async Task ConfirmFriendshipRequest(FriendshipDto frienship)
         {
-            frienship.IsConfirmed = true;
-            await friendshipService.Update(frienship);
+            using (UnitOfWorkProvider.Create())
+            {
+                frienship.IsConfirmed = true;
+                await friendshipService.Update(frienship);
+            }
         }
 
-        public void CancelFriendshipRequest(FriendshipDto friendship) 
-            => friendshipService.Delete(friendship.Id);
+        public void CancelFriendshipRequest(FriendshipDto friendship)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                friendshipService.Delete(friendship.Id);
+            }
+        }
 
         public async Task<List<UserDto>> GetFriendsOfUser(Guid userId)
         {
-            return await friendshipService.ListOfFriendsAsync(userId);
+            using (UnitOfWorkProvider.Create())
+            {
+                return await friendshipService.ListOfFriendsAsync(userId);
+            }
         }
 
     }
