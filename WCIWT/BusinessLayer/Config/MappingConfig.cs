@@ -34,6 +34,9 @@ namespace BusinessLayer.Config
             config.CreateMap<User, UserDto>();
             config.CreateMap<UserDto, User>();
 
+            config.CreateMap<User, UserCreateDto>();
+            config.CreateMap<UserCreateDto, User>();
+
             config.CreateMap<Vote, VoteDto>();
             config.CreateMap<VoteDto, Vote>();
 

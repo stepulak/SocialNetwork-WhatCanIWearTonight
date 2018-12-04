@@ -5,16 +5,21 @@
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
         </a>
         <ul class="dropdown-menu">
-            @if (true) // TODO: Add check if user is logged in
+            @{
+                var username = @HttpContext.Current.User.Identity.Name;
+                bool logged = username.Length != 0;
+            }
+            @if (logged)
             {
-                <li>Username here</li>
+                <li>@username</li>
                 <li role="separator" class="divider"></li>
                 <li>@Html.ActionLink("My Profile", "Index", "UserProfile")</li>
                 <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
             }
-            @if (true) // TODO Add check if user is not logged in
+            else
             {
                 <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                <li>@Html.ActionLink("Register", "Register", "Account")</li>
             }
         </ul>
     </li>

@@ -25,15 +25,7 @@ namespace DemoEshop.PresentationLayer.Controllers
             try
             {
                 await UserFacade.RegisterUser(userCreateDto);
-                //FormsAuthentication.SetAuthCookie(userCreateDto.Username, false);
-                
-                var authTicket = new FormsAuthenticationTicket(1, userCreateDto.Username, DateTime.Now,
-                    DateTime.Now.AddMinutes(30), false, "");
-                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                HttpContext.Response.Cookies.Add(authCookie);
-
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Account");
             }
             catch(ArgumentException)
             {
@@ -52,13 +44,7 @@ namespace DemoEshop.PresentationLayer.Controllers
         {
             if (await UserFacade.Login(model.Username, model.Password))
             {
-                //FormsAuthentication.SetAuthCookie(model.Username, false);
-
-                var authTicket = new FormsAuthenticationTicket(1, model.Username, DateTime.Now,
-                    DateTime.Now.AddMinutes(30), false, null);
-                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                HttpContext.Response.Cookies.Add(authCookie);
+                SetupLoginCookie(model.Username);
 
                 var decodedUrl = "";
                 if (!string.IsNullOrEmpty(returnUrl))
@@ -76,10 +62,33 @@ namespace DemoEshop.PresentationLayer.Controllers
             return View();
         }
 
-        public Task<ActionResult> Logout()
+        public async Task<ActionResult> Logout()
         {
             FormsAuthentication.SignOut();
-            return new Task<ActionResult>(() => RedirectToAction("Index", "Home"));
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        private void SetupLoginCookie(string username)
+        {
+            var ticket = new FormsAuthenticationTicket(
+                1,                                     // ticket version
+                username,                              // authenticated username
+                DateTime.Now,                          // issueDate
+                DateTime.Now.AddMinutes(30),           // expiryDate
+                false,                          // true to persist across browser sessions
+                "",                              // can be used to store additional user data
+                FormsAuthentication.FormsCookiePath);  // the path for the cookie
+
+            // Encrypt the ticket using the machine key
+            var encryptedTicket = FormsAuthentication.Encrypt(ticket);
+
+            // Add the cookie to the request to save it
+            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket)
+            {
+                HttpOnly = true
+            };
+            Response.Cookies.Add(cookie);
         }
     }
 }
