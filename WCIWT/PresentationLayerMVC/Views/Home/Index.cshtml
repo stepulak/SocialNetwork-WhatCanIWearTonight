@@ -37,20 +37,17 @@
                 <p>
                     @Html.DisplayFor(model => model.PostListViewModel.Posts[i].Text)
                 </p>
-                <img src="#" alt="Image"/>
+                <img src="#" alt="Image" />
                 <button class="btn btn-success">Vote</button>
             </div>
             <button class="btn btn-default">Show Comments</button>
         </div>
     }
-
-    @if (Model.FriendListViewModel.Friends != null
-         && Model.FriendListViewModel.Friends.Count != 0
-         && Model.FriendRequestListViewModel.FriendRequests != null  
-         && Model.FriendRequestListViewModel.FriendRequests.Count != 0) 
-// TODO: check if user is logged in
-    {
-        <div class="col-md-4">
+    <div class="col-md-4">
+        @if (Model.FriendRequestListViewModel.FriendRequests != null
+             && Model.FriendRequestListViewModel.FriendRequests.Count != 0)
+        // TODO: check if user is logged in
+        {
             <div class="panel panel-default">
                 <div class="panel-heading>">
                     <h4 class="panel-title">Friendship Requests</h4>
@@ -72,6 +69,10 @@
                     </div>
                 </div>
             </div>
+        }
+        @if (Model.FriendListViewModel.Friends != null
+        && Model.FriendListViewModel.Friends.Count != 0)
+        {
             <div class="panel panel-default">
                 <div class="panel-heading>">
                     <h4 class="panel-title">Contact List</h4>
@@ -82,12 +83,12 @@
                         {
                             <a href="#" class="list-group-item">
                                 @Html.DisplayFor(model => model.FriendListViewModel.Friends[i].Username)
-                            </a> 
+                            </a>
                         }
                     </div>
                 </div>
             </div>
+        }
         </div>
-    }
-</div>
+    </div>
 

@@ -30,7 +30,7 @@ namespace PresentationLayerMVC.Controllers
         public async Task<ActionResult> Index(int page = 1)
         {
             // TODO: If user is logged in, get his id
-            var userId = Guid.Parse("abcf8c45-cdcb-4e12-9aeb-b6adef036964");
+            var userId = Guid.Parse("22d1461d-41db-4a5a-8996-dd0fcf7f5f04");
            //var userId = Guid.Empty;
             var postsModel = await GetPostModel(userId, page);
             var friendRequestsModel = await GetFriendRequestsModel(userId);

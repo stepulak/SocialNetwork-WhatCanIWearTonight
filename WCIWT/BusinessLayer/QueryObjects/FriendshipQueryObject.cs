@@ -20,24 +20,30 @@ namespace BusinessLayer.QueryObjects
         protected override IQuery<Friendship> ApplyWhereClause(IQuery<Friendship> query, FriendshipFilterDto filter)
         {
             return filter.UserA == Guid.Empty 
-                   && filter.UserB == Guid.Empty 
+                   && filter.UserB == Guid.Empty
                 ? query 
                 : query.Where(CreateCompositePredicateFromFilter(filter));
         }
 
         private IPredicate CreateCompositePredicateFromFilter(FriendshipFilterDto filter)
         {
+            // Filter confirmed friendships or pending friend requests
+            SimplePredicate confirmedFriendshipsPredicate = new SimplePredicate(nameof(Friendship.IsConfirmed), ValueComparingOperator.Equal, filter.IsConfirmed);
+            CompositePredicate result = new CompositePredicate(new List<IPredicate> { confirmedFriendshipsPredicate }, LogicalOperator.AND);
             if (filter.UserA == Guid.Empty)
             {
-                return CreatePredicateForOneUser(filter.UserB);
+                result.Predicates.Add(CreatePredicateForOneUser(filter.UserB));
+                return result;
             }
             if (filter.UserB == Guid.Empty)
             {
-                return CreatePredicateForOneUser(filter.UserA);
+                result.Predicates.Add(CreatePredicateForOneUser(filter.UserA));
+                return result;
             }
             
             // Both users must be in frienship structure, doesn't matter who is sender or recipient
-            return CreatePredicateForBothUsers(filter.UserA, filter.UserB);
+            result.Predicates.Add(CreatePredicateForBothUsers(filter.UserA, filter.UserB));
+            return result;
         }
 
         private IPredicate CreatePredicateForOneUser(Guid userId)

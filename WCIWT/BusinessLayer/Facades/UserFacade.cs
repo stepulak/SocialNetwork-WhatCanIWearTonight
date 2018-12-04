@@ -107,7 +107,8 @@ namespace BusinessLayer.Facades
             {
                 var filter = new FriendshipFilterDto
                 {
-                    UserA = userId
+                    UserA = userId,
+                    IsConfirmed = false
                 };
                 return await friendshipService.ListFriendshipAsync(filter);
             }
