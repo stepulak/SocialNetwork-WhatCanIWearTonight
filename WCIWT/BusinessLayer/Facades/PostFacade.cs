@@ -48,6 +48,7 @@ namespace BusinessLayer.Facades
 
         public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostFeedAsync(PostFilterDto filter, Guid userId)
         {
+            filter.SortCriteria = "Time";
             using (UnitOfWorkProvider.Create())
             {
                 if (userId != Guid.Empty)
