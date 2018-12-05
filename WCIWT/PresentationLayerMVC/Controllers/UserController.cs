@@ -53,7 +53,20 @@ namespace PresentationLayerMVC.Controllers
         [Route("{username}/friends")]
         public async Task<ActionResult> DisplayFriends(string username, int page = 1)
         {
-           throw new NotImplementedException();
+            var user = await UserFacade.GetUserByUsernameAsync(username);
+            if (user == null)
+            {
+                // TODO: Redirect 404
+            }
+
+            var friends = await GetUserFriendsModel();
+            var model = new UserFriendsAggregatedViewModel()
+            {
+                User = user,
+                UserFriendsList = friends
+            };
+
+            return View("UserFriendsListView", model);
         }
 
         // POST: user/{username}/add-friend
@@ -127,6 +140,11 @@ namespace PresentationLayerMVC.Controllers
                 ImagesForPosts = imagesResult,
                 PostFilter = postsResult.Filter,
             };
+        }
+
+        private async Task<UserFriendsListViewModel> GetUserFriendsModel()
+        {
+            throw new NotImplementedException();
         }
 
         private async Task<UserDto> GetLoggedUser()

@@ -121,7 +121,7 @@ namespace PresentationLayerMVC.Controllers
             return new FriendListViewModel
             {
                 Friends = new StaticPagedList<UserDto>(result, 1, FriendsPageSize, FriendsPageSize),
-                Filter = null
+                Filter = new FriendshipFilterDto()
             };
         }
 
