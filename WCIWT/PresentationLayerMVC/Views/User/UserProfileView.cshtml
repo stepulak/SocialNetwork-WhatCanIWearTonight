@@ -1,0 +1,102 @@
+﻿@using PresentationLayerMVC.Models.UserProfile
+@model PresentationLayerMVC.Models.Aggregated.UserProfileAggregatedViewModel
+@{
+    ViewBag.Title = Model.User.Username + "'s Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">@Html.DisplayFor(model => model.User.Username)</h3>
+            </div>
+            <div class="row">
+                <div class="panel-body">
+                    <div class="col-md-4">
+                        <ul>
+                            <li>
+                                @Html.DisplayFor(model => model.User.Gender)
+                            </li>
+                            <li>
+                                @Html.DisplayFor(model => model.User.Email)
+                            </li>
+                            <li>
+                                @Html.DisplayFor(model => model.User.Birthdate)
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        @if (!Model.IsFriend && !Model.HasPendingFriendRequest && User.Identity.IsAuthenticated)
+                        {
+                            <div class="row">
+                                <input type="button" value="Send Friendship Request" class="btn btn-success"/>
+                            </div>
+                        }
+                        @if (Model.IsFriend)
+                        {
+                            <div class="row">
+                                <input type="button" value="Remove Friend" class="btn btn-danger"/>
+                            </div>
+                            <div class="row">
+                                <input type="button" value="Send Message" class="btn btn-info"/>
+                            </div>
+                        }
+                          
+                        <div class="row">
+                            <input type="button" class="btn btn-info" value="Show Friends" onclick="location.href=  
+                                   '@Url.Action(
+                                    actionName:"DisplayFriends",
+                                    controllerName: "User",
+                                    routeValues: new
+                                    {
+                                        area = "",
+                                        username = Model.User.Username
+                                    })'"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    @for (var i = 0; i < Model.PostListViewModel.Posts.Count; i++)
+    {
+        <div class="col-md-12">
+            <div class="well">
+                <h3>
+                    @Html.ActionLink(
+                        linkText: Model.PostListViewModel.Posts[i].User.Username,
+                        actionName:"Index",
+                        controllerName: "User",
+                        routeValues: new
+                        {
+                            area = "",
+                            username = Model.PostListViewModel.Posts[i].User.Username
+                        },
+                        htmlAttributes: null)
+                </h3>
+                <div class="divider"></div>
+                <p>
+                    @Html.DisplayFor(model => model.PostListViewModel.Posts[i].Text)
+                </p>
+                @{
+                    //var base64 = Convert.ToBase64String(image);
+                    //var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                }
+                <img src="#" alt="Image"/>
+                @if (HttpContext.Current.User.Identity.Name.Length != 0) // TODO: Add ActionLink to vote
+                {
+                    <button class="btn btn-success">Vote</button>
+                }
+                <p>
+                    Added: @Html.DisplayFor(model => model.PostListViewModel.Posts[i].Time)
+                </p>
+            </div>
+            <button class="btn btn-default">Show Comments</button>
+        </div>
+    }
+</div>
+       

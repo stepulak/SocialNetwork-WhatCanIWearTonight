@@ -64,10 +64,6 @@ namespace BusinessLayer.Facades
                 {
                     return await postService.ListPostsAvailableForUser(userId, filter);
                 }
-
-                filter.IncludePrivatePosts = false;
-                filter.GenderRestriction = Gender.NoInformation;
-                filter.UserAge = 1;
                 return await postService.ListPostAsync(filter);
             }
         }
@@ -77,6 +73,20 @@ namespace BusinessLayer.Facades
             using (UnitOfWorkProvider.Create())
             {
                 postService.Delete(post.Id);
+            }
+        }
+        
+        public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostsByUserId(PostFilterDto filter, Guid userId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                if (userId != Guid.Empty)
+                {
+                    filter.UserId = userId;
+                    filter.SortCriteria = "Time";
+                    return await postService.ListPostAsync(filter);
+                }
+                throw new ArgumentException("Cannot display posts of not existing user");
             }
         }
         

@@ -41,9 +41,16 @@
         <div class="col-md-8">
             <div class="well">
                 <h3>
-                    @Html.ActionLink(Model.PostListViewModel.Posts[i].User.Username,
-                "users/" + Model.PostListViewModel.Posts[i].User.Username,
-                new { Area = "" })
+                    @Html.ActionLink(
+                        linkText: Model.PostListViewModel.Posts[i].User.Username,
+                        actionName:"Index",
+                        controllerName: "User",
+                        routeValues: new
+                        {
+                            area = "",
+                            username = Model.PostListViewModel.Posts[i].User.Username
+                        },
+                        htmlAttributes: null)
                 </h3>
                 <div class="divider"></div>
                 <p>

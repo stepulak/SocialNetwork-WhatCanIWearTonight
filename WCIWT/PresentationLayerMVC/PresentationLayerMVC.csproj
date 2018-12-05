@@ -168,14 +168,18 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostController.cs" />
-    <Compile Include="Controllers\UserProfileController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Models\Aggregated\UserFriendsAggregatedViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Accounts\LoginModel.cs" />
     <Compile Include="Models\Aggregated\HomePageAggregatedViewModel.cs" />
+    <Compile Include="Models\Friends\UserFriendsListViewModel.cs" />
+    <Compile Include="Models\Aggregated\UserProfileAggregatedViewModel.cs" />
     <Compile Include="Models\FriendRequests\FriendRequestListViewModel.cs" />
     <Compile Include="Models\Friends\FriendListViewModel.cs" />
+    <Compile Include="Models\Friends\UserFriendViewModel.cs" />
     <Compile Include="Models\Messages\MessageListViewModel.cs" />
     <Compile Include="Models\Posts\PostListViewModel.cs" />
     <Compile Include="Models\Posts\PostModel.cs" />
@@ -216,7 +220,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Views\User\User.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -233,7 +236,8 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Post\Post.cshtml" />
     <Content Include="Views\Shared\_UserMenu.cshtml" />
-    <Content Include="Views\UserProfile\UserProfileView.cshtml" />
+    <Content Include="Views\User\UserProfileView.cshtml" />
+    <Content Include="Views\User\UserFriendsListView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

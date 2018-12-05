@@ -182,5 +182,19 @@ namespace BusinessLayer.Facades
             }
         }
 
+        public async Task<FriendshipDto> GetFriendshipBetweenUsers(Guid userAId, Guid userBId)
+        {
+            var filter = new FriendshipFilterDto
+            {
+                UserA = userAId,
+                UserB = userBId
+            };
+
+            using (UnitOfWorkProvider.Create())
+            {
+                var result = await friendshipService.ListFriendshipAsync(filter);
+                return result.Items.FirstOrDefault();
+            }
+        }
     }
 }
