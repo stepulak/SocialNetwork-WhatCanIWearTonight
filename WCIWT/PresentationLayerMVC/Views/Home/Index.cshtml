@@ -4,6 +4,11 @@
 @{
     ViewBag.Title = "Home";
 }
+
+
+@{
+    bool logged = HttpContext.Current.User.Identity.Name.Length != 0;
+}
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -11,14 +16,14 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search user, hashtag"/>
+                            <input type="text" class="form-control" placeholder="Search user, hashtag" />
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button">Search</button>
                             </span>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        @if (HttpContext.Current.User.Identity.Name.Length != 0) // TODO: Add ActionLink to create new post
+                        @if (logged) // TODO: Add ActionLink to create new post
                         {
                             <button class="btn btn-primary" type="button">Add Post</button>
                         }
@@ -44,23 +49,42 @@
                 <p>
                     @Html.DisplayFor(model => model.PostListViewModel.Posts[i].Text)
                 </p>
-                @{
-                    //var base64 = Convert.ToBase64String(image);
-                    //var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                }
-                <img src="#" alt="Image" />
-                @if (HttpContext.Current.User.Identity.Name.Length != 0) // TODO: Add ActionLink to vote
+                @if (Model.PostListViewModel.ImagesForPosts[i].Count > 0)
                 {
-                    <button class="btn btn-success">Vote</button>
+                    <div class="row">
+                        @for (var j = 0; j < Model.PostListViewModel.ImagesForPosts[i].Count; j++)
+                        {
+                            var image = Model.PostListViewModel.ImagesForPosts[i][j];
+                            var base64 = Convert.ToBase64String(image.BinaryImage);
+                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            <div class="col-md-4">
+                                <div class="thumbnail">
+                                    <img src="@imgSrc" alt="Image" class="img-rounded" style="width:100%" />
+                                    <div class="caption">
+                                        @if (logged)
+                                        {
+                                            <button class="btn btn-default" type="button">Like (@image.LikesCount)</button>
+                                            <button class="btn btn-default" type="button">Dislike (@image.DislikesCount)</button>
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink($"Like ({image.LikesCount})", "Login", "Account", new { @class = "btn btn-default" })
+                                            @Html.ActionLink($"Dislike ({image.DislikesCount})", "Login", "Account", new { @class = "btn btn-default" })
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 }
                 <p>
                     Added: @Html.DisplayFor(model => model.PostListViewModel.Posts[i].Time)
                 </p>
+                @Html.ActionLink("Show comments", "posts/" + Model.PostListViewModel.Posts[i].Id, null, new { @class = "btn btn-default" })
             </div>
-            <button class="btn btn-default">Show Comments</button>
         </div>
     }
-    @if (HttpContext.Current.User.Identity.Name.Length != 0)
+    @if (logged)
     {
         <div class="col-md-4">
             @if (Model.FriendRequestListViewModel.FriendRequests != null
@@ -107,7 +131,7 @@
                     </div>
                 </div>
             }
-            </div>
+        </div>
     }
-    </div>
+</div>
 

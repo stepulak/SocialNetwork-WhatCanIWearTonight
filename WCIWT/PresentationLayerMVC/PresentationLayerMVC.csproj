@@ -189,6 +189,13 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\icon.svg" />
+    <Content Include="Content\Images\TestingImages\apache1.jpg" />
+    <Content Include="Content\Images\TestingImages\apache2.jpg" />
+    <Content Include="Content\Images\TestingImages\lucia1.jpg" />
+    <Content Include="Content\Images\TestingImages\lucia2.jpg" />
+    <Content Include="Content\Images\TestingImages\lucia3.jpg" />
+    <Content Include="Content\Images\TestingImages\lucia4.jpg" />
+    <Content Include="Content\Images\TestingImages\lucia5.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

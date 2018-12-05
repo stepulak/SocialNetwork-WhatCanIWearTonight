@@ -11,15 +11,19 @@ using X.PagedList;
 
 namespace PresentationLayerMVC.Controllers
 {
+    [RoutePrefix("posts")]
     public class PostController : Controller
     {
         public PostFacade PostFacade { get; set; }
 
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
+        [Route("{postId}")]
         public async Task<ActionResult> Index(Guid postId)
         {
             if (postId == Guid.Empty)
