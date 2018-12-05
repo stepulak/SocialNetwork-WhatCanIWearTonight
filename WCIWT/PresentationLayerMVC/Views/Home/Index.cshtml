@@ -18,7 +18,10 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <button class="btn btn-primary" type="button">Add Post</button>
+                        @if (HttpContext.Current.User.Identity.Name.Length != 0) // TODO: Add ActionLink to create new post
+                        {
+                            <button class="btn btn-primary" type="button">Add Post</button>
+                        }
                         <button class="btn btn-info" type="button">Filter</button>
                     </div>
                 </div>
