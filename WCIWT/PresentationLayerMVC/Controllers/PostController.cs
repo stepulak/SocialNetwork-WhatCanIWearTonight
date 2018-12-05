@@ -14,8 +14,9 @@ namespace PresentationLayerMVC.Controllers
     [RoutePrefix("posts")]
     public class PostController : Controller
     {
+        public UserFacade UserFacade { get; set; }
         public PostFacade PostFacade { get; set; }
-
+        
         [HttpGet]
         public ActionResult Index()
         {
@@ -39,28 +40,16 @@ namespace PresentationLayerMVC.Controllers
                 Images = new StaticPagedList<ImageDto>(images, 1, images.Count, images.Count),
                 Replys = new StaticPagedList<PostReplyDto>(replys, 1, replys.Count, replys.Count)
             };
-            return View("Index", model);
+            return View("Post", model);
         }
 
         [HttpPost]
-        public ActionResult AddComment(Guid postId, Guid userId, string comment)
+        [Route("comment")]
+        public async Task<ActionResult> AddComment(PostWithReplysViewModel model)
         {
-            if (postId == Guid.Empty || userId == Guid.Empty)
-            {
-                return Index();
-            }
-            try
-            {
-                PostFacade.CommentPost(postId, userId, comment);
-                return View("Index", "Post");
-            }
-            catch(Exception e)
-            {
-                ModelState.AddModelError("Comment", e.Message);
-                return View();
-            }
+            return await AddComment(Guid.Parse(model.PostId), model.Username, model.TextComment);
         }
-
+        
         [HttpPost]
         public async Task<ActionResult> Vote(Guid imageId, Guid userId, VoteType type)
         {
@@ -70,8 +59,9 @@ namespace PresentationLayerMVC.Controllers
             }
             try
             {
+                string url = Request.UrlReferrer.AbsolutePath;
                 await PostFacade.AddVote(imageId, userId, type);
-                return View("Index", "Post");
+                return Redirect(url);
             }
             catch(Exception)
             {
@@ -89,8 +79,9 @@ namespace PresentationLayerMVC.Controllers
             }
             try
             {
+                string url = Request.UrlReferrer.AbsolutePath;
                 await PostFacade.RemoveVote(imageId, userId);
-                return View("Index", "Post");
+                return Redirect(url);
             }
             catch(Exception)
             {
@@ -99,5 +90,24 @@ namespace PresentationLayerMVC.Controllers
             }
         }
 
+        private async Task<ActionResult> AddComment(Guid postId, string username, string comment)
+        {
+            if (postId == Guid.Empty)
+            {
+                return Index();
+            }
+            try
+            {
+                string url = Request.UrlReferrer.AbsolutePath;
+                var userId = (await UserFacade.GetUserByUsernameAsync(username)).Id;
+                PostFacade.CommentPost(postId, userId, comment);
+                return Redirect(url);
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("Comment", e.Message);
+                return View();
+            }
+        }
     }
 }

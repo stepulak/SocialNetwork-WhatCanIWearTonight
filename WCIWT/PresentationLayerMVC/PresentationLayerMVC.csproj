@@ -178,7 +178,7 @@
     <Compile Include="Models\Friends\FriendListViewModel.cs" />
     <Compile Include="Models\Messages\MessageListViewModel.cs" />
     <Compile Include="Models\Posts\PostListViewModel.cs" />
-    <Compile Include="Models\Posts\PostWithCommentsViewModel.cs" />
+    <Compile Include="Models\Posts\PostWithReplysViewModel.cs" />
     <Compile Include="Models\UserProfile\UserProfileViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

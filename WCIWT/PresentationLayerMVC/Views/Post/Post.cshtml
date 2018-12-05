@@ -3,6 +3,10 @@
     ViewBag.Title = "Post";
 }
 
+@{ 
+    bool logged = HttpContext.Current.User.Identity.Name.Length != 0;
+}
+
 <!-- TODO MAYBE REMOVE THIS? -->
 <div class="row">
     <div class="col-md-12">
@@ -36,29 +40,70 @@
                 @Html.DisplayFor(model => model.Post.Text)
             </p>
             <div class="divider"></div>
+            <div class="row">
             @for (var i = 0; i < Model.Images.Count; i++)
             {
-                @{
-                    var base64 = Convert.ToBase64String(Model.Images[i].BinaryImage);
-                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                }
-                <img src="@imgSrc" />
-                <button class="btn btn-info" type="button">Like</button>
-                <button class="btn btn-info" type="button">Dislike</button>
-                <div class="divider"></div>
+                var image = Model.Images[i];
+                var base64 = Convert.ToBase64String(image.BinaryImage);
+                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <img src="@imgSrc" alt="Image" class="img-rounded" style="width:100%" />
+                        <div class="caption">
+                            @if (logged)
+                            {
+                                <button class="btn btn-default" type="button">Like (@image.LikesCount)</button>
+                                <button class="btn btn-default" type="button">Dislike (@image.DislikesCount)</button>
+                            }
+                            else
+                            {
+                                @Html.ActionLink($"Like ({image.LikesCount})", "Login", "Account", new { @class = "btn btn-default" })
+                                @Html.ActionLink($"Dislike ({image.DislikesCount})", "Login", "Account", new { @class = "btn btn-default" })
+                            }
+                        </div>
+                    </div>
+                </div>
             }
+            </div>
         </div>
     </div>
 </div>
+
+@if (logged)
+{
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <div class="well">
+        @using (Html.BeginForm("AddComment", "Post"))
+        {
+            @Html.AntiForgeryToken()
+            @Html.TextAreaFor(model => model.TextComment, new { @class = "form-control" })
+            @Html.Hidden("Username", HttpContext.Current.User.Identity.Name)
+            @Html.Hidden("PostId", Model.Post.Id) // must be done
+            <input type="submit" value="Add Comment" class="btn btn-default" />
+        }
+        </div>
+    </div>
+</div>
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
         @for (var i = 0; i < Model.Replys.Count; i++)
         {
         <div class="well">
-            <h6>[@Html.DisplayFor(model => model.Replys[i].Time.ToString())] @Html.DisplayFor(model => model.Replys[i].User.Username)</h6>
+            @{
+                var time = Model.Replys[i].Time.ToString();
+                var username = Model.Replys[i].User.Username;
+                var text = Model.Replys[i].Text;
+            }
+            <h3>@Html.DisplayFor(model => username)</h3>
             <div class="divider"></div>
             <p>
-                @Html.DisplayFor(model => model.Replys[i].Text)
+                @Html.DisplayFor(model => text)
+            </p>
+            <p>
+                Added: @Html.DisplayFor(model => time)
             </p>
         </div>
         }
