@@ -16,7 +16,7 @@ using X.PagedList;
 namespace PresentationLayerMVC.Controllers
 {
     [RoutePrefix("users")]
-    public class UserProfileController : Controller
+    public class UserController : Controller
     {
         public const int PostsPageSize = 10;
         public const int ImagesPerPost = 5;
@@ -28,9 +28,8 @@ namespace PresentationLayerMVC.Controllers
         // GET: user/{username}
         [HttpGet]
         [Route("{username}")]
-        public async Task<ActionResult> Index(string username)
+        public async Task<ActionResult> Index(string username, int page = 1)
         {
-            int page = 1;
             var user = await UserFacade.GetUserByUsernameAsync(username);
             var posts = await GetPostModel(user.Id, page);
 
@@ -41,6 +40,31 @@ namespace PresentationLayerMVC.Controllers
             };
             return View($"UserProfileView", model);
         }
+
+        // GET: user/{username}/friends
+        [HttpGet]
+        [Route("{username}/friends")]
+        public async Task<ActionResult> DisplayFriends(string username, int page = 1)
+        {
+           throw new NotImplementedException();
+        }
+
+        // POST: user/{username}/add-friend
+        [HttpPost]
+        [Route("{username}/add-friend")]
+        public async Task<ActionResult> AddFriend(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        // POST: user/{username}/remove-friend
+        [HttpPost]
+        [Route("{username}/remove-friend")]
+        public async Task<ActionResult> RemoveFriend(string username)
+        {
+            throw new NotImplementedException();;
+        }
+
 
 
         private async Task<PostListViewModel> GetPostModel(Guid userId, int page)

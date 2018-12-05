@@ -31,10 +31,13 @@
                             <button class="btn btn-success">Send Friendship request</button>
                         </div>
                         <div class="row">
-                            <button class="btn btn-success">Send Message</button>
+                            <button class="btn btn-danger">Remove Friend</button>
                         </div>
                         <div class="row">
-                            <button class="btn btn-success">Show Friends</button>
+                            <button class="btn btn-info">Send Message</button>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-info">Show Friends</button>
                         </div>
                     </div>
                 </div>
@@ -52,7 +55,7 @@
                     @Html.ActionLink(
                         linkText: Model.PostListViewModel.Posts[i].User.Username,
                         actionName:"Index",
-                        controllerName: "UserProfile",
+                        controllerName: "User",
                         routeValues: new
                         {
                             area = "",
