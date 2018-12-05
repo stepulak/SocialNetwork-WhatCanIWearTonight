@@ -27,17 +27,34 @@
                         </ul>
                     </div>
                     <div class="col-md-6">
+                        @if (!Model.IsFriend && !Model.HasPendingFriendRequest && User.Identity.IsAuthenticated)
+                        {
+                            <div class="row">
+                                <button class="btn btn-success">Send Friendship request</button>
+                            </div>
+                        }
+                        @if (Model.IsFriend)
+                        {
+                            <div class="row">
+                                <button class="btn btn-danger">Remove Friend</button>
+                            </div>
+                            <div class="row">
+                                <button class="btn btn-info">Send Message</button>
+                            </div>
+                        }
+                          
                         <div class="row">
-                            <button class="btn btn-success">Send Friendship request</button>
-                        </div>
-                        <div class="row">
-                            <button class="btn btn-danger">Remove Friend</button>
-                        </div>
-                        <div class="row">
-                            <button class="btn btn-info">Send Message</button>
-                        </div>
-                        <div class="row">
-                            <button class="btn btn-info">Show Friends</button>
+                            <button class="btn btn-info">
+                                @*@Html.Action(
+                                    actionName:"DisplayFriends",
+                                    controllerName: "User",
+                                    routeValues: new
+                                    {
+                                        area = "",
+                                        username = Model.User.Username
+                                    })*@
+                                Show Friends
+                            </button>
                         </div>
                     </div>
                 </div>

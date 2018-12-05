@@ -31,6 +31,11 @@ namespace PresentationLayerMVC.Controllers
         public async Task<ActionResult> Index(string username, int page = 1)
         {
             var user = await UserFacade.GetUserByUsernameAsync(username);
+            if (user == null)
+            {
+                // TODO: Redirect 404
+            }
+
             var posts = await GetPostModel(user.Id, page);
             var friendshipWithLoggedUser = await GetFriendshipWithLoggedUser(user.Id);
             var model = new UserProfileAggregatedViewModel()
