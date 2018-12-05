@@ -27,11 +27,6 @@ namespace BusinessLayer.QueryObjects
         private CompositePredicate CreateCompositePredicateFromFilter(PostFilterDto filter)
         {
             List<IPredicate> predicates = new List<IPredicate>();
-
-            if (filter.UserAge > 0)
-            {
-                predicates.Add(CreateAgeRestrictionPredicate(filter));
-            }
             if (filter.UserId != Guid.Empty)
             {
                 predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.UserId));
@@ -46,6 +41,7 @@ namespace BusinessLayer.QueryObjects
             }
 
             //predicates.Add(CreateGenderRestrictionPredicate(filter));
+            predicates.Add(CreateAgeRestrictionPredicate(filter));
             return new CompositePredicate(predicates, LogicalOperator.AND);
         }
 

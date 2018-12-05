@@ -28,7 +28,7 @@ namespace PresentationLayerMVC.Controllers
         public UserFacade UserFacade { get; set; }
         public PostFacade PostFacade { get; set; }
 
-        public async Task<PartialViewResult> UserMenu()
+        public PartialViewResult UserMenu()
         {
             return PartialView("_UserMenu");
         }
@@ -79,7 +79,6 @@ namespace PresentationLayerMVC.Controllers
 
         private async Task<PostListViewModel> GetPostModel(Guid userId, int page)
         {
-            // TODO: when filter DTO is changed, pass userId to filter
             var filter = Session[FilterSessionKey] as PostFilterDto ?? new PostFilterDto{PageSize = PostsPageSize};
             filter.RequestedPageNumber = page;
 
@@ -122,7 +121,7 @@ namespace PresentationLayerMVC.Controllers
             return new FriendListViewModel
             {
                 Friends = new StaticPagedList<UserDto>(result, 1, FriendsPageSize, FriendsPageSize),
-                Filter = null
+                Filter = new FriendshipFilterDto()
             };
         }
 

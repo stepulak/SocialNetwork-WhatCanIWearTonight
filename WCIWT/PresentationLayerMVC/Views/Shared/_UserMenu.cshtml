@@ -13,10 +13,18 @@
             {
                 <li>@username</li>
                 <li role="separator" class="divider"></li>
-                <li>@Html.ActionLink("My Profile",
-                        "users/" + username,
-                        new { Area = "" })
-                    </li>
+                <li>
+                    @Html.ActionLink(
+                        linkText: "My Profile",
+                        actionName:"Index",
+                        controllerName: "User",
+                        routeValues: new
+                        {
+                            area = "",
+                            username = username
+                        },
+                        htmlAttributes: null)
+                </li>
                 <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
             }
             else
