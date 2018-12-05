@@ -48,18 +48,28 @@ namespace BusinessLayer.Facades
 
         public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostFeedAsync(PostFilterDto filter, Guid userId)
         {
-            filter.SortCriteria = "Time";
             using (UnitOfWorkProvider.Create())
             {
                 if (userId != Guid.Empty)
                 {
                     return await postService.ListPostsAvailableForUser(userId, filter);
                 }
-
-                filter.IncludePrivatePosts = false;
-                filter.GenderRestriction = Gender.NoInformation;
-                filter.UserAge = 1;
                 return await postService.ListPostAsync(filter);
+            }
+        }
+
+        public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostsByUserId(PostFilterDto filter, Guid userId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                if (userId != Guid.Empty)
+                {
+                    filter.UserId = userId;
+                    filter.SortCriteria = "Time";
+                    filter.IncludePrivatePosts = true;
+                    return await postService.ListPostAsync(filter);
+                }
+                throw new ArgumentException("Cannot display posts of not existing user");
             }
         }
 
