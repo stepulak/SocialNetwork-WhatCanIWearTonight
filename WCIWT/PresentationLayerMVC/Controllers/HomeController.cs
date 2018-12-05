@@ -28,16 +28,14 @@ namespace PresentationLayerMVC.Controllers
         public UserFacade UserFacade { get; set; }
         public PostFacade PostFacade { get; set; }
 
-        public PartialViewResult UserMenu()
+        public async Task<PartialViewResult> UserMenu()
         {
-            var model = UserFacade.GetUserAsync(Guid.Parse("22d1461d-41db-4a5a-8996-dd0fcf7f5f04"));
-            return PartialView("_UserMenu", model);
+            return PartialView("_UserMenu");
         }
 
         public async Task<ActionResult> Index(int page = 1)
         {
-            Guid userId = await GetGuidOfLoggedUser();
-            //userId = Guid.Parse("22d1461d-41db-4a5a-8996-dd0fcf7f5f04");
+            var userId = await GetGuidOfLoggedUser();
             var postsModel = await GetPostModel(userId, page);
             var friendRequestsModel = await GetFriendRequestsModel(userId);
             var friendsModel = await GetFriendsModel(userId);
@@ -139,12 +137,15 @@ namespace PresentationLayerMVC.Controllers
 
         private async Task<Guid> GetGuidOfLoggedUser()
         {
-            if (HttpContext.User != null && HttpContext.User.Identity != null)
-            {
-                var userDto = await UserFacade.GetUserByUsernameAsync(HttpContext.User.Identity.Name);
-                return userDto?.Id ?? Guid.Empty;
-            }
-            return Guid.Empty;
+            var user = await GetLoggedUser();
+            return user?.Id ?? Guid.Empty;
+        }
+
+        private async Task<UserDto> GetLoggedUser()
+        {
+            return HttpContext.User?.Identity != null
+                ? await UserFacade.GetUserByUsernameAsync(HttpContext.User.Identity.Name)
+                : null;
         }
     }
 }
