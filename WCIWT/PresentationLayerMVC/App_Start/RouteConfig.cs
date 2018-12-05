@@ -24,6 +24,11 @@ namespace PresentationLayerMVC
                 "{controller}/{action}",
                 new { }
             );
+
+            routes.MapRoute(
+                "Actions2",
+                "{controller}/{action}/{username}/{imageId}",
+                new { });
         }
     }
 }

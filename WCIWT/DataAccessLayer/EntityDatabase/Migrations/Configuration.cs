@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
+using System.IO;
+using System.Web;
 
 namespace EntityDatabase.Migrations
 {
@@ -297,6 +299,133 @@ namespace EntityDatabase.Migrations
                 message3,
                 message4
             };
+            
+            string imageFolder = "~\\Content\\Images\\TestingImages\\";
+            var imageGirl1 = File.ReadAllBytes(HttpContext.Current.Server.MapPath(imageFolder + "lucia1.jpg"));
+            var imageGirl2 = File.ReadAllBytes(HttpContext.Current.Server.MapPath(imageFolder + "lucia2.jpg"));
+            var imageGirl3 = File.ReadAllBytes(HttpContext.Current.Server.MapPath(imageFolder + "lucia3.jpg"));
+            var imageGirl4 = File.ReadAllBytes(HttpContext.Current.Server.MapPath(imageFolder + "lucia4.jpg"));
+            var imageGirl5 = File.ReadAllBytes(HttpContext.Current.Server.MapPath(imageFolder + "lucia5.jpg"));
+            var imageHelicopter1 = File.ReadAllBytes(HttpContext.Current.Server.MapPath(imageFolder + "apache1.jpg"));
+            var imageHelicopter2 = File.ReadAllBytes(HttpContext.Current.Server.MapPath(imageFolder + "apache2.jpg"));
+
+            var vote1Image1 = new Vote
+            {
+                Id = Guid.Parse("5f107264-fee7-4a35-ab7f-f5e302c42e20"),
+                Type = VoteType.Like,
+                User = user1,
+                UserId = user1.Id,
+            };
+
+            var vote2Image1 = new Vote
+            {
+                Id = Guid.Parse("5f107264-fee7-4a35-ab7f-f5e302c42e21"),
+                Type = VoteType.Dislike,
+                User = user2,
+                UserId = user2.Id,
+            };
+
+            var vote1Image4 = new Vote
+            {
+                Id = Guid.Parse("5f107264-fee7-4a35-ab7f-f5e302c42e22"),
+                Type = VoteType.Like,
+                User = user3,
+                UserId = user3.Id,
+            };
+
+            var vote2Image4 = new Vote
+            {
+                Id = Guid.Parse("5f107264-fee7-4a35-ab7f-f5e302c42e23"),
+                Type = VoteType.Like,
+                User = user2,
+                UserId = user2.Id,
+            };
+
+            var vote3Image4 = new Vote
+            {
+                Id = Guid.Parse("5f107264-fee7-4a35-ab7f-f5e302c42e24"),
+                Type = VoteType.Like,
+                User = user1,
+                UserId = user1.Id,
+            };
+
+            var vote1Image5 = new Vote
+            {
+                Id = Guid.Parse("5f107264-fee7-4a35-ab7f-f5e302c42e26"),
+                Type = VoteType.Like,
+                User = user1,
+                UserId = user1.Id,
+            };
+
+            var image1Post1 = new Image
+            {
+                Id = Guid.Parse("bbe4fcc1-03f5-433a-b677-0022a7a3b3d1"),
+                DislikesCount = 1,
+                LikesCount = 1,
+                BinaryImage = imageGirl1,
+                Post = post1,
+                PostId = post1.Id,
+                Votes = new List<Vote> { vote1Image1, vote2Image1 },
+            };
+
+            var image2Post1 = new Image
+            {
+                Id = Guid.Parse("bbe4fcc1-03f5-433a-b677-0022a7a3b3d2"),
+                DislikesCount = 0,
+                LikesCount = 0,
+                BinaryImage = imageGirl2,
+                Post = post1,
+                PostId = post1.Id,
+                Votes = new List<Vote> { },
+            };
+
+            var image3Post1 = new Image
+            {
+                Id = Guid.Parse("bbe4fcc1-03f5-433a-b677-0022a7a3b3d3"),
+                DislikesCount = 0,
+                LikesCount = 0,
+                BinaryImage = imageGirl3,
+                Post = post1,
+                PostId = post1.Id,
+                Votes = new List<Vote> { },
+            };
+
+            var image4Post1 = new Image
+            {
+                Id = Guid.Parse("bbe4fcc1-03f5-433a-b677-0022a7a3b3d4"),
+                DislikesCount = 0,
+                LikesCount = 3,
+                BinaryImage = imageGirl4,
+                Post = post1,
+                PostId = post1.Id,
+                Votes = new List<Vote> { vote1Image4, vote2Image4, vote3Image4 },
+            };
+
+            var image5Post1 = new Image
+            {
+                Id = Guid.Parse("bbe4fcc1-03f5-433a-b677-0022a7a3b3d5"),
+                DislikesCount = 0,
+                LikesCount = 1,
+                BinaryImage = imageGirl5,
+                Post = post1,
+                PostId = post1.Id,
+                Votes = new List<Vote> { vote1Image5 },
+            };
+
+            vote1Image1.Image = image1Post1;
+            vote1Image1.ImageId = image1Post1.Id;
+            vote2Image1.Image = image1Post1;
+            vote2Image1.ImageId = image1Post1.Id;
+            vote1Image4.Image = image4Post1;
+            vote1Image4.ImageId = image4Post1.Id;
+            vote2Image4.Image = image4Post1;
+            vote2Image4.ImageId = image4Post1.Id;
+            vote3Image4.Image = image4Post1;
+            vote3Image4.ImageId = image4Post1.Id;
+            vote1Image5.Image = image5Post1;
+            vote1Image5.ImageId = image5Post1.Id;
+
+            post1.Images = new List<Image> { image1Post1, image2Post1, image3Post1, image4Post1, image5Post1 };
 
             user1.Messages = user1ToUser3Messages;
             user3.Messages = user1ToUser3Messages;

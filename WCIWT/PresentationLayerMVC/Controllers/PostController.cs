@@ -11,15 +11,20 @@ using X.PagedList;
 
 namespace PresentationLayerMVC.Controllers
 {
+    [RoutePrefix("posts")]
     public class PostController : Controller
     {
+        public UserFacade UserFacade { get; set; }
         public PostFacade PostFacade { get; set; }
-
+        
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
+        [Route("{postId}")]
         public async Task<ActionResult> Index(Guid postId)
         {
             if (postId == Guid.Empty)
@@ -29,36 +34,59 @@ namespace PresentationLayerMVC.Controllers
             var post = await PostFacade.GetPostDtoAccordingToId(postId);
             var replys = await PostFacade.ListOfReplysForPost(postId);
             var images = await PostFacade.ListOfImagesForPost(postId);
-            var model = new PostWithReplysViewModel
+            var model = new PostModel
             {
                 Post = post,
                 Images = new StaticPagedList<ImageDto>(images, 1, images.Count, images.Count),
                 Replys = new StaticPagedList<PostReplyDto>(replys, 1, replys.Count, replys.Count)
             };
-            return View("Index", model);
+            return View("Post", model);
         }
 
         [HttpPost]
-        public ActionResult AddComment(Guid postId, Guid userId, string comment)
+        [Route("comment")]
+        public async Task<ActionResult> AddComment(PostModel model)
         {
-            if (postId == Guid.Empty || userId == Guid.Empty)
+            return await AddComment(Guid.Parse(model.PostId), model.Username, model.TextComment);
+        }
+        
+        //[HttpGet]
+        [Route("like/{username}/{imageId}")]
+        public async Task<ActionResult> Like(string username, Guid imageId)
+        {
+            var userId = (await UserFacade.GetUserByUsernameAsync(username)).Id;
+            return await Vote(imageId, userId, VoteType.Like);
+        }
+
+        //[HttpGet]
+        [Route("dislike/{username}/{imageId}")]
+        public async Task<ActionResult> Dislike(string username, Guid imageId)
+        {
+            var userId = (await UserFacade.GetUserByUsernameAsync(username)).Id;
+            return await Vote(imageId, userId, VoteType.Dislike);
+        }
+        
+        private async Task<ActionResult> AddComment(Guid postId, string username, string comment)
+        {
+            if (postId == Guid.Empty)
             {
                 return Index();
             }
             try
             {
+                string url = Request.UrlReferrer.AbsolutePath;
+                var userId = (await UserFacade.GetUserByUsernameAsync(username)).Id;
                 PostFacade.CommentPost(postId, userId, comment);
-                return View("Index", "Post");
+                return Redirect(url);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ModelState.AddModelError("Comment", e.Message);
                 return View();
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Vote(Guid imageId, Guid userId, VoteType type)
+        private async Task<ActionResult> Vote(Guid imageId, Guid userId, VoteType type)
         {
             if (imageId == Guid.Empty || userId == Guid.Empty)
             {
@@ -66,34 +94,15 @@ namespace PresentationLayerMVC.Controllers
             }
             try
             {
-                await PostFacade.AddVote(imageId, userId, type);
-                return View("Index", "Post");
+                string url = Request.UrlReferrer.AbsolutePath;
+                await PostFacade.AddVote(imageId, userId, type); // TODO: AddVote -> Change vote
+                return Redirect(url);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 ModelState.AddModelError("Image", "Image does not exist!");
                 return View();
             }
         }
-
-        [HttpPost]
-        public async Task<ActionResult> RemoveVote(Guid imageId, Guid userId)
-        {
-            if (imageId == Guid.Empty || userId == Guid.Empty)
-            {
-                return Index();
-            }
-            try
-            {
-                await PostFacade.RemoveVote(imageId, userId);
-                return View("Index", "Post");
-            }
-            catch(Exception)
-            {
-                ModelState.AddModelError("Image", "Image does not exist!");
-                return View();
-            }
-        }
-
     }
 }
