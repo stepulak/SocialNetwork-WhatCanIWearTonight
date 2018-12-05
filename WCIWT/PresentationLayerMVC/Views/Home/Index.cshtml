@@ -49,7 +49,10 @@
                     //var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
                 }
                 <img src="#" alt="Image" />
-                <button class="btn btn-success">Vote</button>
+                @if (HttpContext.Current.User.Identity.Name.Length != 0) // TODO: Add ActionLink to vote
+                {
+                    <button class="btn btn-success">Vote</button>
+                }
             </div>
             <button class="btn btn-default">Show Comments</button>
         </div>
