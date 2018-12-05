@@ -30,31 +30,29 @@
                         @if (!Model.IsFriend && !Model.HasPendingFriendRequest && User.Identity.IsAuthenticated)
                         {
                             <div class="row">
-                                <button class="btn btn-success">Send Friendship request</button>
+                                <input type="button" value="Send Friendship Request" class="btn btn-success"/>
                             </div>
                         }
                         @if (Model.IsFriend)
                         {
                             <div class="row">
-                                <button class="btn btn-danger">Remove Friend</button>
+                                <input type="button" value="Remove Friend" class="btn btn-danger"/>
                             </div>
                             <div class="row">
-                                <button class="btn btn-info">Send Message</button>
+                                <input type="button" value="Send Message" class="btn btn-info"/>
                             </div>
                         }
                           
                         <div class="row">
-                            <button class="btn btn-info">
-                                @*@Html.Action(
+                            <input type="button" class="btn btn-info" value="Show Friends" onclick="location.href=  
+                                   '@Url.Action(
                                     actionName:"DisplayFriends",
                                     controllerName: "User",
                                     routeValues: new
                                     {
                                         area = "",
                                         username = Model.User.Username
-                                    })*@
-                                Show Friends
-                            </button>
+                                    })'"/>
                         </div>
                     </div>
                 </div>
