@@ -36,8 +36,8 @@ namespace PresentationLayerMVC.Controllers
                 // TODO: Redirect 404
             }
 
-            var posts = await GetPostModel(user.Id, page);
             var friendshipWithLoggedUser = await GetFriendshipWithLoggedUser(user.Id);
+            var posts = await GetPostModel(user.Id, page, ResolveIsFriendForModel(friendshipWithLoggedUser));
             var model = new UserProfileAggregatedViewModel()
             {
                 User = user,
@@ -82,11 +82,11 @@ namespace PresentationLayerMVC.Controllers
             return await UserFacade.GetFriendshipBetweenUsers(loggedUser.Id, userId);
         }
 
-        private async Task<PostListViewModel> GetPostModel(Guid userId, int page)
+        private async Task<PostListViewModel> GetPostModel(Guid userId, int page, bool isFriend)
         {
-            var filter = Session[FilterSessionKey] as PostFilterDto ?? new PostFilterDto { PageSize = PostsPageSize };
+            var filter = Session[FilterSessionKey] as PostFilterDto ?? await CreateFilterForUserDetailPosts(isFriend);
             filter.RequestedPageNumber = page;
-
+            
             var posts = await PostFacade.GetPostsByUserId(filter, userId);
             var imagesForPosts = new List<List<ImageDto>>();
 
@@ -96,6 +96,25 @@ namespace PresentationLayerMVC.Controllers
             }
 
             return InitializePostListViewModel(posts, imagesForPosts);
+        }
+
+        private async Task<PostFilterDto> CreateFilterForUserDetailPosts(bool isFriend)
+        {
+            var result = new PostFilterDto
+            {
+                PageSize = PostsPageSize,
+            };
+            if (isFriend)
+            {
+                var friend = await GetLoggedUser();
+                var friendAge = (int)((DateTime.Now - friend.Birthdate).TotalDays / 365.2425);
+
+                result.IncludePrivatePosts = true;
+                result.UserAge = friendAge;
+                result.GenderRestriction = friend.Gender;
+            }
+
+            return result;
         }
 
         private PostListViewModel InitializePostListViewModel(QueryResultDto<PostDto, PostFilterDto> postsResult,

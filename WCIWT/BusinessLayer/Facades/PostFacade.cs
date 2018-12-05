@@ -66,7 +66,6 @@ namespace BusinessLayer.Facades
                 {
                     filter.UserId = userId;
                     filter.SortCriteria = "Time";
-                    filter.IncludePrivatePosts = true;
                     return await postService.ListPostAsync(filter);
                 }
                 throw new ArgumentException("Cannot display posts of not existing user");
