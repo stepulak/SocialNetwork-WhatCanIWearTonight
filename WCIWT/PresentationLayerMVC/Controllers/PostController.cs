@@ -34,7 +34,7 @@ namespace PresentationLayerMVC.Controllers
             var post = await PostFacade.GetPostDtoAccordingToId(postId);
             var replys = await PostFacade.ListOfReplysForPost(postId);
             var images = await PostFacade.ListOfImagesForPost(postId);
-            var model = new PostWithReplysViewModel
+            var model = new PostModel
             {
                 Post = post,
                 Images = new StaticPagedList<ImageDto>(images, 1, images.Count, images.Count),
@@ -45,51 +45,27 @@ namespace PresentationLayerMVC.Controllers
 
         [HttpPost]
         [Route("comment")]
-        public async Task<ActionResult> AddComment(PostWithReplysViewModel model)
+        public async Task<ActionResult> AddComment(PostModel model)
         {
             return await AddComment(Guid.Parse(model.PostId), model.Username, model.TextComment);
         }
         
-        [HttpPost]
-        public async Task<ActionResult> Vote(Guid imageId, Guid userId, VoteType type)
+        //[HttpGet]
+        [Route("like/{username}/{imageId}")]
+        public async Task<ActionResult> Like(string username, Guid imageId)
         {
-            if (imageId == Guid.Empty || userId == Guid.Empty)
-            {
-                return Index();
-            }
-            try
-            {
-                string url = Request.UrlReferrer.AbsolutePath;
-                await PostFacade.AddVote(imageId, userId, type);
-                return Redirect(url);
-            }
-            catch(Exception)
-            {
-                ModelState.AddModelError("Image", "Image does not exist!");
-                return View();
-            }
+            var userId = (await UserFacade.GetUserByUsernameAsync(username)).Id;
+            return await Vote(imageId, userId, VoteType.Like);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> RemoveVote(Guid imageId, Guid userId)
+        //[HttpGet]
+        [Route("dislike/{username}/{imageId}")]
+        public async Task<ActionResult> Dislike(string username, Guid imageId)
         {
-            if (imageId == Guid.Empty || userId == Guid.Empty)
-            {
-                return Index();
-            }
-            try
-            {
-                string url = Request.UrlReferrer.AbsolutePath;
-                await PostFacade.RemoveVote(imageId, userId);
-                return Redirect(url);
-            }
-            catch(Exception)
-            {
-                ModelState.AddModelError("Image", "Image does not exist!");
-                return View();
-            }
+            var userId = (await UserFacade.GetUserByUsernameAsync(username)).Id;
+            return await Vote(imageId, userId, VoteType.Dislike);
         }
-
+        
         private async Task<ActionResult> AddComment(Guid postId, string username, string comment)
         {
             if (postId == Guid.Empty)
@@ -106,6 +82,25 @@ namespace PresentationLayerMVC.Controllers
             catch (Exception e)
             {
                 ModelState.AddModelError("Comment", e.Message);
+                return View();
+            }
+        }
+
+        private async Task<ActionResult> Vote(Guid imageId, Guid userId, VoteType type)
+        {
+            if (imageId == Guid.Empty || userId == Guid.Empty)
+            {
+                return Index();
+            }
+            try
+            {
+                string url = Request.UrlReferrer.AbsolutePath;
+                await PostFacade.AddVote(imageId, userId, type); // TODO: AddVote -> Change vote
+                return Redirect(url);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("Image", "Image does not exist!");
                 return View();
             }
         }

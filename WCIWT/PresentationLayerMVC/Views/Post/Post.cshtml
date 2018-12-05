@@ -1,4 +1,4 @@
-﻿@model PresentationLayerMVC.Models.Posts.PostWithReplysViewModel
+﻿@model PresentationLayerMVC.Models.Posts.PostModel
 @{
     ViewBag.Title = "Post";
 }
@@ -52,8 +52,9 @@
                         <div class="caption">
                             @if (logged)
                             {
-                                <button class="btn btn-default" type="button">Like (@image.LikesCount)</button>
-                                <button class="btn btn-default" type="button">Dislike (@image.DislikesCount)</button>
+                                var username = HttpContext.Current.User.Identity.Name;
+                                @Html.ActionLink($"Like ({image.LikesCount})", $"posts/like/{username}/{image.Id}", null, new { @class = "btn btn-default" })
+                                @Html.ActionLink($"Dislike ({image.DislikesCount})", $"posts/dislike/{username}/{image.Id}", null, new { @class = "btn btn-default" })
                             }
                             else
                             {

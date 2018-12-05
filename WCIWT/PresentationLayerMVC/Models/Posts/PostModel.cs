@@ -6,7 +6,7 @@ using X.PagedList;
 
 namespace PresentationLayerMVC.Models.Posts
 {
-    public class PostWithReplysViewModel
+    public class PostModel
     {
         // TODO: in/out separate classes
 
@@ -19,6 +19,7 @@ namespace PresentationLayerMVC.Models.Posts
         public ImageFilterDto ImageFilter { get; set; }
 
         // In
+        // Comment
         public string PostId { get; set; }
         public string Username { get; set; }
         public string TextComment { get; set; }

@@ -160,7 +160,7 @@ namespace BusinessLayer.Facades
 
         public void CommentPost(Guid postId, Guid userId, string reply)
         {
-            using (UnitOfWorkProvider.Create())
+            using (var uow = UnitOfWorkProvider.Create())
             {
                 if (reply.Length < MinimalPostReplyLength)
                 {
@@ -174,6 +174,7 @@ namespace BusinessLayer.Facades
                     Time = DateTime.Now,
                 };
                 postReplyService.Create(comment);
+                uow.Commit();
             }
         }
 
