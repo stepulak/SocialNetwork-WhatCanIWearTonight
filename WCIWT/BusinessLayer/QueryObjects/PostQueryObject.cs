@@ -8,8 +8,8 @@ using EntityDatabase;
 using WCIWT.Infrastructure.Query;
 using WCIWT.Infrastructure.Query.Predicates;
 using WCIWT.Infrastructure.Query.Predicates.Operators;
-using Gender = BusinessLayer.DataTransferObjects.Gender;
-using PostVisibility = BusinessLayer.DataTransferObjects.PostVisibility;
+using Gender = EntityDatabase.Gender;
+using PostVisibility = EntityDatabase.PostVisibility;
 
 namespace BusinessLayer.QueryObjects
 {
@@ -21,12 +21,7 @@ namespace BusinessLayer.QueryObjects
 
         protected override IQuery<Post> ApplyWhereClause(IQuery<Post> query, PostFilterDto filter)
         {
-            return filter.UserId == Guid.Empty 
-                   && filter.UserAge <= 0 
-                   && filter.GenderRestriction == Gender.NoInformation 
-                   && filter.Visibility == PostVisibility.Public
-                ? query
-                : query.Where(CreateCompositePredicateFromFilter(filter));
+            return query.Where(CreateCompositePredicateFromFilter(filter));
         }
 
         private CompositePredicate CreateCompositePredicateFromFilter(PostFilterDto filter)
@@ -41,16 +36,28 @@ namespace BusinessLayer.QueryObjects
             {
                 predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.UserId));
             }
-            if (filter.GenderRestriction != Gender.NoInformation)
+            if (filter.IncludePrivatePosts)
             {
-                //predicates.Add(CreateGenderRestrictionPredicate(filter));
+                predicates.Add(CreateNoVisibilityRestrictionPost());
             }
-            if (filter.Visibility != PostVisibility.Public)
+            else
             {
-                predicates.Add(new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, filter.Visibility));
+                predicates.Add(new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, PostVisibility.Public));
             }
 
+            //predicates.Add(CreateGenderRestrictionPredicate(filter));
             return new CompositePredicate(predicates, LogicalOperator.AND);
+        }
+
+        private IPredicate CreateNoVisibilityRestrictionPost()
+        {
+            var predicates = new List<IPredicate>
+            {
+                new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, PostVisibility.Public),
+                new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, PostVisibility.FriendsOnly)
+            };
+            var post = new CompositePredicate(predicates, LogicalOperator.OR);
+            return post;
         }
 
         private IPredicate CreateAgeRestrictionPredicate(PostFilterDto filter)

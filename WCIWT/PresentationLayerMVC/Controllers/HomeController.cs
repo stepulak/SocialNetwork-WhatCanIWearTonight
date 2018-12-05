@@ -79,15 +79,6 @@ namespace PresentationLayerMVC.Controllers
 
         private async Task<PostListViewModel> GetPostModel(Guid userId, int page)
         {
-            if (userId == Guid.Empty)
-            {
-                return new PostListViewModel
-                {
-                    Posts = new StaticPagedList<PostDto>(new List<PostDto>(), 1, 0, 0),
-                    ImagesForPosts = new List<List<ImageDto>>(),
-                    PostFilter = null,
-                };
-            }
             // TODO: when filter DTO is changed, pass userId to filter
             var filter = Session[FilterSessionKey] as PostFilterDto ?? new PostFilterDto{PageSize = PostsPageSize};
             filter.RequestedPageNumber = page;

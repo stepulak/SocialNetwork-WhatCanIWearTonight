@@ -64,6 +64,7 @@ namespace BusinessLayer.Services.Posts
         public async Task<QueryResultDto<PostDto, PostFilterDto>> ListPostsAvailableForUser(Guid userId,
             PostFilterDto filter)
         {
+            filter.IncludePrivatePosts = true;
             UserDto user = await userService.GetAsync(userId);
             List<UserDto> userFriends = await friendshipService.ListOfFriendsAsync(userId);
             List<Guid> userFriendsIds = userFriends.Select(x => x.Id).ToList();

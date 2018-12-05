@@ -54,6 +54,10 @@ namespace BusinessLayer.Facades
                 {
                     return await postService.ListPostsAvailableForUser(userId, filter);
                 }
+
+                filter.IncludePrivatePosts = false;
+                filter.GenderRestriction = Gender.NoInformation;
+                filter.UserAge = 1;
                 return await postService.ListPostAsync(filter);
             }
         }
