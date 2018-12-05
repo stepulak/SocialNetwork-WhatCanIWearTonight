@@ -34,12 +34,15 @@ namespace DemoEshop.PresentationLayer.Controllers
             }
         }
         
+        [HttpGet]
+        [Route("login")]
         public ActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [Route("login")]
         public async Task<ActionResult> Login(LoginModel model, string returnUrl)
         {
             if (await UserFacade.Login(model.Username, model.Password))
@@ -62,6 +65,8 @@ namespace DemoEshop.PresentationLayer.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("logout")]
         public async Task<ActionResult> Logout()
         {
             FormsAuthentication.SignOut();
