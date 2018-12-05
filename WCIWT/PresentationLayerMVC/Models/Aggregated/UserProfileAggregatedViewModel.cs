@@ -7,5 +7,7 @@ namespace PresentationLayerMVC.Models.Aggregated
     {
         public PostListViewModel PostListViewModel { get; set; }
         public UserDto User { get; set; }
+        public bool HasPendingFriendRequest { get; set; }
+        public bool IsFriend { get; set; }
     }
 }

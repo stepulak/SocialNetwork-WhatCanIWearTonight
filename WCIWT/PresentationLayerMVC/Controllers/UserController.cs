@@ -32,11 +32,13 @@ namespace PresentationLayerMVC.Controllers
         {
             var user = await UserFacade.GetUserByUsernameAsync(username);
             var posts = await GetPostModel(user.Id, page);
-
+            var friendshipWithLoggedUser = await GetFriendshipWithLoggedUser(user.Id);
             var model = new UserProfileAggregatedViewModel()
             {
                 User = user,
-                PostListViewModel = posts
+                PostListViewModel = posts,
+                IsFriend =  ResolveIsFriendForModel(friendshipWithLoggedUser),
+                HasPendingFriendRequest = ResolveHasPendingFriendRequestForModel(friendshipWithLoggedUser)
             };
             return View($"UserProfileView", model);
         }
@@ -65,7 +67,15 @@ namespace PresentationLayerMVC.Controllers
             throw new NotImplementedException();;
         }
 
-
+        private async Task<FriendshipDto> GetFriendshipWithLoggedUser(Guid userId)
+        {
+            var loggedUser = await GetLoggedUser();
+            if (loggedUser == null)
+            {
+                return null;
+            }
+            return await UserFacade.GetFriendshipBetweenUsers(loggedUser.Id, userId);
+        }
 
         private async Task<PostListViewModel> GetPostModel(Guid userId, int page)
         {
@@ -94,5 +104,16 @@ namespace PresentationLayerMVC.Controllers
                 PostFilter = postsResult.Filter,
             };
         }
+
+        private async Task<UserDto> GetLoggedUser()
+        {
+            return HttpContext.User?.Identity != null
+                ? await UserFacade.GetUserByUsernameAsync(HttpContext.User.Identity.Name)
+                : null;
+        }
+
+        private bool ResolveHasPendingFriendRequestForModel(FriendshipDto friendship) => friendship != null && !friendship.IsConfirmed;
+
+        private bool ResolveIsFriendForModel(FriendshipDto friendship) => friendship != null && friendship.IsConfirmed;
     }
 }
