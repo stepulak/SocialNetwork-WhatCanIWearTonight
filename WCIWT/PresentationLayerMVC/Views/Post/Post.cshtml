@@ -53,13 +53,61 @@
                             @if (logged)
                             {
                                 var username = HttpContext.Current.User.Identity.Name;
-                                @Html.ActionLink($"Like ({image.LikesCount})", $"posts/like/{username}/{image.Id}", null, new { @class = "btn btn-default" })
-                                @Html.ActionLink($"Dislike ({image.DislikesCount})", $"posts/dislike/{username}/{image.Id}", null, new { @class = "btn btn-default" })
+                                @Html.ActionLink(
+                                    linkText: $"Like {image.LikesCount}",
+                                    actionName: "Like",
+                                    controllerName: "Post",
+                                    routeValues: new
+                                    {
+                                        area = "",
+                                        username = username,
+                                        imageId = image.Id,
+                                    },
+                                    htmlAttributes: new
+                                    {
+                                        @class = "btn btn-default"
+                                    })
+                                @Html.ActionLink(
+                                    linkText: $"Dislike {image.DislikesCount}",
+                                    actionName: "Dislike",
+                                    controllerName: "Post",
+                                    routeValues: new
+                                    {
+                                        area = "",
+                                        username = username,
+                                        imageId = image.Id,
+                                    },
+                                    htmlAttributes: new
+                                    {
+                                        @class = "btn btn-default"
+                                    })
                             }
                             else
                             {
-                                @Html.ActionLink($"Like ({image.LikesCount})", "Login", "Account", new { @class = "btn btn-default" })
-                                @Html.ActionLink($"Dislike ({image.DislikesCount})", "Login", "Account", new { @class = "btn btn-default" })
+                                @Html.ActionLink(
+                                   linkText: $"Like {image.LikesCount}",
+                                   actionName: "Login",
+                                   controllerName: "Account",
+                                   routeValues: new
+                                   {
+                                       area = "",
+                                   },
+                                   htmlAttributes: new
+                                   {
+                                       @class = "btn btn-default"
+                                   })
+                                @Html.ActionLink(
+                                   linkText: $"Dislike {image.DislikesCount}",
+                                   actionName: "Login",
+                                   controllerName: "Account",
+                                   routeValues: new
+                                   {
+                                       area = "",
+                                   },
+                                   htmlAttributes: new
+                                   {
+                                       @class = "btn btn-default"
+                                   })
                             }
                         </div>
                     </div>

@@ -76,7 +76,7 @@ namespace PresentationLayerMVC.Controllers
             {
                 string url = Request.UrlReferrer.AbsolutePath;
                 var userId = (await UserFacade.GetUserByUsernameAsync(username)).Id;
-                PostFacade.CommentPost(postId, userId, comment);
+                await PostFacade.CommentPost(postId, userId, comment);
                 return Redirect(url);
             }
             catch (Exception e)
@@ -95,7 +95,7 @@ namespace PresentationLayerMVC.Controllers
             try
             {
                 string url = Request.UrlReferrer.AbsolutePath;
-                await PostFacade.AddVote(imageId, userId, type); // TODO: AddVote -> Change vote
+                await PostFacade.ChangeVote(imageId, userId, type);
                 return Redirect(url);
             }
             catch (Exception)

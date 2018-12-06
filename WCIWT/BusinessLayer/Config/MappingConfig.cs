@@ -40,6 +40,9 @@ namespace BusinessLayer.Config
             config.CreateMap<Vote, VoteDto>();
             config.CreateMap<VoteDto, Vote>();
 
+            config.CreateMap<Image, ImageDto>();
+            config.CreateMap<ImageDto, Image>();
+
             config.CreateMap<QueryResult<Friendship>, QueryResultDto<FriendshipDto, FriendshipFilterDto>>();
             config.CreateMap<QueryResult<Hashtag>, QueryResultDto<HashtagDto, HashtagFilterDto>>();
             config.CreateMap<QueryResult<Image>, QueryResultDto<ImageDto, ImageFilterDto>>();

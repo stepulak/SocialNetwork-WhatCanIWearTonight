@@ -21,6 +21,7 @@ namespace BusinessLayer.Services.Hashtags
         public HashtagService(IMapper mapper, IRepository<Hashtag> repository, QueryObjectBase<HashtagDto, Hashtag, HashtagFilterDto, IQuery<Hashtag>> hashtagQueryObject)
             : base(mapper, repository, hashtagQueryObject)
         {
+            HashtagQueryObject = hashtagQueryObject;
         }
 
         public async Task<QueryResultDto<HashtagDto, HashtagFilterDto>> ListHashtagAsync(HashtagFilterDto filter)

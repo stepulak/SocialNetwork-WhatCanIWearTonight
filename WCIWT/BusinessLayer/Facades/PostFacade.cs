@@ -94,39 +94,52 @@ namespace BusinessLayer.Facades
         {
             using (UnitOfWorkProvider.Create())
             {
-                var vote = await voteService.ListVoteAsync(new VoteFilterDto
+                var votes = await voteService.ListVoteAsync(new VoteFilterDto
                 {
                     ImageId = imageId,
                     UserId = userId
                 });
-                if (vote.TotalItemsCount == 1)
+                if (votes.TotalItemsCount != 0)
                 {
-                    return new Tuple<bool, VoteDto>(true, vote.Items.First());
+                    return new Tuple<bool, VoteDto>(true, votes.Items.First());
                 }
-                return new Tuple<bool, VoteDto>(false, new VoteDto { });
+                return new Tuple<bool, VoteDto>(false, null);
             }
         }
 
-        public async Task<Guid> AddVote(Guid imageId, Guid userId, VoteType type)
+        public async Task<Guid> ChangeVote(Guid imageId, Guid userId, VoteType type)
         {
-            Tuple<bool, VoteDto> vote;
-            ImageDto image;
-            using (UnitOfWorkProvider.Create())
-            {
-                image = await imageService.GetAsync(imageId);
-                if (image == null)
-                {
-                    throw new ArgumentException("Image does not exist");
-                }
-            }
-            vote = await VoteFromUser(imageId, userId);
+            var image = await GetImage(imageId); 
+            var vote = await VoteFromUser(imageId, userId);
             if (vote.Item1)
             {
                 // In case you disliked the image and you want to like it instead
                 // (or other way round), remove the old vote and create new
-                await RemoveVote(vote.Item2);
+                await RemoveVote(image, vote.Item2);
+                if (vote.Item2.Type == type)
+                {
+                    return Guid.Empty;
+                }
             }
+            return await AddVote(image, userId, type);
+        }
+
+        private async Task<ImageDto> GetImage(Guid imageId)
+        {
             using (UnitOfWorkProvider.Create())
+            {
+                var image = await imageService.GetAsync(imageId);
+                if (image == null)
+                {
+                    throw new ArgumentException("Image does not exist");
+                }
+                return image;
+            }
+        }
+
+        private async Task<Guid> AddVote(ImageDto image, Guid userId, VoteType type)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
             {
                 if (type == VoteType.Like)
                 {
@@ -137,38 +150,31 @@ namespace BusinessLayer.Facades
                     image.DislikesCount++;
                 }
                 await imageService.Update(image);
-                return voteService.Create(new VoteDto { ImageId = imageId, UserId = userId, Type = type });
+                var guid = voteService.Create(new VoteDto { ImageId = image.Id, UserId = userId, Type = type });
+                await uow.Commit();
+                return guid;
             }
         }
-
-        public async Task RemoveVote(Guid imageId, Guid userId)
+        
+        private async Task RemoveVote(ImageDto image, VoteDto vote)
         {
-            QueryResultDto<VoteDto, VoteFilterDto> allVotes;
-            using (UnitOfWorkProvider.Create())
-            {
-                allVotes = await voteService.ListVoteAsync(new VoteFilterDto { ImageId = imageId, UserId = userId });
-            }
-            await RemoveVote(allVotes.Items.First());
-        }
-
-        public async Task RemoveVote(VoteDto vote)
-        {
-            using (UnitOfWorkProvider.Create())
+            using (var uow = UnitOfWorkProvider.Create())
             {
                 if (vote.Type == VoteType.Like)
                 {
-                    vote.Image.LikesCount--;
+                    image.LikesCount--;
                 }
                 else
                 {
-                    vote.Image.DislikesCount--;
+                    image.DislikesCount--;
                 }
-                await imageService.Update(vote.Image);
+                await imageService.Update(image);
                 voteService.Delete(vote.Id);
+                await uow.Commit();
             }
         }
 
-        public void CommentPost(Guid postId, Guid userId, string reply)
+        public async Task CommentPost(Guid postId, Guid userId, string reply)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
@@ -184,7 +190,7 @@ namespace BusinessLayer.Facades
                     Time = DateTime.Now,
                 };
                 postReplyService.Create(comment);
-                uow.Commit();
+                await uow.Commit();
             }
         }
 

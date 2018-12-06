@@ -25,13 +25,13 @@ namespace BusinessLayer.QueryObjects
         private IPredicate CreateCompositePredicateFromFilter(VoteFilterDto filter)
         {
             // either one of UserId or ImageId
-            if (filter.UserId == Guid.Empty)
-            {
-                return new SimplePredicate(nameof(Vote.ImageId), ValueComparingOperator.Equal, filter.ImageId);
-            }
-            if (filter.ImageId == Guid.Empty)
+            if (filter.UserId != Guid.Empty && filter.ImageId == Guid.Empty)
             {
                 return new SimplePredicate(nameof(Vote.UserId), ValueComparingOperator.Equal, filter.UserId);
+            }
+            if (filter.ImageId != Guid.Empty && filter.UserId == Guid.Empty)
+            {
+                return new SimplePredicate(nameof(Vote.ImageId), ValueComparingOperator.Equal, filter.ImageId);
             }
             // Or both
             var predicates = new List<IPredicate>

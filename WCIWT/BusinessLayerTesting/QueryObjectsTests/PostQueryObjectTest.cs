@@ -31,7 +31,7 @@ namespace BusinessLayerTesting.QueryObjectsTests
             var queryMock = mockManager.ConfigureQueryMock<Post>();
             var postQueryObject = new PostQueryObject(mapperMock.Object, queryMock.Object);
 
-            var filter = new PostFilterDto { Visibility = filteredVisibility };
+            var filter = new PostFilterDto {};
             var temp = await postQueryObject.ExecuteQuery(filter);
             Assert.AreEqual(expectedPredicate, mockManager.CapturedPredicate);
         }
@@ -155,8 +155,7 @@ namespace BusinessLayerTesting.QueryObjectsTests
             {
                 UserAge = filteredUserAge,
                 GenderRestriction = filteredGenderRestriction,
-                UserId = filteredUserId,
-                Visibility = filteredPostVisibility
+                UserId = filteredUserId
             };
             var temp = await postQueryObject.ExecuteQuery(filter);
             Assert.AreEqual(expectedPredicate, mockManager.CapturedPredicate);
