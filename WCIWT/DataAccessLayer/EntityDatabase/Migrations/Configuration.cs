@@ -430,6 +430,8 @@ namespace EntityDatabase.Migrations
             user1.Messages = user1ToUser3Messages;
             user3.Messages = user1ToUser3Messages;
 
+            context.Votes.AddOrUpdate(vote => vote.Id, vote1Image1, vote2Image1, vote1Image4, vote1Image5, vote2Image4, vote3Image4);
+            context.Images.AddOrUpdate(image => image.Id, image1Post1, image2Post1, image3Post1, image4Post1, image5Post1);
             context.Users.AddOrUpdate(user => user.Id, admin, user1, user2, user3);
             context.Posts.AddOrUpdate(post => post.Id, post1, post2, post3, post4, post5, post6, post7, post8);
             context.Friendships.AddOrUpdate(friendship => friendship.Id, user1Touser3Friendship);
