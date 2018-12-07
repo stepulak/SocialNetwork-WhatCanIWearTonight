@@ -8,7 +8,7 @@
 }
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-10">
         <div class="well">
             <h3>@Html.DisplayFor(model => model.Post.User.Username)</h3>
             <div class="divider"></div>
@@ -41,7 +41,7 @@
                                     },
                                     htmlAttributes: new
                                     {
-                                        @class = "btn btn-default"
+                                        @class = "btn btn-success"
                                     })
                                 @Html.ActionLink(
                                     linkText: $"Dislike {image.DislikesCount}",
@@ -55,7 +55,7 @@
                                     },
                                     htmlAttributes: new
                                     {
-                                        @class = "btn btn-default"
+                                        @class = "btn btn-danger"
                                     })
                             }
                             else
@@ -70,7 +70,7 @@
                                    },
                                    htmlAttributes: new
                                    {
-                                       @class = "btn btn-default"
+                                       @class = "btn btn-success"
                                    })
                                 @Html.ActionLink(
                                    linkText: $"Dislike {image.DislikesCount}",
@@ -82,7 +82,7 @@
                                    },
                                    htmlAttributes: new
                                    {
-                                       @class = "btn btn-default"
+                                       @class = "btn btn-danger"
                                    })
                             }
                         </div>
@@ -94,43 +94,44 @@
     </div>
 </div>
 
-@if (logged)
-{
 <div class="row">
-    <div class="col-md-3">
-        <div class="well">
-        @using (Html.BeginForm("AddComment", "Post"))
-        {
-            @Html.AntiForgeryToken()
-            @Html.TextAreaFor(model => model.TextComment, new { @class = "form-control" })
-            @Html.Hidden("Username", HttpContext.Current.User.Identity.Name)
-            @Html.Hidden("PostId", Model.Post.Id) // must be done
-            <input type="submit" value="Add Comment" class="btn btn-default" />
-        }
-        </div>
-    </div>
-</div>
-}
-
-<div class="row">
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-4">
         @for (var i = 0; i < Model.Replys.Count; i++)
         {
-        <div class="well">
-            @{
-                var time = Model.Replys[i].Time.ToString();
-                var username = Model.Replys[i].User.Username;
-                var text = Model.Replys[i].Text;
-            }
-            <h3>@Html.DisplayFor(model => username)</h3>
-            <div class="divider"></div>
-            <p>
-                @Html.DisplayFor(model => text)
-            </p>
-            <p>
-                Added: @Html.DisplayFor(model => time)
-            </p>
-        </div>
+            <div class="well">
+                @{
+                    var time = Model.Replys[i].Time.ToString();
+                    var username = Model.Replys[i].User.Username;
+                    var text = Model.Replys[i].Text;
+                }
+                <h3>@Html.DisplayFor(model => username)</h3>
+                <div class="divider"></div>
+                <p>
+                    @Html.DisplayFor(model => text)
+                </p>
+                <p>
+                    Added: @Html.DisplayFor(model => time)
+                </p>
+            </div>
         }
     </div>
 </div>
+
+@if (logged)
+{
+    <div class="row">
+        <div class="col-md-3">
+            <div class="well">
+                @using (Html.BeginForm("AddComment", "Post"))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.TextAreaFor(model => model.TextComment, new { @class = "form-control" })
+                    @Html.Hidden("Username", HttpContext.Current.User.Identity.Name)
+                    @Html.Hidden("PostId", Model.Post.Id) // must be done
+                    <input type="submit" value="Add Comment" class="btn btn-success" />
+                }
+            </div>
+        </div>
+    </div>
+}
+
