@@ -136,7 +136,19 @@
                 <p>
                     Added: @Html.DisplayFor(model => model.PostListViewModel.Posts[i].Time)
                 </p>
-                @Html.ActionLink("Show comments", "posts/" + Model.PostListViewModel.Posts[i].Id, null, new { @class = "btn btn-default" })
+                @Html.ActionLink(
+                    linkText: $"Show comments",
+                    actionName: "Index",
+                    controllerName: "Post",
+                    routeValues: new
+                    {
+                        area = "",
+                        postId = Model.PostListViewModel.Posts[i].Id
+                    },
+                    htmlAttributes: new
+                    {
+                        @class = "btn btn-default"
+                    })
             </div>
         </div>
     }

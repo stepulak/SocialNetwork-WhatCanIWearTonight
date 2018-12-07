@@ -5,6 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+@{
+    bool logged = HttpContext.Current.User.Identity.Name.Length != 0;
+}
+
 <div class="row">
     <div class="col-md-10">
         <div class="panel panel-default">
@@ -27,24 +32,24 @@
                         </ul>
                     </div>
                     <div class="col-md-6">
-                        @if (!Model.IsFriend && !Model.HasPendingFriendRequest && User.Identity.IsAuthenticated)
+                        @if (!Model.IsFriend && !Model.HasPendingFriendRequest && logged)
                         {
                             <div class="row">
-                                <input type="button" value="Send Friendship Request" class="btn btn-success"/>
+                                <input type="button" value="Send Friendship Request" class="btn btn-success" />
                             </div>
                         }
-                        @if (Model.IsFriend)
+                        @if (Model.IsFriend && logged)
                         {
                             <div class="row">
-                                <input type="button" value="Remove Friend" class="btn btn-danger"/>
+                                <input type="button" value="Remove Friend" class="btn btn-danger" />
                             </div>
                             <div class="row">
-                                <input type="button" value="Send Message" class="btn btn-info"/>
+                                <input type="button" value="Send Message" class="btn btn-info" />
                             </div>
                         }
-                          
+
                         <div class="row">
-                            <input type="button" class="btn btn-info" value="Show Friends" onclick="location.href=  
+                            <input type="button" class="btn btn-info" value="Show Friends" onclick="location.href=
                                    '@Url.Action(
                                     actionName:"DisplayFriends",
                                     controllerName: "User",
@@ -52,7 +57,7 @@
                                     {
                                         area = "",
                                         username = Model.User.Username
-                                    })'"/>
+                                    })'" />
                         </div>
                     </div>
                 </div>
@@ -82,21 +87,100 @@
                 <p>
                     @Html.DisplayFor(model => model.PostListViewModel.Posts[i].Text)
                 </p>
-                @{
-                    //var base64 = Convert.ToBase64String(image);
-                    //var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                }
-                <img src="#" alt="Image"/>
-                @if (HttpContext.Current.User.Identity.Name.Length != 0) // TODO: Add ActionLink to vote
+                @if (Model.PostListViewModel.ImagesForPosts[i].Count > 0)
                 {
-                    <button class="btn btn-success">Vote</button>
+                    <div class="row">
+                        @for (var j = 0; j < Model.PostListViewModel.ImagesForPosts[i].Count; j++)
+                        {
+                            var image = Model.PostListViewModel.ImagesForPosts[i][j];
+                            var base64 = Convert.ToBase64String(image.BinaryImage);
+                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            <div class="col-md-4">
+                                <div class="thumbnail">
+                                    <img src="@imgSrc" alt="Image" class="img-rounded" style="width:100%" />
+                                    <div class="caption">
+                                        @if (logged)
+                                        {
+                                            var username = HttpContext.Current.User.Identity.Name;
+                                            @Html.ActionLink(
+                                                linkText: $"Like {image.LikesCount}",
+                                                actionName: "Like",
+                                                controllerName: "Post",
+                                                routeValues: new
+                                                {
+                                                    area = "",
+                                                    username = username,
+                                                    imageId = image.Id,
+                                                },
+                                                htmlAttributes: new
+                                                {
+                                                    @class = "btn btn-default"
+                                                })
+                                            @Html.ActionLink(
+                                                linkText: $"Dislike {image.DislikesCount}",
+                                                actionName: "Dislike",
+                                                controllerName: "Post",
+                                                routeValues: new
+                                                {
+                                                    area = "",
+                                                    username = username,
+                                                    imageId = image.Id,
+                                                },
+                                                htmlAttributes: new
+                                                {
+                                                    @class = "btn btn-default"
+                                                })
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink(
+                                               linkText: $"Like {image.LikesCount}",
+                                               actionName: "Login",
+                                               controllerName: "Account",
+                                               routeValues: new
+                                               {
+                                                   area = "",
+                                               },
+                                               htmlAttributes: new
+                                               {
+                                                   @class = "btn btn-default"
+                                               })
+                                            @Html.ActionLink(
+                                               linkText: $"Dislike {image.DislikesCount}",
+                                               actionName: "Login",
+                                               controllerName: "Account",
+                                               routeValues: new
+                                               {
+                                                   area = "",
+                                               },
+                                               htmlAttributes: new
+                                               {
+                                                   @class = "btn btn-default"
+                                               })
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 }
                 <p>
                     Added: @Html.DisplayFor(model => model.PostListViewModel.Posts[i].Time)
                 </p>
+                @Html.ActionLink(
+                    linkText: $"Show comments",
+                    actionName: "Index",
+                    controllerName: "Post",
+                    routeValues: new
+                    {
+                        area = "",
+                        postId = Model.PostListViewModel.Posts[i].Id
+                    },
+                    htmlAttributes: new
+                    {
+                        @class = "btn btn-default"
+                    })
             </div>
-            <button class="btn btn-default">Show Comments</button>
         </div>
     }
 </div>
-       
