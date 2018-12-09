@@ -174,6 +174,14 @@ namespace BusinessLayer.Facades
             }
         }
 
+        public void RemoveFriendship(FriendshipDto friendship)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                friendshipService.Delete(friendship.Id);
+            }
+        }
+
         public async Task<QueryResultDto<UserDto, FriendshipFilterDto>> GetFriendsOfUser(Guid userId, FriendshipFilterDto filter)
         {
             filter.UserA = userId;
