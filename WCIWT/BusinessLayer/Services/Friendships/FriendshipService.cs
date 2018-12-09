@@ -28,6 +28,26 @@ namespace BusinessLayer.Services.Friendships
             return await Query.ExecuteQuery(filter);
         }
 
+        public async Task<QueryResultDto<UserDto, FriendshipFilterDto>> GetFriendsOfUserAsync(Guid userId, FriendshipFilterDto filter)
+        {
+            var friendships = await ListFriendshipAsync(filter);
+            var recipientFriends = friendships.Items
+                .Where(friendship => friendship.ApplicantId == userId)
+                .Select(friendship => friendship.Recipient);
+
+            var applicantFriends = friendships.Items
+                .Where(friendship => friendship.RecipientId == userId)
+                .Select(friendship => friendship.Applicant);
+            return new QueryResultDto<UserDto, FriendshipFilterDto>()
+            {
+                Items = recipientFriends.Union(applicantFriends),
+                TotalItemsCount = friendships.TotalItemsCount,
+                PageSize = friendships.PageSize,
+                RequestedPageNumber = friendships.RequestedPageNumber,
+                Filter = filter
+            };
+        }
+
         public async Task<List<UserDto>> ListOfFriendsAsync(Guid userId)
         {
             var friends = await ListOfPossibleFriendsAsync(userId);

@@ -38,7 +38,7 @@ namespace PresentationLayerMVC.Controllers
             var userId = await GetGuidOfLoggedUser();
             var postsModel = await GetPostModel(userId, page);
             var friendRequestsModel = await GetFriendRequestsModel(userId);
-            var friendsModel = await GetFriendsModel(userId);
+            var friendsModel = await GetFriendsModel(userId, page);
             var homepageModel = new HomePageAggregatedViewModel
             {
                 PostListViewModel = postsModel,
@@ -62,17 +62,25 @@ namespace PresentationLayerMVC.Controllers
             return friendRequestsModel;
         }
 
-        private async Task<FriendListViewModel> GetFriendsModel(Guid userId)
+        private async Task<FriendListViewModel> GetFriendsModel(Guid userId, int page)
         {
+
             if (userId == Guid.Empty)
             {
                 return new FriendListViewModel
                 {
-                    Friends = new StaticPagedList<UserDto>(new List<UserDto>(), 1, 0, 0)
+                    Friends = new StaticPagedList<UserDto>(new List<UserDto>(), page, 0, 0)
                 };
             }
 
-            var friends = await UserFacade.GetFriendsOfUser(userId);
+            var filter = new FriendshipFilterDto()
+            {
+                IsConfirmed = true,
+                PageSize = FriendsPageSize,
+                RequestedPageNumber = page,
+                UserA = userId
+            };
+            var friends = await UserFacade.GetFriendsOfUser(userId, filter);
             return InitializeFriendListViewModel(friends);
         }
         
@@ -116,12 +124,17 @@ namespace PresentationLayerMVC.Controllers
             };
         }
 
-        private FriendListViewModel InitializeFriendListViewModel(IList<UserDto> result)
+        private FriendListViewModel InitializeFriendListViewModel(QueryResultDto<UserDto, FriendshipFilterDto> friends)
         {
+            int page = friends.RequestedPageNumber ?? 1;
             return new FriendListViewModel
             {
-                Friends = new StaticPagedList<UserDto>(result, 1, FriendsPageSize, FriendsPageSize),
-                Filter = new FriendshipFilterDto()
+                Friends = new StaticPagedList<UserDto>(
+                    friends.Items,
+                    page,
+                    friends.PageSize,
+                    (int)friends.TotalItemsCount),
+                Filter = friends.Filter
             };
         }
 

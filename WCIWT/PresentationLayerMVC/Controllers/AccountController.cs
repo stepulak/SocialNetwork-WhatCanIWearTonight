@@ -67,7 +67,7 @@ namespace DemoEshop.PresentationLayer.Controllers
 
         [HttpGet]
         [Route("logout")]
-        public async Task<ActionResult> Logout()
+        public RedirectToRouteResult Logout()
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");

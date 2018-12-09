@@ -8,7 +8,8 @@ namespace PresentationLayerMVC.Models.Friends
 {
     public class UserFriendViewModel
     {
-        public UserDto User;
-        public bool IsFriendWithLoggedUser;
+        public UserDto User { get; set; }
+        public bool IsFriendWithLoggedUser { get; set; }
+        public bool HasPendingFriendshipRequest { get; set; }
     }
 }

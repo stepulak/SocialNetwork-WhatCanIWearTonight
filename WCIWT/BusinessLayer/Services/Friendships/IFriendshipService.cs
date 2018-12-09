@@ -16,6 +16,8 @@ namespace BusinessLayer.Services.Friendships
         Task<QueryResultDto<FriendshipDto, FriendshipFilterDto>> ListAllAsync();
         Task<QueryResultDto<FriendshipDto, FriendshipFilterDto>> ListFriendshipAsync(FriendshipFilterDto filter);
         Task<List<UserDto>> ListOfFriendsAsync(Guid userId);
+        Task<QueryResultDto<UserDto, FriendshipFilterDto>> GetFriendsOfUserAsync(Guid userId,
+            FriendshipFilterDto filter);
         Task<List<UserDto>> ListOfFriendRequestsAsync(Guid userId);
     }
 }

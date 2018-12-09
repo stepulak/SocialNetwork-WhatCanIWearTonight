@@ -157,12 +157,12 @@ namespace BusinessLayer.Facades
 
         }
 
-        public async Task ConfirmFriendshipRequest(FriendshipDto frienship)
+        public async Task ConfirmFriendshipRequest(FriendshipDto friendship)
         {
             using (UnitOfWorkProvider.Create())
             {
-                frienship.IsConfirmed = true;
-                await friendshipService.Update(frienship);
+                friendship.IsConfirmed = true;
+                await friendshipService.Update(friendship);
             }
         }
 
@@ -174,11 +174,13 @@ namespace BusinessLayer.Facades
             }
         }
 
-        public async Task<List<UserDto>> GetFriendsOfUser(Guid userId)
+        public async Task<QueryResultDto<UserDto, FriendshipFilterDto>> GetFriendsOfUser(Guid userId, FriendshipFilterDto filter)
         {
+            filter.UserA = userId;
+            filter.IsConfirmed = true;
             using (UnitOfWorkProvider.Create())
             {
-                return await friendshipService.ListOfFriendsAsync(userId);
+                return await friendshipService.GetFriendsOfUserAsync(userId, filter);
             }
         }
 
