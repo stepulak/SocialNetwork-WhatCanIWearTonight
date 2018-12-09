@@ -10,6 +10,7 @@ using BusinessLayer.DataTransferObjects;
 using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
 using PresentationLayerMVC.Models.Aggregated;
+using PresentationLayerMVC.Models.Friends;
 using PresentationLayerMVC.Models.Posts;
 using X.PagedList;
 
@@ -20,6 +21,7 @@ namespace PresentationLayerMVC.Controllers
     {
         public const int PostsPageSize = 10;
         public const int ImagesPerPost = 5;
+        public const int FriendsPageSize = 30;
         private const string FilterSessionKey = "filter";
 
         public UserFacade UserFacade { get; set; }
@@ -59,13 +61,12 @@ namespace PresentationLayerMVC.Controllers
                 // TODO: Redirect 404
             }
 
-            var friends = await GetUserFriendsModel();
+            var friends = await GetUserFriendsModel(user, page);
             var model = new UserFriendsAggregatedViewModel()
             {
                 User = user,
                 UserFriendsList = friends
             };
-
             return View("UserFriendsListView", model);
         }
 
@@ -142,9 +143,42 @@ namespace PresentationLayerMVC.Controllers
             };
         }
 
-        private async Task<UserFriendsListViewModel> GetUserFriendsModel()
+        private async Task<UserFriendsListViewModel> GetUserFriendsModel(UserDto user, int page)
         {
-            throw new NotImplementedException();
+            var filter = new FriendshipFilterDto
+            {
+                PageSize = FriendsPageSize,
+                RequestedPageNumber = page
+            };
+            var friends = await UserFacade.GetFriendsOfUser(user.Id, filter);
+            return new UserFriendsListViewModel
+            {
+                Friends = await InitializeFriendsListViewModel(friends),
+                Filter = friends.Filter
+            };
+        }
+
+        private async Task<IPagedList<UserFriendViewModel>> InitializeFriendsListViewModel(QueryResultDto<UserDto, FriendshipFilterDto> friends)
+        {
+            var userFriendViewModelList = new List<UserFriendViewModel>();
+            var loggedUser = await GetLoggedUser();
+            foreach (var friend in friends.Items)
+            {
+                var friendshipWithLoggedUser = await GetFriendshipWithLoggedUser(friend.Id);
+                userFriendViewModelList.Add(new UserFriendViewModel
+                {
+                    User = friend,
+                    IsFriendWithLoggedUser = loggedUser != null
+                                             && ResolveIsFriendForModel(friendshipWithLoggedUser),
+                    HasPendingFriendshipRequest = loggedUser != null
+                                                  && ResolveHasPendingFriendRequestForModel(friendshipWithLoggedUser)
+                });
+            }
+
+            var page = friends.RequestedPageNumber ?? 1;
+            return new StaticPagedList<UserFriendViewModel>(userFriendViewModelList, page, friends.PageSize,
+                (int)friends.TotalItemsCount);
+
         }
 
         private async Task<UserDto> GetLoggedUser()

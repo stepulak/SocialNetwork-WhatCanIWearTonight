@@ -1,8 +1,57 @@
-﻿
+﻿@using PresentationLayerMVC.Models.Aggregated
+@model  PresentationLayerMVC.Controllers.UserFriendsAggregatedViewModel
 @{
-    ViewBag.Title = "UserFriendsListView";
+    ViewBag.Title = Model.User.Username + "'s friends";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>UserFriendsListView</h2>
+@{
+    bool logged = HttpContext.Current.User.Identity.Name.Length != 0;
+}
 
+<div class="row">
+    <h2>@Html.DisplayFor(model => model.User.Username)'s friends</h2>
+</div>
+<div class="row">
+    @foreach (var friend in Model.UserFriendsList.Friends)
+    {
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h3>
+                        @Html.ActionLink(
+                            linkText: friend.User.Username,
+                            actionName:"Index",
+                            controllerName: "User",
+                            routeValues: new
+                            {
+                                area = "",
+                                username = friend.User.Username
+                            },
+                            htmlAttributes: null)
+                    </h3>  
+                    <div class="col-md-6">
+                        @if (friend.User.Username != HttpContext.Current.User.Identity?.Name)
+                        {
+                            if (!friend.IsFriendWithLoggedUser && !friend.HasPendingFriendshipRequest && logged)
+                            {
+                                <div class="row">
+                                    <input type="button" value="Send Friendship Request" class="btn btn-success" />
+                                </div>
+                            }
+                            if (friend.IsFriendWithLoggedUser && logged)
+                            {
+                                <div class="row">
+                                    <input type="button" value="Remove Friend" class="btn btn-danger" />
+                                </div>
+                                <div class="row">
+                                    <input type="button" value="Send Message" class="btn btn-info" />
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

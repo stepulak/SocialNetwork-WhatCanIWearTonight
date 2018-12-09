@@ -232,17 +232,17 @@ namespace EntityDatabase.Migrations
                     IsConfirmed = true
                 };
             
-            var user1Frienships = new List<Friendship>
+            var user1Friendships = new List<Friendship>
             {
                 user1Touser3Friendship
             };
-            var user3Frienships = new List<Friendship>
+            var user3Friendships = new List<Friendship>
             {
                 user1Touser3Friendship
             };
             
-            user1.Friendships = user1Frienships;
-            //user3.Friendships = user3Frienships;
+            user1.Friendships = user1Friendships;
+            //user3.Friendships = user3Friendships;
 
             var message1 = new Message
             {
