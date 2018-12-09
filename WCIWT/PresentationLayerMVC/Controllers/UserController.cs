@@ -88,7 +88,7 @@ namespace PresentationLayerMVC.Controllers
                 return View();
             }
 
-            if (!await UserFacade.CanSendFrienshipRequest(loggedUser, friendToAdd))
+            if (!await UserFacade.CanSendFriendshipRequest(loggedUser, friendToAdd))
             {
                 ModelState.AddModelError("User", "Cannot send friendship request to this user!");
                 return View();
@@ -100,7 +100,7 @@ namespace PresentationLayerMVC.Controllers
                 await UserFacade.SendFriendshipRequest(loggedUser, friendToAdd);
                 return Redirect(url);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("User", "Cannot send friendship request to this user!");
                 return View();
@@ -135,7 +135,7 @@ namespace PresentationLayerMVC.Controllers
             try
             {
                 string url = Request.UrlReferrer.AbsolutePath;
-                UserFacade.RemoveFriendship(friendshipToRemove);
+                await UserFacade.RemoveFriendship(friendshipToRemove);
                 return Redirect(url);
             }
             catch (Exception)
@@ -211,7 +211,7 @@ namespace PresentationLayerMVC.Controllers
             try
             {
                 string url = Request.UrlReferrer.AbsolutePath;
-                UserFacade.CancelFriendshipRequest(friendshipToDecline);
+                await UserFacade.CancelFriendshipRequest(friendshipToDecline);
                 return Redirect(url);
             }
             catch (Exception)

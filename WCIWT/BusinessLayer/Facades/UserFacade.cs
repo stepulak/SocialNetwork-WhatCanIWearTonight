@@ -123,7 +123,7 @@ namespace BusinessLayer.Facades
             }
         }
 
-        public async Task<bool> CanSendFrienshipRequest(UserDto applicant, UserDto recipient)
+        public async Task<bool> CanSendFriendshipRequest(UserDto applicant, UserDto recipient)
         {
             using (UnitOfWorkProvider.Create())
             {
@@ -139,46 +139,53 @@ namespace BusinessLayer.Facades
 
         }
 
-        public async Task SendFriendshipRequest(UserDto applicant, UserDto recipient)
+        public async Task<Guid> SendFriendshipRequest(UserDto applicant, UserDto recipient)
         {
-            using (UnitOfWorkProvider.Create())
+            using (var uow = UnitOfWorkProvider.Create())
             {
-                if (await CanSendFrienshipRequest(applicant, recipient) == false)
+                if (await CanSendFriendshipRequest(applicant, recipient) == false)
                 {
                     throw new InvalidOperationException($"Unable to send friendship request {applicant} -> {recipient}. Already exists.");
                 }
-                friendshipService.Create(new FriendshipDto
+                var id = friendshipService.Create(new FriendshipDto
                 {
+                   // Applicant = applicant,
+                   // Recipient = recipient,
                     ApplicantId = applicant.Id,
                     RecipientId = recipient.Id,
                     IsConfirmed = false
                 });
+                await uow.Commit();
+                return id;
             }
 
         }
 
         public async Task ConfirmFriendshipRequest(FriendshipDto friendship)
         {
-            using (UnitOfWorkProvider.Create())
+            using (var uow = UnitOfWorkProvider.Create())
             {
                 friendship.IsConfirmed = true;
                 await friendshipService.Update(friendship);
+                await uow.Commit();
             }
         }
 
-        public void CancelFriendshipRequest(FriendshipDto friendship)
+        public async Task CancelFriendshipRequest(FriendshipDto friendship)
         {
-            using (UnitOfWorkProvider.Create())
+            using (var uow = UnitOfWorkProvider.Create())
             {
                 friendshipService.Delete(friendship.Id);
+                await uow.Commit();
             }
         }
 
-        public void RemoveFriendship(FriendshipDto friendship)
+        public async Task RemoveFriendship(FriendshipDto friendship)
         {
-            using (UnitOfWorkProvider.Create())
+            using (var uow = UnitOfWorkProvider.Create())
             {
                 friendshipService.Delete(friendship.Id);
+                await uow.Commit();
             }
         }
 
