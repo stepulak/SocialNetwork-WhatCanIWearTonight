@@ -75,7 +75,36 @@ namespace PresentationLayerMVC.Controllers
         [Route("{username}/add-friend")]
         public async Task<ActionResult> AddFriend(string username)
         {
-            throw new NotImplementedException();
+            var loggedUser = await GetLoggedUser();
+            var friendToAdd = await UserFacade.GetUserByUsernameAsync(username);
+            if (loggedUser == null)
+            {
+                // TODO: redirect to login
+            }
+
+            if (friendToAdd == null)
+            {
+                ModelState.AddModelError("User", "User does not exist!");
+                return View();
+            }
+
+            if (!await UserFacade.CanSendFrienshipRequest(loggedUser, friendToAdd))
+            {
+                ModelState.AddModelError("User", "Cannot send friendship request to this user!");
+                return View();
+            }
+
+            try
+            {
+                string url = Request.UrlReferrer.AbsolutePath;
+                await UserFacade.SendFriendshipRequest(loggedUser, friendToAdd);
+                return Redirect(url);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("User", "Cannot send friendship request to this user!");
+                return View();
+            }
         }
 
         // POST: user/{username}/remove-friend
@@ -83,7 +112,52 @@ namespace PresentationLayerMVC.Controllers
         [Route("{username}/remove-friend")]
         public async Task<ActionResult> RemoveFriend(string username)
         {
-            throw new NotImplementedException();;
+            var loggedUser = await GetLoggedUser();
+            var friendToRemove = await UserFacade.GetUserByUsernameAsync(username);
+            if (loggedUser == null)
+            {
+                // TODO: redirect to login
+            }
+
+            if (friendToRemove == null)
+            {
+                ModelState.AddModelError("User", "User does not exist!");
+                return View();
+            }
+
+            if (await UserFacade.GetFriendshipBetweenUsers(loggedUser.Id, friendToRemove.Id) != null)
+            {
+                ModelState.AddModelError("User", "Cannot remove friendship with this user!");
+                return View();
+            }
+
+            try
+            {
+                string url = Request.UrlReferrer.AbsolutePath;
+                //TODO: Implement on facade 
+                return Redirect(url);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("User", "Cannot remove friendship with this user");
+                return View();
+            }
+        }
+
+        // POST: user/{username}/confirm-friend
+        [HttpPost]
+        [Route("{username}/confirm-friend")]
+        public async Task<ActionResult> ConfirmFriend(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        // POST: user/{username}/decline-friend
+        [HttpPost]
+        [Route("{username}/decline-friend")]
+        public async Task<ActionResult> DeclineFriend(string username)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task<FriendshipDto> GetFriendshipWithLoggedUser(Guid userId)
