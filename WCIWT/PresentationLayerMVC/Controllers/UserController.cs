@@ -79,7 +79,7 @@ namespace PresentationLayerMVC.Controllers
             var friendToAdd = await UserFacade.GetUserByUsernameAsync(username);
             if (loggedUser == null)
             {
-                // TODO: redirect to login
+                RedirectToLogin();
             }
 
             if (friendToAdd == null)
@@ -116,7 +116,7 @@ namespace PresentationLayerMVC.Controllers
             var friendToRemove = await UserFacade.GetUserByUsernameAsync(username);
             if (loggedUser == null)
             {
-                // TODO: redirect to login
+                RedirectToLogin();
             }
 
             if (friendToRemove == null)
@@ -154,7 +154,7 @@ namespace PresentationLayerMVC.Controllers
             var friendToConfirm = await UserFacade.GetUserByUsernameAsync(username);
             if (loggedUser == null)
             {
-                // TODO: redirect to login
+                RedirectToLogin();
             }
 
             if (friendToConfirm == null)
@@ -192,7 +192,7 @@ namespace PresentationLayerMVC.Controllers
             var userToDecline = await UserFacade.GetUserByUsernameAsync(username);
             if (loggedUser == null)
             {
-                // TODO: redirect to login
+                RedirectToLogin();
             }
 
             if (userToDecline == null)
@@ -322,6 +322,8 @@ namespace PresentationLayerMVC.Controllers
                 ? await UserFacade.GetUserByUsernameAsync(HttpContext.User.Identity.Name)
                 : null;
         }
+
+        private void RedirectToLogin() => RedirectToAction("Login", "Account");
 
         private bool ResolveHasPendingFriendRequestForModel(FriendshipDto friendship) => friendship != null && !friendship.IsConfirmed;
 
