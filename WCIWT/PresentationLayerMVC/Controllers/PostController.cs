@@ -65,7 +65,14 @@ namespace PresentationLayerMVC.Controllers
             var userId = (await UserFacade.GetUserByUsernameAsync(username)).Id;
             return await Vote(imageId, userId, VoteType.Dislike);
         }
-        
+
+        [HttpGet]
+        [Route("new")]
+        public ActionResult NewPost()
+        {
+            return View();
+        }
+
         private async Task<ActionResult> AddComment(Guid postId, string username, string comment)
         {
             if (postId == Guid.Empty)

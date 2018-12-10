@@ -76,10 +76,10 @@
     <Compile Include="DataTransferObjects\HashtagDto.cs" />
     <Compile Include="DataTransferObjects\ImageDto.cs" />
     <Compile Include="DataTransferObjects\MessageDto.cs" />
+    <Compile Include="DataTransferObjects\PostCreateDto.cs" />
     <Compile Include="DataTransferObjects\PostDto.cs" />
     <Compile Include="DataTransferObjects\PostReplyDto.cs" />
     <Compile Include="DataTransferObjects\Enums\PostVisibility.cs" />
-    <Compile Include="DataTransferObjects\PublicPostDto.cs" />
     <Compile Include="DataTransferObjects\UserCreateDto.cs" />
     <Compile Include="DataTransferObjects\UserDto.cs" />
     <Compile Include="DataTransferObjects\VoteDto.cs" />
