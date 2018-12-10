@@ -238,6 +238,7 @@
     <Content Include="Views\Shared\_UserMenu.cshtml" />
     <Content Include="Views\User\UserProfileView.cshtml" />
     <Content Include="Views\User\UserFriendsListView.cshtml" />
+    <Content Include="Views\Post\NewPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
