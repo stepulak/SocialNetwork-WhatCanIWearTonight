@@ -164,17 +164,36 @@
                     </div>
                     <div class="panel-body">
                         <div class="list-group">
-                            @for (var i = 0; i < Model.FriendRequestListViewModel.FriendRequests.Count; i++)
+                            @foreach (var friendR in Model.FriendRequestListViewModel.FriendRequests)
                             {
-                                <a href="#" class="list-group-item">
-                                    @Html.DisplayFor(model => model.FriendRequestListViewModel.FriendRequests[i].Applicant.Username)
+                                <a href="" class="list-group-item">
+                                    @Html.DisplayFor(model => friendR.Applicant.Username)
                                 </a>
-                                <button class="btn btn-success">
-                                    <div class="glyphicon glyphicon-ok"></div>
-                                </button>
-                                <button class="btn btn-danger">
-                                    <div class="glyphicon glyphicon-remove"></div>
-                                </button>
+                                using(Html.BeginForm("ConfirmFriend", "User", FormMethod.Post, new
+                                {
+                                    username = friendR.Applicant.Username,
+                                    area = "",
+                                    id = "confirmFriendRequest",
+                                    @class = "btn btn-success"
+                                }))
+                                {
+                                    <a href="javascript:document.getElementById('confirmFriendRequest').submit()">
+                                        <div class="glyphicon glyphicon-ok"></div>
+                                    </a>
+                                }
+
+                                using(Html.BeginForm("DeclineFriend", "User", FormMethod.Post, new
+                                {
+                                    username = friendR.Applicant.Username,
+                                    area ="",
+                                    id = "declineFriendRequest",
+                                    @class = "btn btn-danger"
+                                }))
+                                {
+                                    <a href="javascript:document.getElementById('declineFriendRequest').submit()">
+                                        <div class="glyphicon glyphicon-remove"></div>
+                                    </a>
+                                }
                             }
                         </div>
                     </div>
@@ -189,11 +208,21 @@
                     </div>
                     <div class="panel-body">
                         <div class="list-group">
-                            @for (var i = 0; i < Model.FriendListViewModel.Friends.Count; i++)
+                            @foreach (var friend in Model.FriendListViewModel.Friends)
                             {
-                                <a href="#" class="list-group-item">
-                                    @Html.DisplayFor(model => model.FriendListViewModel.Friends[i].Username)
-                                </a>
+                                @Html.ActionLink(
+                                    linkText: "Send Message",
+                                    actionName: "Index",
+                                    controllerName: "Message",
+                                    routeValues: new
+                                    {
+                                        area = "",
+                                        username = friend.Username,
+                                    },
+                                    htmlAttributes: new
+                                    {
+                                        @class = "btn btn-info"
+                                    })
                             }
                         </div>
                     </div>

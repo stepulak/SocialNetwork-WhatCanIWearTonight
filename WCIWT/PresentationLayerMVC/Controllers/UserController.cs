@@ -79,7 +79,7 @@ namespace PresentationLayerMVC.Controllers
             var friendToAdd = await UserFacade.GetUserByUsernameAsync(username);
             if (loggedUser == null)
             {
-                // TODO: redirect to login
+                RedirectToLogin();
             }
 
             if (friendToAdd == null)
@@ -88,7 +88,7 @@ namespace PresentationLayerMVC.Controllers
                 return View();
             }
 
-            if (!await UserFacade.CanSendFrienshipRequest(loggedUser, friendToAdd))
+            if (!await UserFacade.CanSendFriendshipRequest(loggedUser, friendToAdd))
             {
                 ModelState.AddModelError("User", "Cannot send friendship request to this user!");
                 return View();
@@ -100,7 +100,7 @@ namespace PresentationLayerMVC.Controllers
                 await UserFacade.SendFriendshipRequest(loggedUser, friendToAdd);
                 return Redirect(url);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("User", "Cannot send friendship request to this user!");
                 return View();
@@ -116,7 +116,7 @@ namespace PresentationLayerMVC.Controllers
             var friendToRemove = await UserFacade.GetUserByUsernameAsync(username);
             if (loggedUser == null)
             {
-                // TODO: redirect to login
+                RedirectToLogin();
             }
 
             if (friendToRemove == null)
@@ -125,7 +125,8 @@ namespace PresentationLayerMVC.Controllers
                 return View();
             }
 
-            if (await UserFacade.GetFriendshipBetweenUsers(loggedUser.Id, friendToRemove.Id) != null)
+            var friendshipToRemove = await UserFacade.GetFriendshipBetweenUsers(loggedUser.Id, friendToRemove.Id);
+            if (friendshipToRemove == null || !friendshipToRemove.IsConfirmed)
             {
                 ModelState.AddModelError("User", "Cannot remove friendship with this user!");
                 return View();
@@ -134,7 +135,7 @@ namespace PresentationLayerMVC.Controllers
             try
             {
                 string url = Request.UrlReferrer.AbsolutePath;
-                //TODO: Implement on facade 
+                await UserFacade.RemoveFriendship(friendshipToRemove);
                 return Redirect(url);
             }
             catch (Exception)
@@ -149,7 +150,37 @@ namespace PresentationLayerMVC.Controllers
         [Route("{username}/confirm-friend")]
         public async Task<ActionResult> ConfirmFriend(string username)
         {
-            throw new NotImplementedException();
+            var loggedUser = await GetLoggedUser();
+            var friendToConfirm = await UserFacade.GetUserByUsernameAsync(username);
+            if (loggedUser == null)
+            {
+                RedirectToLogin();
+            }
+
+            if (friendToConfirm == null)
+            {
+                ModelState.AddModelError("User", "User does not exist!");
+                return View();
+            }
+
+            var friendshipToConfirm = await UserFacade.GetFriendshipBetweenUsers(loggedUser.Id, friendToConfirm.Id);
+            if (friendshipToConfirm == null || friendshipToConfirm.IsConfirmed)
+            {
+                ModelState.AddModelError("User", "Cannot confirm friendship with this user!");
+                return View();
+            }
+
+            try
+            {
+                string url = Request.UrlReferrer.AbsolutePath;
+                await UserFacade.ConfirmFriendshipRequest(friendshipToConfirm);
+                return Redirect(url);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("User", "Cannot confirm friendship with this user");
+                return View();
+            }
         }
 
         // POST: user/{username}/decline-friend
@@ -157,7 +188,37 @@ namespace PresentationLayerMVC.Controllers
         [Route("{username}/decline-friend")]
         public async Task<ActionResult> DeclineFriend(string username)
         {
-            throw new NotImplementedException();
+            var loggedUser = await GetLoggedUser();
+            var userToDecline = await UserFacade.GetUserByUsernameAsync(username);
+            if (loggedUser == null)
+            {
+                RedirectToLogin();
+            }
+
+            if (userToDecline == null)
+            {
+                ModelState.AddModelError("User", "User does not exist!");
+                return View();
+            }
+
+            var friendshipToDecline = await UserFacade.GetFriendshipBetweenUsers(loggedUser.Id, userToDecline.Id);
+            if (friendshipToDecline == null || friendshipToDecline.IsConfirmed)
+            {
+                ModelState.AddModelError("User", "Cannot decline friendship with this user!");
+                return View();
+            }
+
+            try
+            {
+                string url = Request.UrlReferrer.AbsolutePath;
+                await UserFacade.CancelFriendshipRequest(friendshipToDecline);
+                return Redirect(url);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("User", "Cannot decline friendship with this user");
+                return View();
+            }
         }
 
         private async Task<FriendshipDto> GetFriendshipWithLoggedUser(Guid userId)
@@ -261,6 +322,8 @@ namespace PresentationLayerMVC.Controllers
                 ? await UserFacade.GetUserByUsernameAsync(HttpContext.User.Identity.Name)
                 : null;
         }
+
+        private void RedirectToLogin() => RedirectToAction("Login", "Account");
 
         private bool ResolveHasPendingFriendRequestForModel(FriendshipDto friendship) => friendship != null && !friendship.IsConfirmed;
 

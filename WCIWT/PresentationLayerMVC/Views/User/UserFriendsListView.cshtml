@@ -35,17 +35,49 @@
                         {
                             if (!friend.IsFriendWithLoggedUser && !friend.HasPendingFriendshipRequest && logged)
                             {
-                                <div class="row">
-                                    <input type="button" value="Send Friendship Request" class="btn btn-success" />
-                                </div>
+                        <div class="row">
+                            @using (Html.BeginForm("AddFriend", "User", FormMethod.Post, new
+                            {
+                                username = Model.User.Username,
+                                id = "friendRequest",
+                                @class = "btn btn-success"
+                            }))
+                            {
+                                <a href="javascript:document.getElementById('friendRequest').submit()">
+                                    <span>Send Friend Request</span>
+                                </a>
+                            }
+                        </div>
                             }
                             if (friend.IsFriendWithLoggedUser && logged)
                             {
                                 <div class="row">
-                                    <input type="button" value="Remove Friend" class="btn btn-danger" />
+                                    @using (Html.BeginForm("RemoveFriend", "User", FormMethod.Post, new
+                                    {
+                                        username = Model.User.Username,
+                                        id = "friendRemove",
+                                        @class = "btn btn-danger"
+                                    }))
+                                    {
+                                        <a href="javascript:document.getElementById('friendRemove').submit()">
+                                            <span>Remove Friend</span>
+                                        </a>
+                                    }
                                 </div>
                                 <div class="row">
-                                    <input type="button" value="Send Message" class="btn btn-info" />
+                                    @Html.ActionLink(
+                                        linkText: "Send Message",
+                                        actionName: "Index",
+                                        controllerName: "Message",
+                                        routeValues: new
+                                        {
+                                            area = "",
+                                            username = Model.User.Username,
+                                        },
+                                        htmlAttributes: new
+                                        {
+                                            @class = "btn btn-info"
+                                        })
                                 </div>
                             }
                         }
