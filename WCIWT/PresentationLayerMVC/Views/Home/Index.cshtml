@@ -23,11 +23,21 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        @if (logged) // TODO: Add ActionLink to create new post
+                        @if (logged)
                         {
-                            <button class="btn btn-primary" type="button">Add Post</button>
+                            @Html.ActionLink(
+                                linkText: "Add Post",
+                                actionName: "NewPost",
+                                controllerName: "Post",
+                                routeValues: new
+                                {
+                                    area = "",
+                                },
+                                htmlAttributes: new
+                                {
+                                    @class = "btn btn-primary"
+                                })
                         }
-                        <button class="btn btn-info" type="button">Filter</button>
                     </div>
                 </div>
             </div>

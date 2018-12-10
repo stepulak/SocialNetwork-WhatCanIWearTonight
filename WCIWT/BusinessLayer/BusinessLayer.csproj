@@ -74,6 +74,7 @@
     <Compile Include="DataTransferObjects\FriendshipDto.cs" />
     <Compile Include="DataTransferObjects\Enums\Gender.cs" />
     <Compile Include="DataTransferObjects\HashtagDto.cs" />
+    <Compile Include="DataTransferObjects\ImageCreateDto.cs" />
     <Compile Include="DataTransferObjects\ImageDto.cs" />
     <Compile Include="DataTransferObjects\MessageDto.cs" />
     <Compile Include="DataTransferObjects\PostCreateDto.cs" />

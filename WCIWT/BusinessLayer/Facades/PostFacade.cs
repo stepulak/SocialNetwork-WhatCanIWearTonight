@@ -45,13 +45,24 @@ namespace BusinessLayer.Facades
             }
         }
 
-        public Guid AddPost(UserDto user, PostDto post)
+        public async Task<Guid> AddPost(UserDto user, PostCreateDto postDto)
         {
-            using (UnitOfWorkProvider.Create())
+            var post = new PostDto
             {
-                post.Time = DateTime.Now;
-                post.UserId = user.Id;
-                return postService.Create(post);
+                Text = postDto.Text,
+                AgeRestrictionFrom = postDto.AgeRestrictionFrom,
+                AgeRestrictionTo = postDto.AgeRestrictionTo,
+                Time = DateTime.Now,
+                UserId = user.Id,
+                GenderRestriction = postDto.GenderRestriction,
+                HasAgeRestriction = postDto.HasAgeRestriction,
+                Visibility = postDto.Visibility
+        };
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                var id = postService.Create(post);
+                await uow.Commit();
+                return id;
             }
         }
 
@@ -209,6 +220,24 @@ namespace BusinessLayer.Facades
             {
                 var result = await imageService.ListImageAsync(new ImageFilterDto { PostId = postId });
                 return result.Items.ToList();
+            }
+        }
+
+        public async Task<Guid> AddImage(ImageCreateDto imageCreateDto)
+        {
+            var image = new ImageDto
+            {
+                BinaryImage = imageCreateDto.BinaryImage,
+                PostId = imageCreateDto.PostId,
+                LikesCount = 0,
+                DislikesCount = 0
+            };
+
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                var id = imageService.Create(image);
+                await uow.Commit();
+                return id;
             }
         }
     }
