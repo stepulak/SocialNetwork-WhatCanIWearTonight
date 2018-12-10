@@ -3,6 +3,7 @@ using BusinessLayer.Facades;
 using PresentationLayerMVC.Models.Posts;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -73,9 +74,31 @@ namespace PresentationLayerMVC.Controllers
             return View();
         }
 
+        [HttpPost]
+        [Route("new")]
+        public async Task<ActionResult> NewPost(CreatePostModel model)
+        {
+            var user = await GetLoggedUser();
+            if (user != null)
+            {
+                var newPostId =  await PostFacade.AddPost(user, model.Post);
+                var newPost = await PostFacade.GetPostDtoAccordingToId(newPostId);
+                var uploadedSuccessfully = await CreateImageDtosFromFiles(model.Files, newPost);
+                if (uploadedSuccessfully)
+                {
+                    RedirectToAction("Index", "Post", new { postId = newPostId });
+                }
+            }
+            else
+            {
+                RedirectToAction("Login", "Account");
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
         private async Task<ActionResult> AddComment(Guid postId, string username, string comment)
         {
-            if (postId == Guid.Empty)
+            if (postId == Guid.Empty)   
             {
                 return Index();
             }
@@ -110,6 +133,44 @@ namespace PresentationLayerMVC.Controllers
                 ModelState.AddModelError("Image", "Image does not exist!");
                 return View();
             }
+        }
+
+        private async Task<bool> CreateImageDtosFromFiles(List<HttpPostedFileBase> files, PostDto post)
+        {
+            foreach (var file in files)
+            {
+                var image = new ImageCreateDto
+                {
+                    BinaryImage = createByteImage(file),
+                    PostId = post.Id
+                };
+                var imageId = await PostFacade.AddImage(image);
+                if (imageId == Guid.Empty)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private async Task<UserDto> GetLoggedUser()
+        {
+            return HttpContext.User?.Identity != null
+                ? await UserFacade.GetUserByUsernameAsync(HttpContext.User.Identity.Name)
+                : null;
+        }
+
+        private byte[] createByteImage(HttpPostedFileBase file)
+        {
+            string imagesPath = HttpContext.Server.MapPath("~/Content/TempImages"); // Or file save folder, etc.
+            string extension = Path.GetExtension(file.FileName);
+            string newFileName = $"NewFile{extension}";
+            string saveToPath = Path.Combine(imagesPath, newFileName);
+            file.SaveAs(saveToPath);
+            var imageBytes = System.IO.File.ReadAllBytes(saveToPath);
+            System.IO.File.Delete(saveToPath);
+            return imageBytes;
         }
     }
 }
