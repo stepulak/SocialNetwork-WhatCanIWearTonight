@@ -19,24 +19,46 @@ namespace BusinessLayer.QueryObjects
 
         protected override IQuery<Message> ApplyWhereClause(IQuery<Message> query, MessageFilterDto filter)
         {
-            return filter.UserId == Guid.Empty ? query : query.Where(CreateCompositePredicateFromFilter(filter));
+            return filter == null ? query : query.Where(CreateCompositePredicateFromFilter(filter));
         }
 
         private IPredicate CreateCompositePredicateFromFilter(MessageFilterDto filter)
         {
-            if (filter.UserFilterType == MessageUserFilterType.Receiver)
+            var predicates = new List<IPredicate>();
+            predicates.Add(filter.CareAboutRole
+                ? CareAboutRolePredicates(filter)
+                : DontCareAboutRolePredicates(filter));
+            if (filter.UnseenOnly)
             {
-                return new SimplePredicate(nameof(Message.UserReceiverId), ValueComparingOperator.Equal, filter.UserId);
+                predicates.Add(new SimplePredicate(nameof(Message.Seen), ValueComparingOperator.Equal, false));
             }
-            if (filter.UserFilterType == MessageUserFilterType.Sender)
-            {
-                return new SimplePredicate(nameof(Message.UserSenderId), ValueComparingOperator.Equal, filter.UserId);
-            }
-            var predicates = new List<IPredicate>
-            {
-                new SimplePredicate(nameof(Message.UserReceiverId), ValueComparingOperator.Equal, filter.UserId),
-                new SimplePredicate(nameof(Message.UserSenderId), ValueComparingOperator.Equal, filter.UserId)
-            };
+            return new CompositePredicate(predicates, LogicalOperator.AND);
+        }
+
+        private IPredicate CareAboutRolePredicates(MessageFilterDto filter)
+        {
+            var predicates = new List<IPredicate>();
+            predicates.Add(new SimplePredicate(nameof(Message.UserSenderId), ValueComparingOperator.Equal, filter.Sender));
+            predicates.Add(new SimplePredicate(nameof(Message.UserReceiverId), ValueComparingOperator.Equal, filter.Receiver));
+            return new CompositePredicate(predicates, LogicalOperator.AND);
+
+        }
+
+        private IPredicate DontCareAboutRolePredicates(MessageFilterDto filter)
+        {
+            var predicates = new List<IPredicate>();
+
+            var opt1 = new List<IPredicate>();
+            opt1.Add(new SimplePredicate(nameof(Message.UserSenderId), ValueComparingOperator.Equal, filter.Sender));
+            opt1.Add(new SimplePredicate(nameof(Message.UserReceiverId), ValueComparingOperator.Equal, filter.Receiver));
+            predicates.Add(new CompositePredicate(opt1, LogicalOperator.AND));
+
+            var opt2 = new List<IPredicate>();
+            opt2.Add(new SimplePredicate(nameof(Message.UserSenderId), ValueComparingOperator.Equal, filter.Receiver));
+            opt2.Add(new SimplePredicate(nameof(Message.UserReceiverId), ValueComparingOperator.Equal, filter.Sender));
+            predicates.Add(new CompositePredicate(opt2, LogicalOperator.AND));
+
+
             return new CompositePredicate(predicates, LogicalOperator.OR);
         }
     }

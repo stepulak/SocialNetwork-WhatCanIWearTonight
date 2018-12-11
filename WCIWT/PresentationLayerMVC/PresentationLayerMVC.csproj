@@ -167,8 +167,10 @@
     <Compile Include="App_Start\Windsor\WindsorControllerFactory.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Models\Aggregated\MessagesAggregatedViewModel.cs" />
     <Compile Include="Models\Aggregated\UserFriendsAggregatedViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -590,6 +592,7 @@
     <Content Include="Views\User\UserProfileView.cshtml" />
     <Content Include="Views\User\UserFriendsListView.cshtml" />
     <Content Include="Views\Post\NewPost.cshtml" />
+    <Content Include="Views\Message\MessageView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

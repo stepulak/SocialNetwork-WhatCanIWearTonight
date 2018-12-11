@@ -7,22 +7,19 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.DataTransferObjects.Filters
 {
-    public enum MessageUserFilterType
-    {
-        Sender,
-        Receiver,
-        Both
-    }
 
     public class MessageFilterDto : FilterDtoBase
     {
-        public Guid UserId { get; set; }
-        public MessageUserFilterType UserFilterType { get; set; }
-
+        public Guid Sender { get; set; }
+        public Guid Receiver { get; set; }
+        public bool CareAboutRole { get; set; }
+        public bool UnseenOnly { get; set; }
         public MessageFilterDto()
         {
-            UserId = Guid.Empty;
-            UserFilterType = MessageUserFilterType.Both;
+            Sender = Guid.Empty;
+            Receiver = Guid.Empty;
+            CareAboutRole = false;
+            UnseenOnly = false;
         }
     }      
 }
