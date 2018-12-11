@@ -39,7 +39,8 @@ namespace PresentationLayerMVC.Controllers
             {
                 Post = post,
                 Images = new StaticPagedList<ImageDto>(images, 1, images.Count, images.Count),
-                Replys = new StaticPagedList<PostReplyDto>(replys, 1, replys.Count, replys.Count)
+                Replys = new StaticPagedList<PostReplyDto>(replys, 1, replys.Count, replys.Count),
+                HashtagIndices = PostFacade.FindHashtagIndices(post.Text)
             };
             return View("Post", model);
         }

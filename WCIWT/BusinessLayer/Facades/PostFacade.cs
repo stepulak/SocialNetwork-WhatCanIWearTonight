@@ -25,16 +25,19 @@ namespace BusinessLayer.Facades
         private readonly IVoteService voteService;
         private readonly IImageService imageService;
         private readonly IPostReplyService postReplyService;
+        private readonly IHashtagService hashtagService;
 
         public PostFacade(IUnitOfWorkProvider unitOfWorkProvider, 
             IPostService postService, IPostReplyService postReplyService,
-            IVoteService voteService, IImageService imageService)
+            IVoteService voteService, IImageService imageService,
+            IHashtagService hashtagService)
             : base(unitOfWorkProvider)
         {
             this.postService = postService;
             this.voteService = voteService;
             this.imageService = imageService;
             this.postReplyService = postReplyService;
+            this.hashtagService = hashtagService;
         }
 
         public async Task<PostDto> GetPostDtoAccordingToId(Guid id)
@@ -57,23 +60,31 @@ namespace BusinessLayer.Facades
                 GenderRestriction = postDto.GenderRestriction,
                 HasAgeRestriction = postDto.HasAgeRestriction,
                 Visibility = postDto.Visibility
-        };
+            };
+            var hashtags = FindHashtags(postDto.Text);
             using (var uow = UnitOfWorkProvider.Create())
             {
                 var id = postService.Create(post);
                 await uow.Commit();
+                AddHashtagsToPost(postDto.Text, id);
                 return id;
             }
         }
 
-        public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostFeedAsync(PostFilterDto filter, Guid userId)
+        public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostFeedAsync(PostFilterDto filter, Guid userId, string hashtagFilter)
         {
             using (UnitOfWorkProvider.Create())
             {
                 filter.SortCriteria = "Time";
                 if (userId != Guid.Empty)
                 {
-                    return await postService.ListPostsAvailableForUser(userId, filter);
+                    var posts = await postService.ListPostsAvailableForUser(userId, filter);
+                    if (hashtagFilter != null)
+                    {
+                        posts.Items = posts.Items
+                            .Where(p => hashtagService.ListHashtagAsync(new HashtagFilterDto { PostId = p.Id, Tag = hashtagFilter }).Result.TotalItemsCount > 0);
+                    }
+                    return posts;
                 }
                 return await postService.ListPostAsync(filter);
             }
@@ -256,6 +267,45 @@ namespace BusinessLayer.Facades
                 var id = imageService.Create(image);
                 await uow.Commit();
                 return id;
+            }
+        }
+
+        public static List<Tuple<int, int>> FindHashtagIndices(string text)
+        {
+            var indices = new List<Tuple<int, int>>();
+            var index = text.IndexOf('#');
+            while (index >= 0)
+            {
+                int tagEnd = index;
+                while (tagEnd < text.Length && !char.IsWhiteSpace(text[tagEnd])) { tagEnd++; }
+                indices.Add(new Tuple<int, int>(index, tagEnd));
+                index = text.IndexOf('#', tagEnd);
+            }
+            return indices;
+        }
+
+        private static List<string> FindHashtags(string text)
+        {
+            return FindHashtagIndices(text)
+                .Select(idx => text.Substring(idx.Item1, idx.Item2 - idx.Item1))
+                .ToList();
+        }
+
+        private void AddHashtagsToPost(string text, Guid postId)
+        {
+            var hashtags = FindHashtags(text);
+            foreach (var hashtag in hashtags)
+            {
+                hashtagService.Create(new HashtagDto { Tag = hashtag, PostId = postId });
+            }
+        }
+
+        private async Task RemoveHashtagsForPost(Guid postId)
+        {
+            var oldHashtags = await hashtagService.ListHashtagAsync(new HashtagFilterDto { PostId = postId });
+            foreach (var hashtag in oldHashtags.Items)
+            {
+                hashtagService.Delete(hashtag.Id);
             }
         }
     }

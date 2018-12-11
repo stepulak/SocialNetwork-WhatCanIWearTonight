@@ -39,16 +39,12 @@ namespace BusinessLayer.Services.Posts
 
         public override Guid Create(PostDto entityDto)
         {
-            var postId = base.Create(entityDto);
-            AddHashtagsToPost(entityDto);
-            return postId;
+            return base.Create(entityDto);
         }
 
         public override async Task Update(PostDto entityDto)
         {
             await base.Update(entityDto);
-            await RemoveHashtagsForPost(entityDto);
-            AddHashtagsToPost(entityDto);
         }
 
         public async Task<QueryResultDto<PostDto, PostFilterDto>> ListPostAsync(PostFilterDto filter)
@@ -85,38 +81,6 @@ namespace BusinessLayer.Services.Posts
         protected override Task<Post> GetWithIncludesAsync(Guid entityId)
         {
             return Repository.GetAsync(entityId, "User");
-        }
-
-        private static List<string> FindHashtags(string text)
-        {
-            var hashtags = new List<string>();
-            var index = text.IndexOf('#');
-            while (index >= 0)
-            {
-                int tagEnd = index;
-                while (tagEnd < text.Length && !char.IsWhiteSpace(text[tagEnd])) { tagEnd++; }
-                hashtags.Add(text.Substring(index, tagEnd - index));
-                index = text.Substring(index).IndexOf('#');
-            }
-            return hashtags;
-        }
-
-        private void AddHashtagsToPost(PostDto postDto)
-        {
-            var hashtags = FindHashtags(postDto.Text);
-            foreach (var hashtag in hashtags)
-            {
-                hashtagService.Create(new HashtagDto { Tag = hashtag, PostId = postDto.Id });
-            }
-        }
-
-        private async Task RemoveHashtagsForPost(PostDto postDto)
-        {
-            var oldHashtags = await hashtagService.ListHashtagAsync(new HashtagFilterDto { PostId = postDto.Id });
-            foreach (var hashtag in oldHashtags.Items)
-            {
-                hashtagService.Delete(hashtag.Id);
-            }
         }
     }
 }

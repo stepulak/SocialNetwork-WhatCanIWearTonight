@@ -35,17 +35,30 @@ namespace PresentationLayerMVC.Controllers
 
         public async Task<ActionResult> Index(int page = 1)
         {
+            var homepageModel = await GetHomePageModel(page);
+            return View("Index", homepageModel);
+        }
+
+        [HttpGet]
+        [Route("hashtag")]
+        public async Task<ActionResult> PostsWithHashtag(string hashtag)
+        {
+            var homepageModel = await GetHomePageModel(1, hashtag);
+            return View("Index", homepageModel);
+        }
+
+        private async Task<HomePageAggregatedViewModel> GetHomePageModel(int page, string hashtagFilter = null)
+        {
             var userId = await GetGuidOfLoggedUser();
-            var postsModel = await GetPostModel(userId, page);
+            var postsModel = await GetPostModel(userId, page, hashtagFilter);
             var friendRequestsModel = await GetFriendRequestsModel(userId);
             var friendsModel = await GetFriendsModel(userId, page);
-            var homepageModel = new HomePageAggregatedViewModel
+            return new HomePageAggregatedViewModel
             {
                 PostListViewModel = postsModel,
                 FriendRequestListViewModel = friendRequestsModel,
                 FriendListViewModel = friendsModel
             };
-            return View("Index", homepageModel);
         }
 
         private async Task<FriendRequestListViewModel> GetFriendRequestsModel(Guid userId)
@@ -85,12 +98,12 @@ namespace PresentationLayerMVC.Controllers
         }
         
 
-        private async Task<PostListViewModel> GetPostModel(Guid userId, int page)
+        private async Task<PostListViewModel> GetPostModel(Guid userId, int page, string hashtagFilter = null)
         {
             var filter = Session[FilterSessionKey] as PostFilterDto ?? new PostFilterDto{PageSize = PostsPageSize};
             filter.RequestedPageNumber = page;
 
-            var posts = await PostFacade.GetPostFeedAsync(filter, userId);
+            var posts = await PostFacade.GetPostFeedAsync(filter, userId, hashtagFilter);
             var imagesForPosts = new List<List<ImageDto>>();
 
             foreach (var post in posts.Items)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BusinessLayer.DataTransferObjects;
@@ -17,6 +18,7 @@ namespace PresentationLayerMVC.Models.Posts
         public PostFilterDto PostFilter { get; set; }
         public PostReplyFilterDto PostReplyFilter { get; set; }
         public ImageFilterDto ImageFilter { get; set; }
+        public List<Tuple<int, int>> HashtagIndices { get; set; }
 
         // In
         // Comment
