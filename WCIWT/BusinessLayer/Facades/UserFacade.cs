@@ -119,7 +119,9 @@ namespace BusinessLayer.Facades
                     UserA = userId,
                     IsConfirmed = false
                 };
-                return await friendshipService.ListFriendshipAsync(filter);
+                var friendships = await friendshipService.ListFriendshipAsync(filter);
+                friendships.Items = friendships.Items.Where(friendship => friendship.RecipientId == userId);
+                return friendships;
             }
         }
 
@@ -134,9 +136,10 @@ namespace BusinessLayer.Facades
                     UserB = recipient.Id
                 };
                 var allFriendships = await friendshipService.ListFriendshipAsync(filter);
-                return allFriendships.TotalItemsCount == 0;
+                filter.IsConfirmed = false;
+                var allFriendshipRequests = await friendshipService.ListFriendshipAsync(filter);
+                return allFriendships.TotalItemsCount == 0 && allFriendshipRequests.TotalItemsCount == 0;
             }
-
         }
 
         public async Task<Guid> SendFriendshipRequest(UserDto applicant, UserDto recipient)
@@ -149,8 +152,6 @@ namespace BusinessLayer.Facades
                 }
                 var id = friendshipService.Create(new FriendshipDto
                 {
-                   // Applicant = applicant,
-                   // Recipient = recipient,
                     ApplicantId = applicant.Id,
                     RecipientId = recipient.Id,
                     IsConfirmed = false
@@ -207,6 +208,21 @@ namespace BusinessLayer.Facades
                 UserB = userBId
             };
 
+            using (UnitOfWorkProvider.Create())
+            {
+                var result = await friendshipService.ListFriendshipAsync(filter);
+                return result.Items.FirstOrDefault();
+            }
+        }
+
+        public async Task<FriendshipDto> GetFriendshipRequestBetweenUsers(Guid userAId, Guid userBId)
+        {
+            var filter = new FriendshipFilterDto
+            {
+                UserA = userAId,
+                UserB = userBId,
+                IsConfirmed = false
+            };
             using (UnitOfWorkProvider.Create())
             {
                 var result = await friendshipService.ListFriendshipAsync(filter);

@@ -100,7 +100,23 @@ namespace BusinessLayer.Facades
                 throw new ArgumentException("Cannot display posts of not existing user");
             }
         }
-        
+
+        public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostsForLoggedUser(PostFilterDto filter,
+            Guid userId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                if (userId != Guid.Empty)
+                {
+                    filter.UserId = userId;
+                    filter.SortCriteria = "Time";
+                    filter.IncludePrivatePosts = true;
+                    return await postService.ListPostAsync(filter);
+                }
+                throw new ArgumentException("Cannot display posts of not existing user");
+            }
+        }
+
         public async Task<Tuple<bool, VoteDto>> VoteFromUser(Guid imageId, Guid userId)
         {
             using (UnitOfWorkProvider.Create())
@@ -219,7 +235,9 @@ namespace BusinessLayer.Facades
             using (UnitOfWorkProvider.Create())
             {
                 var result = await imageService.ListImageAsync(new ImageFilterDto { PostId = postId });
-                return result.Items.ToList();
+                return result.Items
+                    .OrderByDescending(image => image.LikesCount - image.DislikesCount)
+                    .ToList();
             }
         }
 

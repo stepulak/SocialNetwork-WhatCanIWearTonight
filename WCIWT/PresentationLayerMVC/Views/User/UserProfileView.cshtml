@@ -11,89 +11,92 @@
 }
 
 <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">@Html.DisplayFor(model => model.User.Username)</h3>
             </div>
             <div class="row">
-                <div class="panel-body">
-                    <div class="col-md-4">
-                        <ul>
-                            <li>
-                                @Html.DisplayFor(model => model.User.Gender)
-                            </li>
-                            <li>
-                                @Html.DisplayFor(model => model.User.Email)
-                            </li>
-                            <li>
-                                @Html.DisplayFor(model => model.User.Birthdate)
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        @if (Model.User.Username != HttpContext.Current.User.Identity?.Name)
-                        {
-                            if (!Model.IsFriend && !Model.HasPendingFriendRequest && logged)
+                <div class="col-md-12">
+                    <div class="panel-body">
+                        <div class="col-md-8">
+                            <ul>
+                                <li>
+                                    @Html.DisplayFor(model => model.User.Gender)
+                                </li>
+                                <li>
+                                    @Html.DisplayFor(model => model.User.Email)
+                                </li>
+                                <li>
+                                    @Html.DisplayFor(model => model.User.Birthdate)
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2 col-md-offset-2">
+                            @if (Model.User.Username != HttpContext.Current.User.Identity?.Name)
                             {
-                                <div class="row">
-                                    @using (Html.BeginForm("AddFriend", "User", FormMethod.Post, new
-                                    {
-                                        username = Model.User.Username,
-                                        id = "friendRequest",
-                                        @class = "btn btn-success"
-                                    }))
-                                    {
-                                        <a href="javascript:document.getElementById('friendRequest').submit()">
-                                            <span>Send Friend Request</span>
-                                        </a>
-                                    }
-                                </div>
-                            }
-                            if (Model.IsFriend && logged)
-                            {
-                                <div class="row">
-                                    @using (Html.BeginForm("RemoveFriend", "User", FormMethod.Post, new
-                                    {
-                                        username = Model.User.Username,
-                                        id = "friendRemove",
-                                        @class = "btn btn-danger"
-                                    }))
-                                    {
-                                        <a href="javascript:document.getElementById('friendRemove').submit()">
-                                            <span>Remove Friend</span>
-                                        </a>
-                                    }                              
-                                    </div>
-                                <div class="row">
-                                    @Html.ActionLink(
-                                        linkText: "Send Message",
-                                        actionName: "Index",
-                                        controllerName: "Message",
-                                        routeValues: new
+                                if (!Model.IsFriend && !Model.HasPendingFriendRequest && logged)
+                                {
+                                    <div class="row">
+                                        @using (Html.BeginForm("AddFriend", "User", FormMethod.Post, new
                                         {
-                                            area = "",
                                             username = Model.User.Username,
-                                        },
-                                        htmlAttributes: new
+                                            @id = "friendRequest",
+                                        }))
                                         {
-                                            @class = "btn btn-info"
-                                        })
-                                </div>
+                                            <a class="btn btn-success"
+                                               href="javascript:document.getElementById('friendRequest').submit()">
+                                                <span>Send Friend Request</span>
+                                            </a>
+                                        }
+                                    </div>
+                                }
+                                if (Model.IsFriend && logged)
+                                {
+                                    <div class="row">
+                                        @using (Html.BeginForm("RemoveFriend", "User", FormMethod.Post, new
+                                        {
+                                            username = Model.User.Username,
+                                            @id = "friendRemove",
+                                        }))
+                                        {
+                                            <a class="btn btn-danger"
+                                               href="javascript:document.getElementById('friendRemove').submit()">
+                                                <span>Remove Friend</span>
+                                            </a>
+                                        }
+                                    </div>
+                                    <div class="row">
+                                        @Html.ActionLink(
+                                            linkText: "Send Message",
+                                            actionName: "Index",
+                                            controllerName: "Message",
+                                            routeValues: new
+                                            {
+                                                area = "",
+                                                username = Model.User.Username,
+                                            },
+                                            htmlAttributes: new
+                                            {
+                                                @class = "btn btn-info"
+                                            })
+                                    </div>
+                                }
                             }
-                        }
-                        <div class="row">
-                            <input type="button" class="btn btn-info" value="Show Friends" onclick="location.href = '@Url.Action(
+                            <div class="row">
+                                <input type="button" class="btn btn-info" value="Show Friends" onclick="location.href = '@Url.Action(
                                                                                                                          actionName: "DisplayFriends",
                                                                                                                          controllerName: "User",
                                                                                                                          routeValues: new
                                                                                                                          {
                                                                                                                              area = "",
                                                                                                                              username = Model.User.Username
-                                                                                                                         })'"/>
+                                                                                                                         })'" />
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

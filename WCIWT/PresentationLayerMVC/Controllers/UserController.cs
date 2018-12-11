@@ -163,7 +163,7 @@ namespace PresentationLayerMVC.Controllers
                 return View();
             }
 
-            var friendshipToConfirm = await UserFacade.GetFriendshipBetweenUsers(loggedUser.Id, friendToConfirm.Id);
+            var friendshipToConfirm = await UserFacade.GetFriendshipRequestBetweenUsers(loggedUser.Id, friendToConfirm.Id);
             if (friendshipToConfirm == null || friendshipToConfirm.IsConfirmed)
             {
                 ModelState.AddModelError("User", "Cannot confirm friendship with this user!");
@@ -201,7 +201,7 @@ namespace PresentationLayerMVC.Controllers
                 return View();
             }
 
-            var friendshipToDecline = await UserFacade.GetFriendshipBetweenUsers(loggedUser.Id, userToDecline.Id);
+            var friendshipToDecline = await UserFacade.GetFriendshipRequestBetweenUsers(loggedUser.Id, userToDecline.Id);
             if (friendshipToDecline == null || friendshipToDecline.IsConfirmed)
             {
                 ModelState.AddModelError("User", "Cannot decline friendship with this user!");
@@ -228,15 +228,31 @@ namespace PresentationLayerMVC.Controllers
             {
                 return null;
             }
-            return await UserFacade.GetFriendshipBetweenUsers(loggedUser.Id, userId);
+           var friendship = await UserFacade.GetFriendshipBetweenUsers(loggedUser.Id, userId);
+            if (friendship == null)
+            {
+                return await UserFacade.GetFriendshipRequestBetweenUsers(loggedUser.Id, userId);
+            }
+
+            return friendship;
         }
 
         private async Task<PostListViewModel> GetPostModel(Guid userId, int page, bool isFriend)
         {
             var filter = Session[FilterSessionKey] as PostFilterDto ?? await CreateFilterForUserDetailPosts(isFriend);
             filter.RequestedPageNumber = page;
-            
-            var posts = await PostFacade.GetPostsByUserId(filter, userId);
+
+            QueryResultDto<PostDto, PostFilterDto> posts;
+            var loggedUser = await GetLoggedUser();
+            if (loggedUser != null && loggedUser.Id == userId)
+            {
+                posts = await PostFacade.GetPostsForLoggedUser(filter, userId);
+            }
+            else
+            {
+                posts = await PostFacade.GetPostsByUserId(filter, userId);
+            }
+
             var imagesForPosts = new List<List<ImageDto>>();
 
             foreach (var post in posts.Items)
