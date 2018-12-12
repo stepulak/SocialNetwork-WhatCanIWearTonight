@@ -290,6 +290,7 @@ namespace PresentationLayerMVC.Controllers
                 Posts = new StaticPagedList<PostDto>(postsResult.Items, postsResult.RequestedPageNumber ?? 1, PostsPageSize,
                     (int)postsResult.TotalItemsCount),
                 ImagesForPosts = imagesResult,
+                HashtagIndices = postsResult.Items.Select(p => PostFacade.FindHashtagIndices(p.Text)).ToList(),
                 PostFilter = postsResult.Filter,
             };
         }

@@ -49,7 +49,14 @@ namespace BusinessLayer.Services.Posts
 
         public async Task<QueryResultDto<PostDto, PostFilterDto>> ListPostAsync(PostFilterDto filter)
         {
-            return await Query.ExecuteQuery(filter);
+            var query = await Query.ExecuteQuery(filter);
+            if (filter.PostIdsWithHashtag != null)
+            {
+                query.Items = query.Items
+                    .Where(i => filter.PostIdsWithHashtag.Contains(i.Id));
+                query.TotalItemsCount = query.Items.LongCount();
+            }
+            return query;
         }
 
         public async Task<QueryResultDto<PostDto, PostFilterDto>> ListUserOwnedPosts(Guid userId)
@@ -61,9 +68,9 @@ namespace BusinessLayer.Services.Posts
             PostFilterDto filter)
         {
             filter.IncludePrivatePosts = true;
-            UserDto user = await userService.GetAsync(userId);
-            List<UserDto> userFriends = await friendshipService.ListOfFriendsAsync(userId);
-            List<Guid> userFriendsIds = userFriends.Select(x => x.Id).ToList();
+            var user = await userService.GetAsync(userId);
+            var userFriends = await friendshipService.ListOfFriendsAsync(userId);
+            var userFriendsIds = userFriends.Select(x => x.Id).ToList();
             var userAge = (int)((DateTime.Now - user.Birthdate).TotalDays / 365.2425);
             filter.UserAge = userAge;
             filter.GenderRestriction = user.Gender;
@@ -75,6 +82,7 @@ namespace BusinessLayer.Services.Posts
                 .Where(post => userFriendsIds.Contains(post.UserId)
                                || post.UserId == userId
                                || post.Visibility == DataTransferObjects.PostVisibility.Public);
+            allPosts.TotalItemsCount = allPosts.Items.LongCount();
             return allPosts;
         }
         

@@ -40,6 +40,26 @@ namespace PresentationLayerMVC.Controllers
         }
 
         [HttpGet]
+        [Route("search")]
+        public async Task<ActionResult> Search(string searchKey)
+        {
+            if (string.IsNullOrWhiteSpace(searchKey))
+            {
+                return View("Index", "Invalid search");
+            }
+            HomePageAggregatedViewModel homepageModel;
+            if (searchKey.StartsWith("#"))
+            {
+                homepageModel = await GetHomePageModel(1, searchKey);
+            }
+            else
+            {
+                homepageModel = await GetHomePageModel(1);
+            }
+            return View("Index", homepageModel);
+        }
+
+        [HttpGet]
         [Route("hashtag")]
         public async Task<ActionResult> PostsWithHashtag(string hashtag)
         {
@@ -133,6 +153,7 @@ namespace PresentationLayerMVC.Controllers
                 Posts = new StaticPagedList<PostDto>(postsResult.Items, postsResult.RequestedPageNumber ?? 1, PostsPageSize,
                     (int)postsResult.TotalItemsCount),
                 ImagesForPosts = imagesResult,
+                HashtagIndices = postsResult.Items.Select(p => PostFacade.FindHashtagIndices(p.Text)).ToList(),
                 PostFilter = postsResult.Filter,
             };
         }

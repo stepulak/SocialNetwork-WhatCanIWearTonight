@@ -67,6 +67,7 @@ namespace BusinessLayer.Facades
                 var id = postService.Create(post);
                 await uow.Commit();
                 AddHashtagsToPost(postDto.Text, id);
+                await uow.Commit();
                 return id;
             }
         }
@@ -76,15 +77,16 @@ namespace BusinessLayer.Facades
             using (UnitOfWorkProvider.Create())
             {
                 filter.SortCriteria = "Time";
+                if (hashtagFilter != null)
+                {
+                    filter.PostIdsWithHashtag = (await hashtagService.ListHashtagAsync(new HashtagFilterDto { Tag = hashtagFilter }))
+                        .Items
+                        .Select(h => h.PostId)
+                        .ToList();
+                }
                 if (userId != Guid.Empty)
                 {
-                    var posts = await postService.ListPostsAvailableForUser(userId, filter);
-                    if (hashtagFilter != null)
-                    {
-                        posts.Items = posts.Items
-                            .Where(p => hashtagService.ListHashtagAsync(new HashtagFilterDto { PostId = p.Id, Tag = hashtagFilter }).Result.TotalItemsCount > 0);
-                    }
-                    return posts;
+                    return await postService.ListPostsAvailableForUser(userId, filter);
                 }
                 return await postService.ListPostAsync(filter);
             }

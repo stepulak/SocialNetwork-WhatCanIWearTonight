@@ -9,17 +9,10 @@ namespace BusinessLayer.DataTransferObjects.Filters
 {
     public class PostFilterDto : FilterDtoBase
     {
-        public bool IncludePrivatePosts { get; set; }
-        public Gender GenderRestriction { get; set; }
-        public int UserAge { get; set; }
-        public Guid UserId { get; set; }
-
-        public PostFilterDto()
-        {
-            IncludePrivatePosts = false;
-            GenderRestriction = Gender.NoInformation;
-            UserAge = -1;
-            UserId = Guid.Empty;
-        }
+        public bool IncludePrivatePosts { get; set; } = false;
+        public Gender GenderRestriction { get; set; } = Gender.NoInformation;
+        public int UserAge { get; set; } = -1;
+        public Guid UserId { get; set; } = Guid.Empty;
+        public List<Guid> PostIdsWithHashtag { get; set; } = null;
     }
 }
