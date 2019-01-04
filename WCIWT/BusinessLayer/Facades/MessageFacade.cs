@@ -76,6 +76,13 @@ namespace BusinessLayer.Facades
             }
         }
 
+        public async Task<QueryResultDto<MessageDto, MessageFilterDto>> AllMessages(Guid userId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await messageService.ListMessageAsync(new MessageFilterDto { CareAboutRole = false, Sender = userId });
+            }
+        }
 
         public async Task<Guid> SendMessage(UserDto sender, UserDto receiver, string text)
         {
@@ -95,7 +102,14 @@ namespace BusinessLayer.Facades
             }
         }
 
-        public void DeleteMessage(MessageDto message) => messageService.Delete(message.Id);
+        public async Task DeleteMessage(Guid messageId)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                messageService.Delete(messageId);
+                await uow.Commit();
+            }
+        }
 
         public async Task<QueryResultDto<MessageDto, MessageFilterDto>> MessagesBetweenUsers(UserDto userA, UserDto userB, MessageFilterDto filter)
         {

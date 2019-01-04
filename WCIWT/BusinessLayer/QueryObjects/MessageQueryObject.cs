@@ -49,13 +49,25 @@ namespace BusinessLayer.QueryObjects
             var predicates = new List<IPredicate>();
 
             var opt1 = new List<IPredicate>();
-            opt1.Add(new SimplePredicate(nameof(Message.UserSenderId), ValueComparingOperator.Equal, filter.Sender));
-            opt1.Add(new SimplePredicate(nameof(Message.UserReceiverId), ValueComparingOperator.Equal, filter.Receiver));
+            if (filter.Sender != Guid.Empty)
+            {
+                opt1.Add(new SimplePredicate(nameof(Message.UserSenderId), ValueComparingOperator.Equal, filter.Sender));
+            }
+            if (filter.Receiver != Guid.Empty)
+            {
+                opt1.Add(new SimplePredicate(nameof(Message.UserReceiverId), ValueComparingOperator.Equal, filter.Receiver));
+            }
             predicates.Add(new CompositePredicate(opt1, LogicalOperator.AND));
 
             var opt2 = new List<IPredicate>();
-            opt2.Add(new SimplePredicate(nameof(Message.UserSenderId), ValueComparingOperator.Equal, filter.Receiver));
-            opt2.Add(new SimplePredicate(nameof(Message.UserReceiverId), ValueComparingOperator.Equal, filter.Sender));
+            if (filter.Receiver != Guid.Empty)
+            {
+                opt2.Add(new SimplePredicate(nameof(Message.UserSenderId), ValueComparingOperator.Equal, filter.Receiver));
+            }
+            if (filter.Sender != Guid.Empty)
+            {
+                opt2.Add(new SimplePredicate(nameof(Message.UserReceiverId), ValueComparingOperator.Equal, filter.Sender));
+            }
             predicates.Add(new CompositePredicate(opt2, LogicalOperator.AND));
 
 

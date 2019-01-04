@@ -47,7 +47,7 @@ namespace DemoEshop.PresentationLayer.Controllers
         {
             if (await UserFacade.Login(model.Username, model.Password))
             {
-                SetupLoginCookie(model.Username);
+                SetupLoginCookie(model.Username, await UserFacade.IsAdmin(model.Username));
 
                 var decodedUrl = "";
                 if (!string.IsNullOrEmpty(returnUrl))
@@ -74,7 +74,7 @@ namespace DemoEshop.PresentationLayer.Controllers
         }
 
 
-        private void SetupLoginCookie(string username)
+        private void SetupLoginCookie(string username, bool isAdmin)
         {
             var ticket = new FormsAuthenticationTicket(
                 1,                                     // ticket version
@@ -82,7 +82,7 @@ namespace DemoEshop.PresentationLayer.Controllers
                 DateTime.Now,                          // issueDate
                 DateTime.Now.AddMinutes(30),           // expiryDate
                 false,                          // true to persist across browser sessions
-                "",                              // can be used to store additional user data
+                isAdmin ? "admin" : "",                              // can be used to store additional user data
                 FormsAuthentication.FormsCookiePath);  // the path for the cookie
 
             // Encrypt the ticket using the machine key

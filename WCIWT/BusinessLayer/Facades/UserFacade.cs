@@ -24,8 +24,7 @@ namespace BusinessLayer.Facades
             this.userService = userService;
             this.friendshipService = friendshipService;
         }
-
-
+        
         public async Task<UserDto> GetUserByUsernameAsync(string username)
         {
             using (UnitOfWorkProvider.Create())
@@ -67,31 +66,20 @@ namespace BusinessLayer.Facades
             }
         }
 
-        public async Task<bool> UnregisterUser(UserDto user)
-        {
-            using (var uow = UnitOfWorkProvider.Create())
-            {
-                var filter = new UserFilterDto
-                {
-                    Username = user.Username,
-                    Email = user.Email
-                };
-                var allUsers = await GetAllUsersAsync(filter);
-                if (allUsers.TotalItemsCount == 0)
-                {
-                    return false;
-                }
-                userService.Delete(user.Id);
-                await uow.Commit();
-                return true;
-            }
-        }
-
         public async Task<bool> Login(string username, string password)
         {
             using (UnitOfWorkProvider.Create())
             {
                 return await userService.AuthorizeUserAsync(username, password);
+            }
+        }
+
+        public async Task<bool> IsAdmin(string username)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                var users = await userService.ListUsersAsync(new UserFilterDto { Username = username });
+                return users.TotalItemsCount == 1 && users.Items.First().IsAdmin;
             }
         }
 
@@ -227,6 +215,29 @@ namespace BusinessLayer.Facades
             {
                 var result = await friendshipService.ListFriendshipAsync(filter);
                 return result.Items.FirstOrDefault();
+            }
+        }
+
+        public async Task RemoveUser(Guid userId)
+        {
+            await RemoveFriendshipsForUser(userId);
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                userService.Delete(userId);
+                await uow.Commit();
+            }
+        }
+
+        private async Task RemoveFriendshipsForUser(Guid userId)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                var friendships = await friendshipService.ListFriendshipAsync(new FriendshipFilterDto { UserA = userId });
+                foreach (var friendship in friendships.Items)
+                {
+                    friendshipService.Delete(friendship.Id);
+                }
+                await uow.Commit();
             }
         }
     }

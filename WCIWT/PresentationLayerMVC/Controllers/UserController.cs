@@ -26,6 +26,7 @@ namespace PresentationLayerMVC.Controllers
 
         public UserFacade UserFacade { get; set; }
         public PostFacade PostFacade { get; set; }
+        public MessageFacade MessageFacade { get; set; }
 
         // GET: user/{username}
         [HttpGet]
@@ -218,6 +219,40 @@ namespace PresentationLayerMVC.Controllers
             {
                 ModelState.AddModelError("User", "Cannot decline friendship with this user");
                 return View();
+            }
+        }
+
+        [HttpGet]
+        [Route("remove-user/{userId}")]
+        public async Task<ActionResult> RemoveUser(Guid userId)
+        {
+            var loggedUser = await GetLoggedUser();
+            if (loggedUser != null && loggedUser.IsAdmin)
+            {
+                var posts = await PostFacade.GetPostsByUserId(new PostFilterDto { }, userId);
+                var messages = await MessageFacade.AllMessages(userId);
+                foreach(var post in posts.Items)
+                {
+                    await PostFacade.DeletePost(post.Id);
+                }
+                foreach(var msg in messages.Items)
+                {
+                    await MessageFacade.DeleteMessage(msg.Id);
+                }
+                await RemoveUserNoException(userId);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        private async Task RemoveUserNoException(Guid userId)
+        {
+            try
+            {
+                await UserFacade.RemoveUser(userId);
+            }
+            catch (Exception)
+            {
+                // ignore
             }
         }
 

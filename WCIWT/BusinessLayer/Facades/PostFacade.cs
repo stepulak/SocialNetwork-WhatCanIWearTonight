@@ -92,11 +92,12 @@ namespace BusinessLayer.Facades
             }
         }
 
-        public void DeletePost(PostDto post)
+        public async Task DeletePost(Guid postId)
         {
-            using (UnitOfWorkProvider.Create())
+            using (var uow = UnitOfWorkProvider.Create())
             {
-                postService.Delete(post.Id);
+                postService.Delete(postId);
+                await uow.Commit();
             }
         }
         
@@ -214,7 +215,7 @@ namespace BusinessLayer.Facades
             }
         }
 
-        public async Task CommentPost(Guid postId, Guid userId, string reply)
+        public async Task AddReplyToPost(Guid postId, Guid userId, string reply)
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
@@ -234,12 +235,29 @@ namespace BusinessLayer.Facades
             }
         }
 
+        public async Task DeleteReply(Guid replyId)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                postReplyService.Delete(replyId);
+                await uow.Commit();
+            }
+        }
+
         public async Task<List<PostReplyDto>> ListOfReplysForPost(Guid postId)
         {
             using (UnitOfWorkProvider.Create())
             {
                 var result = await postReplyService.ListPostReplyAsync(new PostReplyFilterDto { PostId = postId });
                 return result.Items.OrderBy(r => r.Time).ToList();
+            }
+        }
+
+        public async Task<PostReplyDto> GetReplyById(Guid replyId)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await postReplyService.GetAsync(replyId);
             }
         }
 

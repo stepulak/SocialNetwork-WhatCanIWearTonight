@@ -46,10 +46,10 @@ namespace PresentationLayerMVC.Controllers
         }
 
         [HttpPost]
-        [Route("comment")]
-        public async Task<ActionResult> AddComment(PostModel model)
+        [Route("reply")]
+        public async Task<ActionResult> AddReply(PostModel model)
         {
-            return await AddComment(Guid.Parse(model.PostId), model.Username, model.TextComment);
+            return await AddReply(Guid.Parse(model.PostId), model.Username, model.TextComment);
         }
         
         //[HttpGet]
@@ -97,7 +97,34 @@ namespace PresentationLayerMVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private async Task<ActionResult> AddComment(Guid postId, string username, string comment)
+        [HttpGet]
+        [Route("remove-post/{postId}")]
+        public async Task<ActionResult> RemovePost(Guid postId)
+        {
+            var user = await GetLoggedUser();
+            var post = await PostFacade.GetPostDtoAccordingToId(postId);
+            if (user != null && post != null && (user.IsAdmin || post.UserId == user.Id))
+            {
+                await PostFacade.DeletePost(postId);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        [Route("remove-reply/{replyId}")]
+        public async Task<ActionResult> RemoveReply(Guid replyId)
+        {
+            var user = await GetLoggedUser();
+            var reply = await PostFacade.GetReplyById(replyId);
+            string url = Request.UrlReferrer.AbsolutePath;
+            if (user != null && reply != null && (user.IsAdmin || reply.UserId == user.Id))
+            {
+                await PostFacade.DeleteReply(replyId);
+            }
+            return Redirect(url);
+        }
+
+        private async Task<ActionResult> AddReply(Guid postId, string username, string reply)
         {
             if (postId == Guid.Empty)   
             {
@@ -107,12 +134,12 @@ namespace PresentationLayerMVC.Controllers
             {
                 string url = Request.UrlReferrer.AbsolutePath;
                 var userId = (await UserFacade.GetUserByUsernameAsync(username)).Id;
-                await PostFacade.CommentPost(postId, userId, comment);
+                await PostFacade.AddReplyToPost(postId, userId, reply);
                 return Redirect(url);
             }
             catch (Exception e)
             {
-                ModelState.AddModelError("Comment", e.Message);
+                ModelState.AddModelError("Reply", e.Message);
                 return View();
             }
         }

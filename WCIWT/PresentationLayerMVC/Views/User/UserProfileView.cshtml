@@ -8,6 +8,7 @@
 
 @{
     bool logged = HttpContext.Current.User.Identity.Name.Length != 0;
+    bool isAdmin = HttpContext.Current.User.IsInRole("admin");
 }
 
 <div class="row">
@@ -92,6 +93,24 @@
                                                                                                                              area = "",
                                                                                                                              username = Model.User.Username
                                                                                                                          })'" />
+                            </div>
+                            <div class="row">
+                                @if (isAdmin)
+                                {
+                                    @Html.ActionLink(
+                                        linkText: "Remove user",
+                                        actionName: "RemoveUser",
+                                        controllerName: "User",
+                                        routeValues: new
+                                        {
+                                            area = "",
+                                            userId = Model.User.Id
+                                        },
+                                        htmlAttributes: new
+                                        {
+                                            @class = "btn btn-danger"
+                                        })
+                                }
                             </div>
                         </div>
                     </div>

@@ -3,8 +3,11 @@
     ViewBag.Title = "Post";
 }
 
-@{ 
-    bool logged = HttpContext.Current.User.Identity.Name.Length != 0;
+@{
+    string loggedUsername = HttpContext.Current.User.Identity.Name;
+    bool logged = loggedUsername.Length != 0;
+    bool isAdmin = HttpContext.Current.User.IsInRole("admin");
+    bool canRemovePost = isAdmin || loggedUsername.Equals(Model.Post.User.Username);
 }
 
 <div class="row">
@@ -132,6 +135,22 @@
                 </div>
             }
             </div>
+            @if (canRemovePost)
+            {
+                 @Html.ActionLink(
+                    linkText: "Remove this post",
+                    actionName:"RemovePost",
+                    controllerName: "Post",
+                    routeValues: new
+                    {
+                        area = "",
+                        postId = Model.Post.Id
+                    },
+                    htmlAttributes: new
+                    {
+                        @class = "btn btn-danger"
+                    })
+            }
         </div>
     </div>
 </div>
@@ -142,6 +161,7 @@
         {
             <div class="well">
                 @{
+                    var id = Model.Replys[i].Id;
                     var time = Model.Replys[i].Time.ToString();
                     var username = Model.Replys[i].User.Username;
                     var text = Model.Replys[i].Text;
@@ -164,6 +184,22 @@
                 <p>
                     Added: @Html.DisplayFor(model => time)
                 </p>
+                @if (isAdmin || username.Equals(loggedUsername))
+                {
+                    @Html.ActionLink(
+                        linkText: "Remove this comment",
+                        actionName:"RemoveReply",
+                        controllerName: "Post",
+                        routeValues: new
+                        {
+                            area = "",
+                            replyId = id
+                        },
+                        htmlAttributes: new
+                        {
+                            @class = "btn btn-danger"
+                        })
+                }
             </div>
         }
     </div>
@@ -174,13 +210,13 @@
     <div class="row">
         <div class="col-md-3">
             <div class="well">
-                @using (Html.BeginForm("AddComment", "Post"))
+                @using (Html.BeginForm("AddReply", "Post"))
                 {
                     @Html.AntiForgeryToken()
                     @Html.TextAreaFor(model => model.TextComment, new { @class = "form-control" })
                     @Html.Hidden("Username", HttpContext.Current.User.Identity.Name)
                     @Html.Hidden("PostId", Model.Post.Id) // must be done
-                    <input type="submit" value="Add Comment" class="btn btn-success" />
+                    <input type="submit" value="Add Reply" class="btn btn-success" />
                 }
             </div>
         </div>
