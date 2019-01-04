@@ -47,16 +47,11 @@ namespace PresentationLayerMVC.Controllers
             {
                 return View("Index", "Invalid search");
             }
-            HomePageAggregatedViewModel homepageModel;
             if (searchKey.StartsWith("#"))
             {
-                homepageModel = await GetHomePageModel(1, searchKey);
+                return View("Index", await GetHomePageModel(1, searchKey));
             }
-            else
-            {
-                homepageModel = await GetHomePageModel(1);
-            }
-            return View("Index", homepageModel);
+            return RedirectToAction("Index", "User", new { username = searchKey });
         }
 
         [HttpGet]

@@ -36,7 +36,7 @@ namespace PresentationLayerMVC.Controllers
             var user = await UserFacade.GetUserByUsernameAsync(username);
             if (user == null)
             {
-                // TODO: Redirect 404
+                return UserNotFoundModel(username);
             }
 
             var friendshipWithLoggedUser = await GetFriendshipWithLoggedUser(user.Id);
@@ -59,7 +59,7 @@ namespace PresentationLayerMVC.Controllers
             var user = await UserFacade.GetUserByUsernameAsync(username);
             if (user == null)
             {
-                // TODO: Redirect 404
+                return UserNotFoundModel(username);
             }
 
             var friends = await GetUserFriendsModel(user, page);
@@ -101,7 +101,7 @@ namespace PresentationLayerMVC.Controllers
                 await UserFacade.SendFriendshipRequest(loggedUser, friendToAdd);
                 return Redirect(url);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ModelState.AddModelError("User", "Cannot send friendship request to this user!");
                 return View();
@@ -242,6 +242,14 @@ namespace PresentationLayerMVC.Controllers
                 await RemoveUserNoException(userId);
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        private ActionResult UserNotFoundModel(string username)
+        {
+            return View("UserProfileView", new UserProfileAggregatedViewModel() {
+                Found = false,
+                User = new UserDto { Username = username }
+            });
         }
 
         private async Task RemoveUserNoException(Guid userId)
