@@ -40,7 +40,7 @@ namespace BusinessLayer.QueryObjects
                 predicates.Add(new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, PostVisibility.Public));
             }
 
-            //predicates.Add(CreateGenderRestrictionPredicate(filter));
+            predicates.Add(CreateGenderRestrictionPredicate(filter));
             predicates.Add(CreateAgeRestrictionPredicate(filter));
             return new CompositePredicate(predicates, LogicalOperator.AND);
         }
@@ -94,10 +94,20 @@ namespace BusinessLayer.QueryObjects
         {
             var predicates = new List<IPredicate>
             {
-                new SimplePredicate(nameof(Post.GenderRestriction), ValueComparingOperator.Equal, filter.GenderRestriction), // filter by user's gender
+                new SimplePredicate(nameof(Post.GenderRestriction), ValueComparingOperator.Equal, GetGenderRetrictionEnumFromFilter(filter)), // filter by user's gender
                 new SimplePredicate(nameof(Post.GenderRestriction), ValueComparingOperator.Equal, Gender.NoInformation) // and add posts with no gender restriction
             };
             return new CompositePredicate(predicates, LogicalOperator.OR);
+        }
+
+        private Gender GetGenderRetrictionEnumFromFilter(PostFilterDto filter)
+        {
+            switch (filter.GenderRestriction)
+            {
+                case DataTransferObjects.Gender.Male: return Gender.Male;
+                case DataTransferObjects.Gender.Female: return Gender.Female;
+                default: return Gender.NoInformation;
+            }
         }
     }
 }
