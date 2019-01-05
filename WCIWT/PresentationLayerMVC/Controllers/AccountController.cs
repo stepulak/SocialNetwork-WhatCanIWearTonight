@@ -22,16 +22,20 @@ namespace DemoEshop.PresentationLayer.Controllers
         [HttpPost]
         public async Task<ActionResult> Register(UserCreateDto userCreateDto)
         {
-            try
+            if (ModelState.IsValid)
             {
-                await UserFacade.RegisterUser(userCreateDto);
-                return RedirectToAction("Login", "Account");
+                try
+                {
+                    await UserFacade.RegisterUser(userCreateDto);
+                    return RedirectToAction("Login", "Account");
+                }
+                catch (ArgumentException)
+                {
+                    ModelState.AddModelError("Username", "Account with that username already exists!");
+                    return View();
+                }
             }
-            catch(ArgumentException)
-            {
-                ModelState.AddModelError("Username", "Account with that username already exists!");
-                return View();
-            }
+            return View();
         }
         
         [HttpGet]

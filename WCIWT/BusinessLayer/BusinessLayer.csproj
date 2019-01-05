@@ -118,6 +118,7 @@
     <Compile Include="Services\Users\UserService.cs" />
     <Compile Include="Services\Votes\IVoteService.cs" />
     <Compile Include="Services\Votes\VoteService.cs" />
+    <Compile Include="Utils\UserDateAttributeValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\EntityDatabase\EntityDatabase.csproj">

@@ -17,9 +17,9 @@ namespace BusinessLayer.DataTransferObjects
         public Gender GenderRestriction { get; set; }
         [Required(ErrorMessage = "Has age restriction must be selected")]
         public bool HasAgeRestriction { get; set; }
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Age restriction from must be a natural number")]
+        [Range(1, int.MaxValue, ErrorMessage = "Value must be greater than 0")]
         public int AgeRestrictionFrom { get; set; }
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Age restriction to must be a natural number")]
+        [Range(1, int.MaxValue, ErrorMessage = "Value must be greater than 0")]
         public int AgeRestrictionTo { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.DataTransferObjects.Common;
+using BusinessLayer.Utils;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -22,6 +23,7 @@ namespace BusinessLayer.DataTransferObjects
         public Gender Gender { get; set; }
         
         [Required(ErrorMessage = "Birthdate is required!")]
+        [UserDateAttributeValidation(ErrorMessage = "You must be at least 15 years old to register")]
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
     }

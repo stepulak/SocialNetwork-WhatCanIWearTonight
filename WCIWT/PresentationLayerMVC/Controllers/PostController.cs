@@ -79,22 +79,25 @@ namespace PresentationLayerMVC.Controllers
         [Route("new")]
         public async Task<ActionResult> NewPost(CreatePostModel model)
         {
-            var user = await GetLoggedUser();
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                var newPostId =  await PostFacade.AddPost(user, model.Post);
-                var newPost = await PostFacade.GetPostDtoAccordingToId(newPostId);
-                var uploadedSuccessfully = await CreateImageDtosFromFiles(model.Files, newPost);
-                if (uploadedSuccessfully)
+                var user = await GetLoggedUser();
+                if (user != null)
                 {
-                    RedirectToAction("Index", "Post", new { postId = newPostId });
+                    var newPostId = await PostFacade.AddPost(user, model.Post);
+                    var newPost = await PostFacade.GetPostDtoAccordingToId(newPostId);
+                    var uploadedSuccessfully = await CreateImageDtosFromFiles(model.Files, newPost);
+                    if (uploadedSuccessfully)
+                    {
+                        RedirectToAction("Index", "Post", new { postId = newPostId });
+                    }
+                }
+                else
+                {
+                    RedirectToAction("Login", "Account");
                 }
             }
-            else
-            {
-                RedirectToAction("Login", "Account");
-            }
-            return RedirectToAction("Index", "Home");
+            return View(model);
         }
 
         [HttpGet]
