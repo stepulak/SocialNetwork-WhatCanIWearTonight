@@ -10,7 +10,6 @@ namespace EntityDatabase
     {
         Male,
         Female,
-        ApacheHelicopter,
         NoInformation,
     }
 }
