@@ -7,6 +7,7 @@
 
 
 @{
+    string loggedUsername = HttpContext.Current.User.Identity.Name;
     bool logged = HttpContext.Current.User.Identity.Name.Length != 0;
     bool isAdmin = HttpContext.Current.User.IsInRole("admin");
 }
@@ -163,39 +164,39 @@
                 </h3>
                 <div class="divider"></div>
                 <p>
-                @{
-                    var postText = Model.PostListViewModel.Posts[i].Text;
-                    var hashtagIndices = Model.PostListViewModel.HashtagIndices[i];
-                    if (hashtagIndices.Count > 0)
-                    {
-                        int textIndex = 0;
-                        for (var j = 0; j < hashtagIndices.Count; j++)
+                    @{
+                        var postText = Model.PostListViewModel.Posts[i].Text;
+                        var hashtagIndices = Model.PostListViewModel.HashtagIndices[i];
+                        if (hashtagIndices.Count > 0)
                         {
-                            var tagBegin = hashtagIndices[j].Item1;
-                            var tagEnd = hashtagIndices[j].Item2;
-                            var innerText = postText.Substring(textIndex, tagBegin - textIndex);
-                            @Html.DisplayFor(model => innerText)
-                            var hashtag = postText.Substring(tagBegin, tagEnd - tagBegin);
-                            @Html.ActionLink(
-                                linkText: hashtag,
-                                actionName: "PostsWithHashtag",
-                                controllerName: "Home",
-                                routeValues: new
-                                {
-                                    area = "",
-                                    hashtag = hashtag
-                                },
-                                htmlAttributes: null)
-                            textIndex = tagEnd;
+                            int textIndex = 0;
+                            for (var j = 0; j < hashtagIndices.Count; j++)
+                            {
+                                var tagBegin = hashtagIndices[j].Item1;
+                                var tagEnd = hashtagIndices[j].Item2;
+                                var innerText = postText.Substring(textIndex, tagBegin - textIndex);
+                                @Html.DisplayFor(model => innerText)
+                                var hashtag = postText.Substring(tagBegin, tagEnd - tagBegin);
+                                @Html.ActionLink(
+                                    linkText: hashtag,
+                                    actionName: "PostsWithHashtag",
+                                    controllerName: "Home",
+                                    routeValues: new
+                                    {
+                                        area = "",
+                                        hashtag = hashtag
+                                    },
+                                    htmlAttributes: null)
+                                textIndex = tagEnd;
+                            }
+                            var restOfText = postText.Substring(hashtagIndices.Last().Item2);
+                            @Html.DisplayFor(model => restOfText)
                         }
-                        var restOfText = postText.Substring(hashtagIndices.Last().Item2);
-                        @Html.DisplayFor(model => restOfText)
+                        else
+                        {
+                            Html.DisplayFor(model => postText);
+                        }
                     }
-                    else
-                    {
-                        Html.DisplayFor(model => postText);
-                    }
-                }
                 </p>
                 @if (Model.PostListViewModel.ImagesForPosts[i].Count > 0)
                 {
@@ -290,8 +291,104 @@
                     {
                         @class = "btn btn-info"
                     })
+                @if(isAdmin || loggedUsername.Equals(Model.PostListViewModel.Posts[i].User.Username))
+                {
+                @Html.ActionLink(
+                   linkText: "Remove this post",
+                   actionName: "RemovePost",
+                   controllerName: "Post",
+                   routeValues: new
+                   {
+                       area = "",
+                       postId = Model.PostListViewModel.Posts[i].Id
+                   },
+                   htmlAttributes: new
+                   {
+                       @class = "btn btn-danger"
+                   })
+                }
             </div>
         </div>
     }
 </div>
+                        <div class="row">
+                    @if (Model.PostListViewModel.Posts.HasPreviousPage)
+                    {
+                        <div class="col-md-2">
+                            @Html.ActionLink(
+                                linkText: "Go Back",
+                                actionName: "Index",
+                                controllerName: "Home",
+                                routeValues: new
+                                {
+                                    area = "",
+                                    username = Model.User.Username,
+                                    page = Model.Page - 1,
+                                },
+                                htmlAttributes: new
+                                {
+                                    @class = "btn btn-info"
+                                })
+                        </div>
+                    }
+                    @if (Model.PostListViewModel.Posts.HasNextPage)
+                    {
+                        <div class="col-md-2">
+                            @Html.ActionLink(
+                                linkText: "Load More",
+                                actionName: "Index",
+                                controllerName: "Home",
+                                routeValues: new
+                                {
+                                    area = "",
+                                    username = Model.User.Username,
+                                    page = Model.Page + 1,
+                                },
+                                htmlAttributes: new
+                                {
+                                    @class = "btn btn-info"
+                                })
+                        </div>
+                    }
+
+                </div>
+    <div class="row">
+        @if (Model.PostListViewModel.Posts.HasPreviousPage)
+        {
+            <div class="col-md-2">
+                @Html.ActionLink(
+                    linkText: "Go Back",
+                    actionName: "Index",
+                    controllerName: "User",
+                    routeValues: new
+                    {
+                        area = "",
+                        page = Model.Page - 1,
+                    },
+                    htmlAttributes: new
+                    {
+                        @class = "btn btn-info"
+                    })
+            </div>
+        }
+        @if (Model.PostListViewModel.Posts.HasNextPage)
+        {
+            <div class="col-md-2">
+                @Html.ActionLink(
+                    linkText: "Load More",
+                    actionName: "Index",
+                    controllerName: "User",
+                    routeValues: new
+                    {
+                        area = "",
+                        page = Model.Page + 1,
+                    },
+                    htmlAttributes: new
+                    {
+                        @class = "btn btn-info"
+                    })
+            </div>
+        }
+
+    </div>
 }

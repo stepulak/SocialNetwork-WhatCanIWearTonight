@@ -19,9 +19,9 @@ namespace PresentationLayerMVC.Controllers
     [RoutePrefix("users")]
     public class UserController : Controller
     {
-        public const int PostsPageSize = 10;
+        public const int PostsPageSize = 5;
         public const int ImagesPerPost = 5;
-        public const int FriendsPageSize = 30;
+        public const int FriendsPageSize = 20;
         private const string FilterSessionKey = "filter";
 
         public UserFacade UserFacade { get; set; }
@@ -45,8 +45,9 @@ namespace PresentationLayerMVC.Controllers
             {
                 User = user,
                 PostListViewModel = posts,
-                IsFriend =  ResolveIsFriendForModel(friendshipWithLoggedUser),
-                HasPendingFriendRequest = ResolveHasPendingFriendRequestForModel(friendshipWithLoggedUser)
+                IsFriend = ResolveIsFriendForModel(friendshipWithLoggedUser),
+                HasPendingFriendRequest = ResolveHasPendingFriendRequestForModel(friendshipWithLoggedUser),
+                Page = page
             };
             return View($"UserProfileView", model);
         }
@@ -66,7 +67,8 @@ namespace PresentationLayerMVC.Controllers
             var model = new UserFriendsAggregatedViewModel()
             {
                 User = user,
-                UserFriendsList = friends
+                UserFriendsList = friends,
+                Page = page
             };
             return View("UserFriendsListView", model);
         }
@@ -97,7 +99,7 @@ namespace PresentationLayerMVC.Controllers
 
             try
             {
-                string url = Request.UrlReferrer.AbsolutePath;
+                string url = Request.UrlReferrer.AbsoluteUri;
                 await UserFacade.SendFriendshipRequest(loggedUser, friendToAdd);
                 return Redirect(url);
             }
@@ -135,7 +137,7 @@ namespace PresentationLayerMVC.Controllers
 
             try
             {
-                string url = Request.UrlReferrer.AbsolutePath;
+                string url = Request.UrlReferrer.AbsoluteUri;
                 await UserFacade.RemoveFriendship(friendshipToRemove);
                 return Redirect(url);
             }
@@ -173,7 +175,7 @@ namespace PresentationLayerMVC.Controllers
 
             try
             {
-                string url = Request.UrlReferrer.AbsolutePath;
+                string url = Request.UrlReferrer.AbsoluteUri;
                 await UserFacade.ConfirmFriendshipRequest(friendshipToConfirm);
                 return Redirect(url);
             }
@@ -211,7 +213,7 @@ namespace PresentationLayerMVC.Controllers
 
             try
             {
-                string url = Request.UrlReferrer.AbsolutePath;
+                string url = Request.UrlReferrer.AbsoluteUri;
                 await UserFacade.CancelFriendshipRequest(friendshipToDecline);
                 return Redirect(url);
             }

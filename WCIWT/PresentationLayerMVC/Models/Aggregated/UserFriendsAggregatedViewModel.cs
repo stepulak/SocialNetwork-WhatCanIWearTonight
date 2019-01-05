@@ -6,5 +6,6 @@ namespace PresentationLayerMVC.Controllers
     {
         public UserDto User { get; set; }
         public UserFriendsListViewModel UserFriendsList { get; set; }
+        public int Page { get; set; }
     }
 }

@@ -76,11 +76,11 @@ namespace BusinessLayer.Services.Posts
             filter.GenderRestriction = user.Gender;
 
             var allPosts = await ListPostAsync(filter);
-           /* allPosts.Items = allPosts.Items
+           allPosts.Items = allPosts.Items
                 .Where(post => userFriendsIds.Contains(post.UserId)
                                || post.UserId == userId
                                || post.Visibility == DataTransferObjects.PostVisibility.Public);
-            allPosts.TotalItemsCount = allPosts.Items.LongCount();*/
+            allPosts.TotalItemsCount = allPosts.Items.LongCount();
             
             return allPosts;
         }

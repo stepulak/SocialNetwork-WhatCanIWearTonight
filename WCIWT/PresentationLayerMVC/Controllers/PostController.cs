@@ -116,7 +116,7 @@ namespace PresentationLayerMVC.Controllers
         {
             var user = await GetLoggedUser();
             var reply = await PostFacade.GetReplyById(replyId);
-            string url = Request.UrlReferrer.AbsolutePath;
+            string url = Request.UrlReferrer.AbsoluteUri;
             if (user != null && reply != null && (user.IsAdmin || reply.UserId == user.Id))
             {
                 await PostFacade.DeleteReply(replyId);
@@ -132,7 +132,7 @@ namespace PresentationLayerMVC.Controllers
             }
             try
             {
-                string url = Request.UrlReferrer.AbsolutePath;
+                string url = Request.UrlReferrer.AbsoluteUri;
                 var userId = (await UserFacade.GetUserByUsernameAsync(username)).Id;
                 await PostFacade.AddReplyToPost(postId, userId, reply);
                 return Redirect(url);
@@ -152,7 +152,7 @@ namespace PresentationLayerMVC.Controllers
             }
             try
             {
-                string url = Request.UrlReferrer.AbsolutePath;
+                string url = Request.UrlReferrer.AbsoluteUri;
                 await PostFacade.ChangeVote(imageId, userId, type);
                 return Redirect(url);
             }

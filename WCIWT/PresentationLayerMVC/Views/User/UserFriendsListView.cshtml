@@ -46,11 +46,11 @@
                                     <div class="row">
                                         @using (Html.BeginForm("AddFriend", "User", new { username = friend.User.Username }, FormMethod.Post, new
                                         {
-                                            @id = "friendRequest",
+                                            @id = "friendRequest=" + friend.User.Username,
                                         }))
                                         {
                                             <a class="btn btn-success"
-                                               href="javascript:document.getElementById('friendRequest').submit()">
+                                               href="javascript:document.getElementById('friendRequest=@friend.User.Username').submit()">
                                                 <span>Send Friend Request</span>
                                             </a>
                                         }
@@ -61,11 +61,11 @@
                                     <div class="row">
                                         @using (Html.BeginForm("RemoveFriend", "User", new { username = friend.User.Username }, FormMethod.Post, new
                                         {
-                                            @id = "friendRemove",
+                                            @id = "friendRemove=" + friend.User.Username,
                                         }))
                                         {
                                             <a class="btn btn-danger"
-                                               href="javascript:document.getElementById('friendRemove').submit()">
+                                               href="javascript:document.getElementById('friendRemove=@friend.User.Username').submit()">
                                                 <span>Remove Friend</span>
                                             </a>
                                         }
@@ -95,4 +95,45 @@
             </div>
         </div>
     }
+</div>
+<div class="row">
+    @if (Model.UserFriendsList.Friends.HasPreviousPage)
+    {
+        <div class="col-md-2">
+            @Html.ActionLink(
+                linkText: "Go Back",
+                actionName: "DisplayFriends",
+                controllerName: "User",
+                routeValues: new
+                {
+                    area = "",
+                    page = Model.Page - 1,
+                    username = Model.User.Username
+                },
+                htmlAttributes: new
+                {
+                    @class = "btn btn-info"
+                })
+        </div>
+    }
+    @if (Model.UserFriendsList.Friends.HasNextPage)
+    {
+        <div class="col-md-2">
+            @Html.ActionLink(
+                linkText: "Load More",
+                actionName: "DisplayFriends",
+                controllerName: "User",
+                routeValues: new
+                {
+                    area = "",
+                    page = Model.Page + 1,
+                    username = Model.User.Username
+                },
+                htmlAttributes: new
+                {
+                    @class = "btn btn-info"
+                })
+        </div>
+    }
+
 </div>

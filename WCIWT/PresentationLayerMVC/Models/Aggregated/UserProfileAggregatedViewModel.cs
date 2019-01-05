@@ -10,5 +10,6 @@ namespace PresentationLayerMVC.Models.Aggregated
         public UserDto User { get; set; }
         public bool HasPendingFriendRequest { get; set; }
         public bool IsFriend { get; set; }
+        public int Page { get; set; }
     }
 }
