@@ -75,7 +75,7 @@ namespace BusinessLayer.Services.Posts
             filter.UserAge = userAge;
             filter.GenderRestriction = user.Gender;
             filter.PostUserIds = userFriendsIds;
-
+            filter.PostUserIds.Add(userId);
            return await ListPostAsync(filter);
         }
         
