@@ -70,19 +70,13 @@ namespace BusinessLayer.Services.Posts
             filter.IncludePrivatePosts = true;
             var user = await userService.GetAsync(userId);
             var userFriends = await friendshipService.ListOfFriendsAsync(userId);
-            var userFriendsIds = userFriends.Select(x => x.Id).ToList();
+            var userFriendsIds = userFriends.Select(friend => friend.Id).ToList();
             var userAge = (int)((DateTime.Now - user.Birthdate).TotalDays / 365.2425);
             filter.UserAge = userAge;
             filter.GenderRestriction = user.Gender;
+            filter.PostUserIds = userFriendsIds;
 
-            var allPosts = await ListPostAsync(filter);
-           allPosts.Items = allPosts.Items
-                .Where(post => userFriendsIds.Contains(post.UserId)
-                               || post.UserId == userId
-                               || post.Visibility == DataTransferObjects.PostVisibility.Public);
-            allPosts.TotalItemsCount = allPosts.Items.LongCount();
-            
-            return allPosts;
+           return await ListPostAsync(filter);
         }
         
         protected override Task<Post> GetWithIncludesAsync(Guid entityId)

@@ -33,7 +33,7 @@ namespace BusinessLayer.QueryObjects
             }
             if (filter.IncludePrivatePosts)
             {
-                predicates.Add(CreateNoVisibilityRestrictionPost());
+                predicates.Add(CreateVisibilityRestrictionPostPredicates(filter));
             }
             else
             {
@@ -45,15 +45,34 @@ namespace BusinessLayer.QueryObjects
             return new CompositePredicate(predicates, LogicalOperator.AND);
         }
 
-        private IPredicate CreateNoVisibilityRestrictionPost()
+        private IPredicate CreateVisibilityRestrictionPostPredicates(PostFilterDto filter)
         {
+            var friendsOnlyPostsPredicates = new List<IPredicate>
+            {
+               new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, PostVisibility.FriendsOnly)
+            };
+            
+            if (filter.PostUserIds != null && filter.PostUserIds.Count > 0)
+            {
+                friendsOnlyPostsPredicates.Add(CreatePostUsernameRestrictionsPredicate(filter));
+            }
+             
             var predicates = new List<IPredicate>
             {
                 new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, PostVisibility.Public),
-                new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, PostVisibility.FriendsOnly)
+                new CompositePredicate(friendsOnlyPostsPredicates, LogicalOperator.AND)
             };
             var post = new CompositePredicate(predicates, LogicalOperator.OR);
             return post;
+        }
+
+        private IPredicate CreatePostUsernameRestrictionsPredicate(PostFilterDto filter) {
+            var predicates = new List<IPredicate>();
+            foreach (Guid userId in filter.PostUserIds)
+            {
+                predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, userId));
+            }
+            return new CompositePredicate(predicates, LogicalOperator.OR);
         }
 
         private IPredicate CreateAgeRestrictionPredicate(PostFilterDto filter)
