@@ -9,5 +9,6 @@ namespace PresentationLayerMVC.Models.Aggregated
         public PostListViewModel PostListViewModel;
         public FriendRequestListViewModel FriendRequestListViewModel;
         public FriendListViewModel FriendListViewModel;
+        public int Page;
     }
 }

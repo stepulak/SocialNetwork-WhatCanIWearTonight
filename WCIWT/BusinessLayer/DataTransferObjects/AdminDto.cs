@@ -11,7 +11,7 @@ namespace BusinessLayer.DataTransferObjects
         public AdminDto()
         {
             IsAdmin = true;
-            Gender = Gender.ApacheHelicopter;
+            Gender = Gender.NoInformation;
         }
     }
 }

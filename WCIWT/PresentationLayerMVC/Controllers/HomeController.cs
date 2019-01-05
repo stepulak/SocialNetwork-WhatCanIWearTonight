@@ -19,7 +19,7 @@ namespace PresentationLayerMVC.Controllers
 {
     public class HomeController : Controller
     {
-        public const int PostsPageSize = 10;
+        public const int PostsPageSize = 2;
         public const int FriendRequestsPageSize = 20;
         public const int FriendsPageSize = 20;
         public const int ImagesPerPost = 5;
@@ -67,12 +67,13 @@ namespace PresentationLayerMVC.Controllers
             var userId = await GetGuidOfLoggedUser();
             var postsModel = await GetPostModel(userId, page, hashtagFilter);
             var friendRequestsModel = await GetFriendRequestsModel(userId);
-            var friendsModel = await GetFriendsModel(userId, page);
+            var friendsModel = await GetFriendsModel(userId, 1);
             return new HomePageAggregatedViewModel
             {
                 PostListViewModel = postsModel,
                 FriendRequestListViewModel = friendRequestsModel,
-                FriendListViewModel = friendsModel
+                FriendListViewModel = friendsModel,
+                Page = page
             };
         }
 

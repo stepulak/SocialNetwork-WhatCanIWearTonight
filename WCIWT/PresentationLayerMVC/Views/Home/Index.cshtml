@@ -199,6 +199,45 @@
                     </div>
                 </div>
             }
+                <div class="row">
+                    @if (Model.PostListViewModel.Posts.HasPreviousPage)
+                    {
+                        <div class="col-md-2">
+                            @Html.ActionLink(
+                                linkText: "Go Back",
+                                actionName: "Index",
+                                controllerName: "Home",
+                                routeValues: new
+                                {
+                                    area = "",
+                                    page = Model.Page - 1,
+                                },
+                                htmlAttributes: new
+                                {
+                                    @class = "btn btn-info"
+                                })
+                        </div>
+                    }
+                    @if (Model.PostListViewModel.Posts.HasNextPage)
+                    {
+                        <div class="col-md-2">
+                            @Html.ActionLink(
+                                linkText: "Load More",
+                                actionName: "Index",
+                                controllerName: "Home",
+                                routeValues: new
+                                {
+                                    area = "",
+                                    page = Model.Page + 1,
+                                },
+                                htmlAttributes: new
+                                {
+                                    @class = "btn btn-info"
+                                })
+                        </div>
+                    }
+
+                </div>
         </div>
         <div class="col-md-4">
             @if (logged)

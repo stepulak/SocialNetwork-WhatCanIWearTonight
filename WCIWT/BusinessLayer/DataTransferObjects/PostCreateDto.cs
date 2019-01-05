@@ -9,15 +9,17 @@ namespace BusinessLayer.DataTransferObjects
 {
     public class PostCreateDto
     {
-        [Required]
+        [Required(ErrorMessage = "Post must contain some text")]
         public string Text { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Post visibility must be selected")]
         public PostVisibility Visibility { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Gender restriction must be selected")]
         public Gender GenderRestriction { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Has age restriction must be selected")]
         public bool HasAgeRestriction { get; set; }
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Age restriction from must be a natural number")]
         public int AgeRestrictionFrom { get; set; }
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Age restriction to must be a natural number")]
         public int AgeRestrictionTo { get; set; }
     }
 }

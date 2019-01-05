@@ -21,7 +21,7 @@ namespace PresentationLayerMVC.Controllers
         public UserFacade UserFacade { get; set; }
         public MessageFacade MessageFacade { get; set; }
 
-        public const int MessagePageSize = 10;
+        public const int MessagePageSize = 5;
         private const string FilterSessionKey = "filter";
 
 
@@ -46,7 +46,8 @@ namespace PresentationLayerMVC.Controllers
             var model = new MessagesAggregatedViewModel
             {
                 Friend = friend,
-                MessagesListView = await GetMessagesOfUsers(loggedUser, friend, page)
+                MessagesListView = await GetMessagesOfUsers(loggedUser, friend, page),
+                Page = page
             };
             return View("MessageView", model);
         }
@@ -99,6 +100,7 @@ namespace PresentationLayerMVC.Controllers
         private MessageListViewModel InitializeMessageListViewModel(QueryResultDto<MessageDto, MessageFilterDto> messages)
         {
             int page = messages.RequestedPageNumber ?? 1;
+            messages.Items = messages.Items.OrderBy(message => message.Time);
             return new MessageListViewModel
             {
                 Messages = new StaticPagedList<MessageDto>(

@@ -76,13 +76,12 @@ namespace BusinessLayer.Services.Posts
             filter.GenderRestriction = user.Gender;
 
             var allPosts = await ListPostAsync(filter);
-            // TODO: filterDTO should be rewritten to allow needed filtering
-            // Filter all posts who are private and you are not friend of post's owner.
-            allPosts.Items = allPosts.Items
+           /* allPosts.Items = allPosts.Items
                 .Where(post => userFriendsIds.Contains(post.UserId)
                                || post.UserId == userId
                                || post.Visibility == DataTransferObjects.PostVisibility.Public);
-            allPosts.TotalItemsCount = allPosts.Items.LongCount();
+            allPosts.TotalItemsCount = allPosts.Items.LongCount();*/
+            
             return allPosts;
         }
         

@@ -114,7 +114,7 @@ namespace BusinessLayer.Facades
         public async Task<QueryResultDto<MessageDto, MessageFilterDto>> MessagesBetweenUsers(UserDto userA, UserDto userB, MessageFilterDto filter)
         {
             filter.SortCriteria = "Time";
-            filter.SortAscending = true;
+            filter.SortAscending = false;
             filter.Sender = userA.Id;
             filter.Receiver = userB.Id;
             filter.CareAboutRole = false;

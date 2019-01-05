@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using BusinessLayer.DataTransferObjects;
@@ -11,7 +12,9 @@ namespace PresentationLayerMVC.Models.Aggregated
     {
         public MessageListViewModel MessagesListView { get; set; }
         public UserDto Friend { get; set; }
+        public int Page { get; set; }
 
+        [Required(ErrorMessage = "Message must not be empty")]
         public string NewMessageText { get; set; }
     }
 }
