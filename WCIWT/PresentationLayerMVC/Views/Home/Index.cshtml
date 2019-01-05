@@ -288,11 +288,11 @@
                                             @using (Html.BeginForm("ConfirmFriend", "User", new {username = friendR.Applicant.Username,}, FormMethod.Post,
                                                 new
                                                 {
-                                                    @id = "confirmFriendRequest",
+                                                    @id = "confirmFriendRequest=" + friendR.Applicant.Username,
                                                 }))
                                             {
                                                 <a class="btn btn-success"
-                                                   href="javascript:document.getElementById('confirmFriendRequest').submit()">
+                                                   href="javascript:document.getElementById('confirmFriendRequest=@friendR.Applicant.Username').submit()">
                                                     <div class="glyphicon glyphicon-ok"></div>
                                                 </a>
                                             }
@@ -301,12 +301,12 @@
                                             @using (Html.BeginForm("DeclineFriend", "User", new {username = friendR.Applicant.Username,}, FormMethod.Post,
                                                 new
                                                 {
-                                                    @id = "declineFriendRequest",
+                                                    @id = "declineFriendRequest="+ friendR.Applicant.Username,
                                                 }
                                                 ))
                                             {
                                                 <a class="btn btn-danger"
-                                                   href="javascript:document.getElementById('declineFriendRequest').submit()">
+                                                   href="javascript:document.getElementById('declineFriendRequest=@friendR.Applicant.Username').submit()">
                                                     <div class="glyphicon glyphicon-remove"></div>
                                                 </a>
                                             }

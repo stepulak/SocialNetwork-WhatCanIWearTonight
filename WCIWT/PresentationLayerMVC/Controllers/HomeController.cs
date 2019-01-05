@@ -19,7 +19,7 @@ namespace PresentationLayerMVC.Controllers
 {
     public class HomeController : Controller
     {
-        public const int PostsPageSize = 2;
+        public const int PostsPageSize = 3;
         public const int FriendRequestsPageSize = 20;
         public const int FriendsPageSize = 20;
         public const int ImagesPerPost = 5;
