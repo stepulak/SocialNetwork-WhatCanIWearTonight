@@ -22,7 +22,6 @@ namespace PresentationLayerMVC.Controllers
         public const int PostsPageSize = 5;
         public const int ImagesPerPost = 5;
         public const int FriendsPageSize = 20;
-        private const string FilterSessionKey = "filter";
 
         public UserFacade UserFacade { get; set; }
         public PostFacade PostFacade { get; set; }
@@ -284,14 +283,14 @@ namespace PresentationLayerMVC.Controllers
 
         private async Task<PostListViewModel> GetPostModel(Guid userId, int page, bool isFriend)
         {
-            var filter = Session[FilterSessionKey] as PostFilterDto ?? await CreateFilterForUserDetailPosts(isFriend);
+            var filter =  await CreateFilterForUserDetailPosts(isFriend);
             filter.RequestedPageNumber = page;
 
             QueryResultDto<PostDto, PostFilterDto> posts;
             var loggedUser = await GetLoggedUser();
-            if (loggedUser != null && loggedUser.Id == userId)
+            if (loggedUser != null)
             {
-                posts = await PostFacade.GetPostsForLoggedUser(filter, userId);
+                posts = await PostFacade.GetPostsByUserIdForLoggedUser(filter, userId, loggedUser.Id);
             }
             else
             {
@@ -314,14 +313,16 @@ namespace PresentationLayerMVC.Controllers
             {
                 PageSize = PostsPageSize,
             };
+            var loggedUser = await GetLoggedUser();
+            if (loggedUser != null)
+            {
+                var age = (int)((DateTime.Now - loggedUser.Birthdate).TotalDays / 365.2425);
+                result.UserAge = age;
+                result.GenderRestriction = loggedUser.Gender;
+            }
             if (isFriend)
             {
-                var friend = await GetLoggedUser();
-                var friendAge = (int)((DateTime.Now - friend.Birthdate).TotalDays / 365.2425);
-
                 result.IncludePrivatePosts = true;
-                result.UserAge = friendAge;
-                result.GenderRestriction = friend.Gender;
             }
 
             return result;

@@ -79,25 +79,41 @@ namespace PresentationLayerMVC.Controllers
         [Route("new")]
         public async Task<ActionResult> NewPost(CreatePostModel model)
         {
-            if (ModelState.IsValid)
+            if (model.Post.HasAgeRestriction && (model.Post.AgeRestrictionFrom == null || model.Post.AgeRestrictionFrom <= 0))
             {
-                var user = await GetLoggedUser();
-                if (user != null)
+                ModelState.AddModelError("Post.AgeRestrictionFrom", "Age Restriction From must be larger or equal to 0");
+                return View();
+            }
+
+            if (model.Post.HasAgeRestriction && (model.Post.AgeRestrictionTo == null || model.Post.AgeRestrictionTo <= 0))
+            {
+                ModelState.AddModelError("Post.AgeRestrictionTo", "Age Restriction To must be larger or equal to 0");
+                return View();
+            }
+
+            if (model.Post.HasAgeRestriction && model.Post.AgeRestrictionFrom > model.Post.AgeRestrictionTo)
+            {
+                ModelState.AddModelError("Post.AgeRestrictionFrom", "Age Restriction From must be smaller than Age Restriction To");
+                ModelState.AddModelError("Post.AgeRestrictionTo", "Age Restriction To must be larger than Age Restriction From");
+                return View();
+            }
+            var user = await GetLoggedUser();
+            if (user != null)
+            {
+                var newPostId = await PostFacade.AddPost(user, model.Post);
+                var newPost = await PostFacade.GetPostDtoAccordingToId(newPostId);
+                var uploadedSuccessfully = await CreateImageDtosFromFiles(model.Files, newPost);
+                if (uploadedSuccessfully)
                 {
-                    var newPostId = await PostFacade.AddPost(user, model.Post);
-                    var newPost = await PostFacade.GetPostDtoAccordingToId(newPostId);
-                    var uploadedSuccessfully = await CreateImageDtosFromFiles(model.Files, newPost);
-                    if (uploadedSuccessfully)
-                    {
-                        RedirectToAction("Index", "Post", new { postId = newPostId });
-                    }
-                }
-                else
-                {
-                    RedirectToAction("Login", "Account");
+                    return RedirectToAction("Index", "Post", new { postId = newPostId });
                 }
             }
-            return View(model);
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View();
         }
 
         [HttpGet]

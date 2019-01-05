@@ -16,8 +16,8 @@ namespace BusinessLayer.DataTransferObjects
         public Gender GenderRestriction { get; set; }
 
         public bool HasAgeRestriction { get; set; }
-        public int AgeRestrictionFrom { get; set; }
-        public int AgeRestrictionTo { get; set; }
+        public int? AgeRestrictionFrom { get; set; }
+        public int? AgeRestrictionTo { get; set; }
 
         public Guid UserId { get; set; }
         public virtual UserDto User { get; set; }

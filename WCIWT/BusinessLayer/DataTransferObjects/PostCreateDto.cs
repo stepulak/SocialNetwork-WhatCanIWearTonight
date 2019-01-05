@@ -15,11 +15,9 @@ namespace BusinessLayer.DataTransferObjects
         public PostVisibility Visibility { get; set; }
         [Required(ErrorMessage = "Gender restriction must be selected")]
         public Gender GenderRestriction { get; set; }
-        [Required(ErrorMessage = "Has age restriction must be selected")]
+
         public bool HasAgeRestriction { get; set; }
-        [Range(1, int.MaxValue, ErrorMessage = "Value must be greater than 0")]
-        public int AgeRestrictionFrom { get; set; }
-        [Range(1, int.MaxValue, ErrorMessage = "Value must be greater than 0")]
-        public int AgeRestrictionTo { get; set; }
+        public int? AgeRestrictionFrom { get; set; }
+        public int? AgeRestrictionTo { get; set; }
     }
 }

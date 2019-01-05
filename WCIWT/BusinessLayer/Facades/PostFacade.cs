@@ -50,17 +50,35 @@ namespace BusinessLayer.Facades
 
         public async Task<Guid> AddPost(UserDto user, PostCreateDto postDto)
         {
-            var post = new PostDto
+            PostDto post = null;
+            if (postDto.HasAgeRestriction)
             {
-                Text = postDto.Text,
-                AgeRestrictionFrom = postDto.AgeRestrictionFrom,
-                AgeRestrictionTo = postDto.AgeRestrictionTo,
-                Time = DateTime.Now,
-                UserId = user.Id,
-                GenderRestriction = postDto.GenderRestriction,
-                HasAgeRestriction = postDto.HasAgeRestriction,
-                Visibility = postDto.Visibility
-            };
+                post = new PostDto
+                {
+                    Text = postDto.Text,
+                    AgeRestrictionFrom = postDto.AgeRestrictionFrom,
+                    AgeRestrictionTo = postDto.AgeRestrictionTo,
+                    Time = DateTime.Now,
+                    UserId = user.Id,
+                    GenderRestriction = postDto.GenderRestriction,
+                    HasAgeRestriction = postDto.HasAgeRestriction,
+                    Visibility = postDto.Visibility
+                };
+            }
+            else {
+                post = new PostDto
+                {
+                    Text = postDto.Text,
+                    AgeRestrictionFrom = 0,
+                    AgeRestrictionTo = 0,
+                    Time = DateTime.Now,
+                    UserId = user.Id,
+                    GenderRestriction = postDto.GenderRestriction,
+                    HasAgeRestriction = postDto.HasAgeRestriction,
+                    Visibility = postDto.Visibility
+                };
+            }
+
             var hashtags = FindHashtags(postDto.Text);
             using (var uow = UnitOfWorkProvider.Create())
             {
@@ -108,6 +126,9 @@ namespace BusinessLayer.Facades
                 if (userId != Guid.Empty)
                 {
                     filter.UserId = userId;
+                    filter.PostUserIds = new List<Guid>{
+                                userId
+                            };
                     filter.SortCriteria = "Time";
                     return await postService.ListPostAsync(filter);
                 }
@@ -115,16 +136,21 @@ namespace BusinessLayer.Facades
             }
         }
 
-        public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostsForLoggedUser(PostFilterDto filter,
-            Guid userId)
+        public async Task<QueryResultDto<PostDto, PostFilterDto>> GetPostsByUserIdForLoggedUser(PostFilterDto filter,
+            Guid userId, Guid loggedUserId)
         {
             using (UnitOfWorkProvider.Create())
             {
                 if (userId != Guid.Empty)
                 {
+                    filter.LoggedUserId = loggedUserId;
                     filter.UserId = userId;
+                    filter.PostUserIds = new List<Guid>{
+                                userId
+                            };
                     filter.SortCriteria = "Time";
                     filter.IncludePrivatePosts = true;
+
                     return await postService.ListPostAsync(filter);
                 }
                 throw new ArgumentException("Cannot display posts of not existing user");

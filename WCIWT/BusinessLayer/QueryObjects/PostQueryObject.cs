@@ -87,6 +87,11 @@ namespace BusinessLayer.QueryObjects
                 new SimplePredicate(nameof(Post.AgeRestrictionFrom), ValueComparingOperator.GreaterThanOrEqual, filter.UserAge)
             };
             predicates.Add(new CompositePredicate(innerPredicates, LogicalOperator.AND));
+            if (filter.LoggedUserId != Guid.Empty)
+            {
+                predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.UserId));
+
+            }
             return new CompositePredicate(predicates, LogicalOperator.OR);
         }
 
@@ -97,6 +102,11 @@ namespace BusinessLayer.QueryObjects
                 new SimplePredicate(nameof(Post.GenderRestriction), ValueComparingOperator.Equal, GetGenderRetrictionEnumFromFilter(filter)), // filter by user's gender
                 new SimplePredicate(nameof(Post.GenderRestriction), ValueComparingOperator.Equal, Gender.NoInformation) // and add posts with no gender restriction
             };
+            if (filter.LoggedUserId != Guid.Empty)
+            {
+                predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.UserId));
+
+            }
             return new CompositePredicate(predicates, LogicalOperator.OR);
         }
 
