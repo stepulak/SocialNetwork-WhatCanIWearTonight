@@ -10,5 +10,6 @@ namespace PresentationLayerMVC.Models.Aggregated
         public FriendRequestListViewModel FriendRequestListViewModel;
         public FriendListViewModel FriendListViewModel;
         public int Page;
+        public string Hashtag;
     }
 }

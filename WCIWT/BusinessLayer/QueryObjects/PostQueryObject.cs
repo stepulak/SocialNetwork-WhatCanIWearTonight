@@ -43,6 +43,12 @@ namespace BusinessLayer.QueryObjects
             {
                 predicates.Add(new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, PostVisibility.Public)); // User is not logged in, display only public posts
             }
+
+            if (filter.PostIdsWithHashtag != null && filter.PostIdsWithHashtag.Count > 0)
+            {
+                predicates.Add(CreateHashtagRestrictionsPredicate(filter));
+            }
+
             predicates.Add(CreateGenderRestrictionPredicate(filter));
             predicates.Add(CreateAgeRestrictionPredicate(filter));
             return new CompositePredicate(predicates, LogicalOperator.AND);
@@ -107,6 +113,16 @@ namespace BusinessLayer.QueryObjects
             if (filter.LoggedUserId != Guid.Empty)
             {
                 predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.LoggedUserId)); // Display own posts reggardless of restrictions
+            }
+            return new CompositePredicate(predicates, LogicalOperator.OR);
+        }
+
+        private IPredicate CreateHashtagRestrictionsPredicate(PostFilterDto filter)
+        {
+            var predicates = new List<IPredicate>();
+            foreach (Guid postId in filter.PostIdsWithHashtag)
+            {
+                predicates.Add(new SimplePredicate(nameof(Post.Id), ValueComparingOperator.Equal, postId));
             }
             return new CompositePredicate(predicates, LogicalOperator.OR);
         }

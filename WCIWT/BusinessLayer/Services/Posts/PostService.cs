@@ -49,14 +49,7 @@ namespace BusinessLayer.Services.Posts
 
         public async Task<QueryResultDto<PostDto, PostFilterDto>> ListPostAsync(PostFilterDto filter)
         {
-            var query = await Query.ExecuteQuery(filter);
-            /*if (filter.PostIdsWithHashtag != null)
-            {
-                query.Items = query.Items
-                    .Where(i => filter.PostIdsWithHashtag.Contains(i.Id));
-                query.TotalItemsCount = query.Items.LongCount();
-            }*/
-            return query;
+           return await Query.ExecuteQuery(filter);
         }
 
         public async Task<QueryResultDto<PostDto, PostFilterDto>> ListUserOwnedPosts(Guid userId)

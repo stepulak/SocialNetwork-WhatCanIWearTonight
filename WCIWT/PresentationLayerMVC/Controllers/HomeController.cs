@@ -56,9 +56,9 @@ namespace PresentationLayerMVC.Controllers
 
         [HttpGet]
         [Route("hashtag")]
-        public async Task<ActionResult> PostsWithHashtag(string hashtag)
+        public async Task<ActionResult> PostsWithHashtag(string hashtag, int page = 1)
         {
-            var homepageModel = await GetHomePageModel(1, hashtag);
+            var homepageModel = await GetHomePageModel(page, hashtag);
             return View("Index", homepageModel);
         }
 
@@ -73,7 +73,8 @@ namespace PresentationLayerMVC.Controllers
                 PostListViewModel = postsModel,
                 FriendRequestListViewModel = friendRequestsModel,
                 FriendListViewModel = friendsModel,
-                Page = page
+                Page = page,
+                Hashtag = hashtagFilter
             };
         }
 
@@ -121,13 +122,14 @@ namespace PresentationLayerMVC.Controllers
 
             var posts = await PostFacade.GetPostFeedAsync(filter, userId, hashtagFilter);
             var imagesForPosts = new List<List<ImageDto>>();
-
+            var hashtagIndices = new List<List<Tuple<int, int>>>();
             foreach (var post in posts.Items)
             {
                 imagesForPosts.Add(await PostFacade.ListOfImagesForPost(post.Id));
+                hashtagIndices.Add(PostFacade.FindHashtagIndices(post.Text));
             }
 
-            return InitializePostListViewModel(posts, imagesForPosts);
+            return InitializePostListViewModel(posts, imagesForPosts, hashtagIndices);
         }
 
         private FriendRequestListViewModel InitializeFriendRequestListViewModel(
@@ -142,16 +144,18 @@ namespace PresentationLayerMVC.Controllers
         }
 
         private PostListViewModel InitializePostListViewModel(QueryResultDto<PostDto, PostFilterDto> postsResult,
-            List<List<ImageDto>> imagesResult)
+            List<List<ImageDto>> imagesResult, List<List<Tuple<int, int>>> hashtagIndices)
         {
             return new PostListViewModel
             {
                 Posts = new StaticPagedList<PostDto>(postsResult.Items, postsResult.RequestedPageNumber ?? 1, PostsPageSize,
                     (int)postsResult.TotalItemsCount),
                 ImagesForPosts = imagesResult,
-                HashtagIndices = postsResult.Items.Select(p => PostFacade.FindHashtagIndices(p.Text)).ToList(),
+                HashtagIndices = hashtagIndices,
                 PostFilter = postsResult.Filter,
             };
+
+
         }
 
         private FriendListViewModel InitializeFriendListViewModel(QueryResultDto<UserDto, FriendshipFilterDto> friends)

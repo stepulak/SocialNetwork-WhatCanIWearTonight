@@ -69,7 +69,7 @@ namespace EntityDatabase.Migrations
             {
                 Id = Guid.Parse("afbfd424-d186-4747-bd9b-8d894c410936"),
                 Time = new DateTime(2018, 10, 20, 20, 20, 35),
-                Text = "This is a test public post. Vote for the outfit you like the most",
+                Text = "This is a test public post. Vote for the outfit you like the most #ootd",
                 Visibility = PostVisibility.Public,
                 GenderRestriction = Gender.NoInformation,
                 HasAgeRestriction = false,
@@ -80,7 +80,7 @@ namespace EntityDatabase.Migrations
             {
                 Id = Guid.Parse("e710774f-586c-48ca-9487-9c2d5db8070b"),
                 Time = new DateTime(2018, 8, 20, 20, 20, 35),
-                Text = "This is another test public post. Vote for the outfit you like the most",
+                Text = "This is another test public post. Vote for the outfit you like the most #ootd",
                 Visibility = PostVisibility.Public,
                 GenderRestriction = Gender.NoInformation,
                 HasAgeRestriction = false,
@@ -91,7 +91,7 @@ namespace EntityDatabase.Migrations
             {
                 Id = Guid.Parse("5fcad9cc-ba64-4161-969f-1c941c9e2da5"),
                 Time = new DateTime(2018, 5, 20, 20, 20, 35),
-                Text = $"This is a test private post. Only friends of {user1.Username} should see this.Vote for the outfit you like the most",
+                Text = $"This is a test private post. Only friends of {user1.Username} should see this.Vote for the outfit you like the most #classy",
                 Visibility = PostVisibility.FriendsOnly,
                 GenderRestriction = Gender.NoInformation,
                 HasAgeRestriction = false,
@@ -102,7 +102,7 @@ namespace EntityDatabase.Migrations
             {
                 Id = Guid.Parse("09dd3724-6df5-4f16-aeb3-2149d06c071d"),
                 Time = new DateTime(2018, 1, 20, 20, 20, 35),
-                Text = "This is a test of gender restricted post. Only women should see this.Vote for the outfit you like the most",
+                Text = "This is a test of gender restricted post. Only women should see this.Vote for the outfit you like the most #ootd",
                 Visibility = PostVisibility.Public,
                 GenderRestriction = Gender.Female,
                 HasAgeRestriction = false,
@@ -113,7 +113,7 @@ namespace EntityDatabase.Migrations
             {
                 Id = Guid.Parse("142330f6-3648-46e3-8ece-64ae166dd914"),
                 Time = new DateTime(2018, 3, 20, 20, 20, 35),
-                Text = "This is a test of age restricted post. Only users with age between 20 and 40 should see this.Vote for the outfit you like the most",
+                Text = "This is a test of age restricted post. Only users with age between 20 and 40 should see this.Vote for the outfit you like the most #fresh",
                 Visibility = PostVisibility.Public,
                 GenderRestriction = Gender.NoInformation,
                 HasAgeRestriction = true,
@@ -126,7 +126,7 @@ namespace EntityDatabase.Migrations
             {
                 Id = Guid.Parse("142330f6-3648-46e3-8ece-64ae166dd915"),
                 Time = new DateTime(2018, 3, 20, 20, 20, 35),
-                Text = "This is a test post from Lenka",
+                Text = "This is a test post from Lenka #ootd",
                 Visibility = PostVisibility.Public,
                 GenderRestriction = Gender.NoInformation,
                 HasAgeRestriction = false,
@@ -137,7 +137,7 @@ namespace EntityDatabase.Migrations
             {
                 Id = Guid.Parse("142330f6-3648-46e3-8ece-64ae166dd916"),
                 Time = new DateTime(2018, 3, 20, 20, 20, 35),
-                Text = "This is a test post from Marie",
+                Text = "This is a test post from Marie #ootd",
                 Visibility = PostVisibility.Public,
                 GenderRestriction = Gender.NoInformation,
                 HasAgeRestriction = false,
@@ -148,7 +148,7 @@ namespace EntityDatabase.Migrations
             {
                 Id = Guid.Parse("142330f6-3648-46e3-8ece-64ae166dd917"),
                 Time = new DateTime(2018, 3, 20, 20, 20, 35),
-                Text = "This is a private post from Marie",
+                Text = "This is a private post from Marie #classy",
                 Visibility = PostVisibility.FriendsOnly,
                 GenderRestriction = Gender.NoInformation,
                 HasAgeRestriction = false,
@@ -536,6 +536,55 @@ namespace EntityDatabase.Migrations
             vote3Image4.ImageId = image4Post1.Id;
             vote1Image5.ImageId = image5Post1.Id;
 
+            var hashtagOotdPost1 = new Hashtag
+            {
+                Id = Guid.Parse("3150e617-f069-4fc9-98bf-78e87b4084ad"),
+                Tag = "#ootd",
+                PostId = post1.Id,
+            };
+            var hashtagOotdPost2 = new Hashtag
+            {
+                Id = Guid.Parse("0411449a-4f06-463b-bcbb-9f15843a4ecd"),
+                Tag = "#ootd",
+                PostId = post2.Id,
+            };
+            var hashtagClassydPost3 = new Hashtag
+            {
+                Id = Guid.Parse("fb34c6a6-390e-41e2-aae5-79ed941df01a"),
+                Tag = "#classy",
+                PostId = post3.Id,
+            };
+            var hashtagOotdPost4 = new Hashtag
+            {
+                Id = Guid.Parse("c8b27680-20a0-474c-ae96-ff10815bf6f0"),
+                Tag = "#ootd",
+                PostId = post4.Id,
+            };
+            var hashtagFreshdPost5 = new Hashtag
+            {
+                Id = Guid.Parse("695e5879-3b3c-4cf3-bb9e-5af7ce40d069"),
+                Tag = "#fresh",
+                PostId = post5.Id,
+            };
+            var hashtagOotdPost6 = new Hashtag
+            {
+                Id = Guid.Parse("67c634c7-e8dc-44f6-a304-2db8c83f46eb"),
+                Tag = "#ootd",
+                PostId = post6.Id,
+            };
+            var hashtagOotdPost7 = new Hashtag
+            {
+                Id = Guid.Parse("15595c32-07ba-4fc7-8be5-f9d1a754b34c"),
+                Tag = "#ootd",
+                PostId = post7.Id,
+            };
+            var hashtagClassydPost8 = new Hashtag
+            {
+                Id = Guid.Parse("276fe6f5-28ec-4f5b-8e80-b606ee002e6b"),
+                Tag = "#classy",
+                PostId = post8.Id,
+            };
+
             context.Votes.AddOrUpdate(vote => vote.Id, vote1Image1, vote2Image1, vote1Image4, vote1Image5, vote2Image4, vote3Image4);
             context.Images.AddOrUpdate(image => image.Id, image1Post1, image2Post1, image3Post1, image4Post1, image5Post1,
                 image1Post2Obj, image2Post2Obj, image1Post3Obj, image2Post3Obj, image3Post3Obj,
@@ -549,6 +598,8 @@ namespace EntityDatabase.Migrations
             context.Friendships.AddOrUpdate(friendship => friendship.Id, user1Touser3Friendship);
             context.PostReplys.AddOrUpdate(postReply => postReply.Id, postReply1, postReply2);
             context.Messages.AddOrUpdate(message => message.Id, message1, message2, message3, message4);
+            context.Hashtags.AddOrUpdate(hashtag => hashtag.Id, hashtagOotdPost1, hashtagOotdPost2, hashtagOotdPost4, hashtagOotdPost6,
+                hashtagOotdPost7, hashtagFreshdPost5, hashtagClassydPost3, hashtagClassydPost8);
 
             context.SaveChanges();
         }
