@@ -319,6 +319,7 @@ namespace PresentationLayerMVC.Controllers
                 var age = (int)((DateTime.Now - loggedUser.Birthdate).TotalDays / 365.2425);
                 result.UserAge = age;
                 result.GenderRestriction = loggedUser.Gender;
+                result.LoggedUserId = loggedUser.Id;
             }
             if (isFriend)
             {

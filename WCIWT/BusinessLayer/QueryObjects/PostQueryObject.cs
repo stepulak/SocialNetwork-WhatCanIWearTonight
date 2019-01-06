@@ -21,25 +21,28 @@ namespace BusinessLayer.QueryObjects
 
         protected override IQuery<Post> ApplyWhereClause(IQuery<Post> query, PostFilterDto filter)
         {
-            return query.Where(CreateCompositePredicateFromFilter(filter));
+            return query.Where(CreatePredicateFromFilter(filter));
         }
 
-        private CompositePredicate CreateCompositePredicateFromFilter(PostFilterDto filter)
+        private IPredicate CreatePredicateFromFilter(PostFilterDto filter)
         {
             List<IPredicate> predicates = new List<IPredicate>();
-            if (filter.UserId != Guid.Empty)
+            if (filter.UserId != Guid.Empty && filter.LoggedUserId == filter.UserId) //User wants to display own posts - no restrictions applied
+            {
+                return new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.UserId);
+            }
+            if (filter.UserId != Guid.Empty) // General feed
             {
                 predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.UserId));
             }
-            if (filter.IncludePrivatePosts)
+            if (filter.IncludePrivatePosts) // User is logged in and can access private posts
             {
                 predicates.Add(CreateVisibilityRestrictionPostPredicates(filter));
             }
             else
             {
-                predicates.Add(new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, PostVisibility.Public));
+                predicates.Add(new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, PostVisibility.Public)); // User is not logged in, display only public posts
             }
-
             predicates.Add(CreateGenderRestrictionPredicate(filter));
             predicates.Add(CreateAgeRestrictionPredicate(filter));
             return new CompositePredicate(predicates, LogicalOperator.AND);
@@ -62,8 +65,7 @@ namespace BusinessLayer.QueryObjects
                 new SimplePredicate(nameof(Post.Visibility), ValueComparingOperator.Equal, PostVisibility.Public),
                 new CompositePredicate(friendsOnlyPostsPredicates, LogicalOperator.AND)
             };
-            var post = new CompositePredicate(predicates, LogicalOperator.OR);
-            return post;
+            return new CompositePredicate(predicates, LogicalOperator.OR);
         }
 
         private IPredicate CreatePostUsernameRestrictionsPredicate(PostFilterDto filter) {
@@ -87,10 +89,10 @@ namespace BusinessLayer.QueryObjects
                 new SimplePredicate(nameof(Post.AgeRestrictionFrom), ValueComparingOperator.GreaterThanOrEqual, filter.UserAge)
             };
             predicates.Add(new CompositePredicate(innerPredicates, LogicalOperator.AND));
+
             if (filter.LoggedUserId != Guid.Empty)
             {
-                predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.UserId));
-
+                predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.LoggedUserId)); // Display own posts reggardless of restrictions
             }
             return new CompositePredicate(predicates, LogicalOperator.OR);
         }
@@ -104,8 +106,7 @@ namespace BusinessLayer.QueryObjects
             };
             if (filter.LoggedUserId != Guid.Empty)
             {
-                predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.UserId));
-
+                predicates.Add(new SimplePredicate(nameof(Post.UserId), ValueComparingOperator.Equal, filter.LoggedUserId)); // Display own posts reggardless of restrictions
             }
             return new CompositePredicate(predicates, LogicalOperator.OR);
         }

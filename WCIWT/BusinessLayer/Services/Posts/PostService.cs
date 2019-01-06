@@ -64,19 +64,19 @@ namespace BusinessLayer.Services.Posts
             return await ListPostAsync(new PostFilterDto { UserId = userId });
         }
 
-        public async Task<QueryResultDto<PostDto, PostFilterDto>> ListPostsAvailableForUser(Guid userId,
+        public async Task<QueryResultDto<PostDto, PostFilterDto>> ListPostsAvailableForUser(Guid loggedUserId,
             PostFilterDto filter)
         {
             filter.IncludePrivatePosts = true;
-            var user = await userService.GetAsync(userId);
-            var userFriends = await friendshipService.ListOfFriendsAsync(userId);
+            var user = await userService.GetAsync(loggedUserId);
+            var userFriends = await friendshipService.ListOfFriendsAsync(loggedUserId);
             var userFriendsIds = userFriends.Select(friend => friend.Id).ToList();
             var userAge = (int)((DateTime.Now - user.Birthdate).TotalDays / 365.2425);
-            filter.LoggedUserId = user.Id;
+            filter.LoggedUserId = loggedUserId;
             filter.UserAge = userAge;
             filter.GenderRestriction = user.Gender;
             filter.PostUserIds = userFriendsIds;
-            filter.PostUserIds.Add(userId);
+            filter.PostUserIds.Add(loggedUserId);
            return await ListPostAsync(filter);
         }
         

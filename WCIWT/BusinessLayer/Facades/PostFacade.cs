@@ -14,6 +14,7 @@ using BusinessLayer.Services.PostReplys;
 using BusinessLayer.Services.Posts;
 using BusinessLayer.Services.Votes;
 using WCIWT.Infrastructure.UnitOfWork;
+using BusinessLayer.Services.Friendships;
 
 namespace BusinessLayer.Facades
 {
@@ -22,13 +23,14 @@ namespace BusinessLayer.Facades
         public const int MinimalPostReplyLength = 2;
 
         private readonly IPostService postService;
+        private readonly IFriendshipService friendshipService;
         private readonly IVoteService voteService;
         private readonly IImageService imageService;
         private readonly IPostReplyService postReplyService;
         private readonly IHashtagService hashtagService;
 
         public PostFacade(IUnitOfWorkProvider unitOfWorkProvider, 
-            IPostService postService, IPostReplyService postReplyService,
+            IPostService postService, IPostReplyService postReplyService, IFriendshipService friendshipService,
             IVoteService voteService, IImageService imageService,
             IHashtagService hashtagService)
             : base(unitOfWorkProvider)
@@ -38,6 +40,7 @@ namespace BusinessLayer.Facades
             this.imageService = imageService;
             this.postReplyService = postReplyService;
             this.hashtagService = hashtagService;
+            this.friendshipService = friendshipService;
         }
 
         public async Task<PostDto> GetPostDtoAccordingToId(Guid id)
@@ -104,6 +107,7 @@ namespace BusinessLayer.Facades
                 }
                 if (userId != Guid.Empty)
                 {
+                    filter.LoggedUserId = userId;
                     return await postService.ListPostsAvailableForUser(userId, filter);
                 }
                 return await postService.ListPostAsync(filter);
@@ -126,9 +130,6 @@ namespace BusinessLayer.Facades
                 if (userId != Guid.Empty)
                 {
                     filter.UserId = userId;
-                    filter.PostUserIds = new List<Guid>{
-                                userId
-                            };
                     filter.SortCriteria = "Time";
                     return await postService.ListPostAsync(filter);
                 }
@@ -143,11 +144,17 @@ namespace BusinessLayer.Facades
             {
                 if (userId != Guid.Empty)
                 {
+                    var friendships = await friendshipService.GetFriendsOfUserAsync(loggedUserId, new FriendshipFilterDto());
+                    if (friendships.Items.Any(friend => friend.Id == userId))
+                    {
+                        filter.PostUserIds = new List<Guid>
+                        {
+                            userId
+                        };
+                    }
+
                     filter.LoggedUserId = loggedUserId;
                     filter.UserId = userId;
-                    filter.PostUserIds = new List<Guid>{
-                                userId
-                            };
                     filter.SortCriteria = "Time";
                     filter.IncludePrivatePosts = true;
 
