@@ -47,7 +47,7 @@
                                 {
                                     area = "",
                                     hashtag = hashtag
-                                }, 
+                                },
                                 htmlAttributes: null)
                             textIndex = tagEnd;
                         }
@@ -62,94 +62,117 @@
             </p>
             <div class="divider"></div>
             <div class="row">
-            @for (var i = 0; i < Model.Images.Count; i++)
-            {
-                var image = Model.Images[i];
-                var base64 = Convert.ToBase64String(image.BinaryImage);
-                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                <div class="col-md-4">
-                    <div class="thumbnail">
-                        <img src="@imgSrc" alt="Image" class="img-rounded" style="width:100%" />
-                        <div class="caption">
-                            @if (logged)
-                            {
-                                var username = HttpContext.Current.User.Identity.Name;
-                                @Html.ActionLink(
-                                    linkText: $"Like {image.LikesCount}",
-                                    actionName: "Like",
-                                    controllerName: "Post",
-                                    routeValues: new
-                                    {
-                                        area = "",
-                                        username = username,
-                                        imageId = image.Id,
-                                    },
-                                    htmlAttributes: new
-                                    {
-                                        @class = "btn btn-success"
-                                    })
-                                @Html.ActionLink(
-                                    linkText: $"Dislike {image.DislikesCount}",
-                                    actionName: "Dislike",
-                                    controllerName: "Post",
-                                    routeValues: new
-                                    {
-                                        area = "",
-                                        username = username,
-                                        imageId = image.Id,
-                                    },
-                                    htmlAttributes: new
-                                    {
-                                        @class = "btn btn-danger"
-                                    })
-                            }
-                            else
-                            {
-                                @Html.ActionLink(
-                                   linkText: $"Like {image.LikesCount}",
-                                   actionName: "Login",
-                                   controllerName: "Account",
-                                   routeValues: new
-                                   {
-                                       area = "",
-                                   },
-                                   htmlAttributes: new
-                                   {
-                                       @class = "btn btn-success"
-                                   })
-                                @Html.ActionLink(
-                                   linkText: $"Dislike {image.DislikesCount}",
-                                   actionName: "Login",
-                                   controllerName: "Account",
-                                   routeValues: new
-                                   {
-                                       area = "",
-                                   },
-                                   htmlAttributes: new
-                                   {
-                                       @class = "btn btn-danger"
-                                   })
-                            }
+                @for (var i = 0; i < Model.Images.Count; i++)
+                {
+                    var image = Model.Images[i];
+                    var base64 = Convert.ToBase64String(image.BinaryImage);
+                    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                    <div class="col-md-4">
+                        <div class="thumbnail">
+                            <img src="@imgSrc" alt="Image" class="img-rounded" style="width:100%" />
+                            <div class="caption">
+                                @if (logged)
+                                {
+                                    var username = HttpContext.Current.User.Identity.Name;
+                                    @Html.ActionLink(
+                                        linkText: $"Like {image.LikesCount}",
+                                        actionName: "Like",
+                                        controllerName: "Post",
+                                        routeValues: new
+                                        {
+                                            area = "",
+                                            username = username,
+                                            imageId = image.Id,
+                                        },
+                                        htmlAttributes: new
+                                        {
+                                            @class = "btn btn-success"
+                                        })
+                                    @Html.ActionLink(
+                                        linkText: $"Dislike {image.DislikesCount}",
+                                        actionName: "Dislike",
+                                        controllerName: "Post",
+                                        routeValues: new
+                                        {
+                                            area = "",
+                                            username = username,
+                                            imageId = image.Id,
+                                        },
+                                        htmlAttributes: new
+                                        {
+                                            @class = "btn btn-danger"
+                                        })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink(
+                                       linkText: $"Like {image.LikesCount}",
+                                       actionName: "Login",
+                                       controllerName: "Account",
+                                       routeValues: new
+                                       {
+                                           area = "",
+                                       },
+                                       htmlAttributes: new
+                                       {
+                                           @class = "btn btn-success"
+                                       })
+                                    @Html.ActionLink(
+                                       linkText: $"Dislike {image.DislikesCount}",
+                                       actionName: "Login",
+                                       controllerName: "Account",
+                                       routeValues: new
+                                       {
+                                           area = "",
+                                       },
+                                       htmlAttributes: new
+                                       {
+                                           @class = "btn btn-danger"
+                                       })
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
             </div>
+            @if (Model.Post.Visibility == BusinessLayer.DataTransferObjects.PostVisibility.FriendsOnly)
+            {
+                <p>Private post</p>
+            }
+            else
+            {
+                <p>Public post</p>
+            }
+            @if (Model.Post.HasAgeRestriction)
+            {
+                <p>
+                    Age restriction from: @Html.DisplayFor(model => model.Post.AgeRestrictionFrom) year(s) to: @Html.DisplayFor(model => model.Post.AgeRestrictionTo) year(s)
+                </p>
+            }
+            @if (Model.Post.GenderRestriction != BusinessLayer.DataTransferObjects.Gender.NoInformation)
+            {
+                <p>
+                    Gender restriction: @Html.DisplayFor(model => model.Post.GenderRestriction) only
+                </p>
+            }
+            <p>
+                Added: @Html.DisplayFor(model => model.Post.Time)
+            </p>
             @if (canRemovePost)
             {
-                 @Html.ActionLink(
-                    linkText: "Remove this post",
-                    actionName:"RemovePost",
-                    controllerName: "Post",
-                    routeValues: new
-                    {
-                        area = "",
-                        postId = Model.Post.Id
-                    },
-                    htmlAttributes: new
-                    {
-                        @class = "btn btn-danger"
-                    })
+                @Html.ActionLink(
+                   linkText: "Remove this post",
+                   actionName:"RemovePost",
+                   controllerName: "Post",
+                   routeValues: new
+                   {
+                       area = "",
+                       postId = Model.Post.Id
+                   },
+                   htmlAttributes: new
+                   {
+                       @class = "btn btn-danger"
+                   })
             }
         </div>
     </div>

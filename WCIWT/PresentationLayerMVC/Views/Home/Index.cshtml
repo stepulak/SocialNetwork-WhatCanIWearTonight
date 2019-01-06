@@ -182,6 +182,26 @@
                                 }
                             </div>
                         }
+                        @if (Model.PostListViewModel.Posts[i].Visibility == BusinessLayer.DataTransferObjects.PostVisibility.FriendsOnly)
+                        {
+                            <p>Private post</p>
+                        }
+                        else
+                        {
+                            <p>Public post</p>
+                        }
+                        @if (Model.PostListViewModel.Posts[i].HasAgeRestriction)
+                        {
+                            <p>
+                                Age restriction from: @Html.DisplayFor(model => model.PostListViewModel.Posts[i].AgeRestrictionFrom) year(s) to: @Html.DisplayFor(model => model.PostListViewModel.Posts[i].AgeRestrictionTo) year(s)
+                            </p>
+                        }
+                        @if (Model.PostListViewModel.Posts[i].GenderRestriction != BusinessLayer.DataTransferObjects.Gender.NoInformation)
+                        {
+                            <p>
+                                Gender restriction: @Html.DisplayFor(model => model.PostListViewModel.Posts[i].GenderRestriction) only
+                            </p>
+                        }
                         <p>
                             Added: @Html.DisplayFor(model => model.PostListViewModel.Posts[i].Time)
                         </p>
@@ -198,7 +218,7 @@
                             {
                                 @class = "btn btn-info"
                             })
-                        @if(isAdmin || loggedUsername.Equals(Model.PostListViewModel.Posts[i].User.Username))
+                        @if (isAdmin || loggedUsername.Equals(Model.PostListViewModel.Posts[i].User.Username))
                         {
                             @Html.ActionLink(
                                linkText: "Remove this post",
