@@ -115,24 +115,6 @@
                                                                                                                              username = Model.User.Username
                                                                                                                          })'" />
                                 </div>
-                                <div class="row">
-                                    @if (isAdmin)
-                                    {
-                                        @Html.ActionLink(
-                                            linkText: "Remove user",
-                                            actionName: "RemoveUser",
-                                            controllerName: "User",
-                                            routeValues: new
-                                            {
-                                                area = "",
-                                                userId = Model.User.Id
-                                            },
-                                            htmlAttributes: new
-                                            {
-                                                @class = "btn btn-danger"
-                                            })
-                                    }
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -194,7 +176,7 @@
                         }
                         else
                         {
-                            Html.DisplayFor(model => postText);
+                            @Html.DisplayFor(model => postText);
                         }
                     }
                 </p>

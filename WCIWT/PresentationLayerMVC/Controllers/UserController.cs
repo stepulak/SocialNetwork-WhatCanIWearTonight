@@ -223,28 +223,6 @@ namespace PresentationLayerMVC.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("remove-user/{userId}")]
-        public async Task<ActionResult> RemoveUser(Guid userId)
-        {
-            var loggedUser = await GetLoggedUser();
-            if (loggedUser != null && loggedUser.IsAdmin)
-            {
-                var posts = await PostFacade.GetPostsByUserId(new PostFilterDto { }, userId);
-                var messages = await MessageFacade.AllMessages(userId);
-                foreach(var post in posts.Items)
-                {
-                    await PostFacade.DeletePost(post.Id);
-                }
-                foreach(var msg in messages.Items)
-                {
-                    await MessageFacade.DeleteMessage(msg.Id);
-                }
-                await RemoveUserNoException(userId);
-            }
-            return RedirectToAction("Index", "Home");
-        }
-
         private ActionResult UserNotFoundModel(string username)
         {
             return View("UserProfileView", new UserProfileAggregatedViewModel() {
@@ -252,19 +230,7 @@ namespace PresentationLayerMVC.Controllers
                 User = new UserDto { Username = username }
             });
         }
-
-        private async Task RemoveUserNoException(Guid userId)
-        {
-            try
-            {
-                await UserFacade.RemoveUser(userId);
-            }
-            catch (Exception)
-            {
-                // ignore
-            }
-        }
-
+        
         private async Task<FriendshipDto> GetFriendshipWithLoggedUser(Guid userId)
         {
             var loggedUser = await GetLoggedUser();

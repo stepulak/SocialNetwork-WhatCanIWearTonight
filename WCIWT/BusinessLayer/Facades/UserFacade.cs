@@ -217,28 +217,5 @@ namespace BusinessLayer.Facades
                 return result.Items.FirstOrDefault();
             }
         }
-
-        public async Task RemoveUser(Guid userId)
-        {
-            await RemoveFriendshipsForUser(userId);
-            using (var uow = UnitOfWorkProvider.Create())
-            {
-                userService.Delete(userId);
-                await uow.Commit();
-            }
-        }
-
-        private async Task RemoveFriendshipsForUser(Guid userId)
-        {
-            using (var uow = UnitOfWorkProvider.Create())
-            {
-                var friendships = await friendshipService.ListFriendshipAsync(new FriendshipFilterDto { UserA = userId });
-                foreach (var friendship in friendships.Items)
-                {
-                    friendshipService.Delete(friendship.Id);
-                }
-                await uow.Commit();
-            }
-        }
     }
 }

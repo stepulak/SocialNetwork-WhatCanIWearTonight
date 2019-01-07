@@ -71,8 +71,7 @@ namespace BusinessLayer.Services.Users
             var result = await Query.ExecuteQuery(filter);
             return result.Items.FirstOrDefault();
         }
-
-
+        
         private async Task<bool> DoesUserExistAsync(string username)
         {
             var queryResult = await Query.ExecuteQuery(new UserFilterDto { Username = username });
