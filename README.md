@@ -1,6 +1,4 @@
-# PV179-WCIWT
-PV179 Project - What Can I Wear Tonight Social Network
-
+# What Can I Wear Tonight Social Network
 
 ## User Story
 Social network for everybody but aimed mainly on young women. It helps to resolve a very common problem of "What should I wear tonight?"
